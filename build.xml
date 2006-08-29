@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project [
+   <!ENTITY buildmagic SYSTEM "tools/etc/buildmagic/buildmagic.ent">
+   <!ENTITY targets SYSTEM "tools/etc/buildmagic/targets.ent">
+]>
+
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!--  JBoss, the OpenSource J2EE webOS                                      -->
+<!--                                                                        -->
+<!--  Distributable under LGPL license.                                     -->
+<!--  See terms of license at http://www.gnu.org.                           -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+
+<!-- $Id$ -->
+
+<project default="build" name="JBoss/Common">
+
+  <!-- ================================================================== -->
+  <!-- Setup                                                              -->
+  <!-- ================================================================== -->
+
+  <!--
+     | Include the common Buildmagic elements.
+     |
+     | This defines several different targets, properties and paths.
+     | It also sets up the basic extention tasks amoung other things.
+   -->
+
+  &buildmagic;
+
+  <!--
+     | Include the normal targets.
+   -->
+  &targets;
+
+  <!-- ================================================================== -->
+  <!-- Configuration                                                      -->
+  <!-- ================================================================== -->
+
+  <!--
+     | Configure the build system.  
+     |
+     | This target is invoked by the Buildmagic initialization logic and 
+     | should contain module specific configuration elements.
+   -->
+
+  <target name="configure" unless="configure.disable">
+
+    <!-- =================== -->
+    <!-- Basic Configuration -->
+    <!-- =================== -->
+
+    <!-- Module name(s) & version -->
+    <property name="module.name" value="common"/>
+    <property name="module.Name" value="JBoss/Common"/>
+    <property name="module.version" value="DEV"/>
+
+    
+
+    <!-- The combined dependent module classpath -->
+    <path id="dependentmodule.classpath">
+    </path>
+
+    <!-- ===== -->
+    <!-- Tasks -->
+    <!-- ===== -->
+
+    <call target="_default:task-init"/>
+    
+    <!-- Set project specific properties -->
+    <property name="jboss.home" value="../build/output/jboss-${version.major}.${version.minor}.${version.revision}.${version.tag}"/>
+    <property name="server" value="default"/>
+    
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Compile                                                            -->
+  <!-- ================================================================== -->
+
+  <!-- 
+     | Compile everything.
+     |
+     | This target should depend on other compile-* targets for each 
+     | different type of compile that needs to be performed, short of
+     | documentation compiles.
+   -->
+
+  <target name="compile" depends="_default:compile-etc"
+    description="Compile all source files.">
+    <ant antfile="build-compile.xml" target="compile-classes"/>
+  </target>
+
+
+  <!-- ================================================================== -->
+  <!-- Archives                                                           -->
+  <!-- ================================================================== -->
+
+  <!-- 
+     | Build all jar files.
+   -->
+  <target name="module-jars">
+
+    <!-- Build jboss-common.jar -->
+    <jar jarfile="${build.lib}/jboss-common-core.jar"
+      manifest="${build.etc}/default.mf">
+      <fileset dir="${build.classes}"/>
+    </jar>
+
+  </target>
+  
+  <target name="build" depends="createthirdparty, main"/>
+  
+   <!-- create the thirdparty folder from items in the repository -->
+   <!-- then generate a new libraries.ent file and include it in  -->
+   <!-- the build                                                 -->
+   <target name="createthirdparty" unless="inhibit.downloads"
+      depends="check.inhibit.downloads, set.proxy">
+      
+      <ant antfile="build-thirdparty.xml" target="generate-lib-file"/>
+   </target>
+
+   <!-- check if thirdparty libraries are to be downloaded -->
+   <target name="check.inhibit.downloads">
+      <condition property="inhibit.downloads">
+         <or>
+            <uptodate property="dependencies.current"
+ 	      srcfile="build-thirdparty.xml"
+               targetfile="thirdparty/libraries.ent"/>
+            <istrue value="${nodownload}"/>
+         </or>
+      </condition>
+  </target>
+
+  <!-- check if the the user has specied proxy settings -->
+  <target name="check.proxy">
+    <condition property="hasproxy">
+        <and>
+            <isset property="proxy.host"/>
+            <isset property="proxy.port"/>
+            <not>
+                <equals arg1="" arg2="${proxy.host}" trim="true"/>
+            </not>
+            <not>
+                <equals arg1="" arg2="${proxy.port}" trim="true"/>
+            </not>
+        </and>
+    </condition>
+  </target>
+
+  <!-- set proxy settings -->
+  <condition property="hasproxyauth">
+        <and>
+            <isset property="hasproxy"/>
+            <isset property="proxy.username"/>
+            <isset property="proxy.password"/>
+            <not>
+                <equals arg1="" arg2="${proxy.username}" trim="true"/>
+            </not>
+            <not>
+                <equals arg1="" arg2="${proxy.password}" trim="true"/>
+            </not>
+        </and>
+    </condition>
+  <target name="set.proxy" depends="set.proxy.withoutauth, set.proxy.auth"/>
+
+  <!-- set proxy settings without auth -->
+  <target name="set.proxy.withoutauth" if="hasproxy" unless="hasproxyauth" depends="check.proxy">
+    <echo>Proxy is set to ${proxy.host}:${proxy.port}</echo>
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/>
+  </target>
+
+  <!-- set proxy settings using auth -->
+  <target name="set.proxy.auth" if="hasproxyauth" depends="check.proxy">
+    <echo>Auth Proxy is set to ${proxy.host}:${proxy.port} username=[${proxy.username}]</echo>
+    <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}" proxyuser="${proxy.username}" proxypassword="${proxy.password}"/>
+  </target>  
+  
+</project>
