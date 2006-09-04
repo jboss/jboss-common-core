@@ -344,8 +344,14 @@ public final class DOMUtils
             
             // Prevent DOMException: NAMESPACE_ERR: An attempt is made to create or 
             // change an object in a way which is incorrect with regard to namespaces.
-            if (("xmlns".equals(qname) && "".equals(value)) == false)
+            if (uri == null && qname.startsWith("xmlns"))
+            {
+               log.trace("Ignore attribute: [uri=" + uri + ",qname=" + qname + ",value=" + value + "]");
+            }
+            else
+            {
                destElement.setAttributeNS(uri, qname, value);
+            }
         }
     }
 
