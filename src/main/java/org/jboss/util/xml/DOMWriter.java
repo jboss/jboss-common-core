@@ -261,7 +261,7 @@ public class DOMWriter
                String atName = attr.getNodeName();
                String atValue = normalize(attr.getNodeValue());
                
-               if (atPrefix != null && atPrefix.equals("xmlns") == false)
+               if (atPrefix != null && (atPrefix.equals("xmlns") || atPrefix.equals("xml")) == false)
                {
                   String nsURI = getNamespaceURI(atPrefix, element, rootNode);
                   nsMap.put(atPrefix, nsURI);
