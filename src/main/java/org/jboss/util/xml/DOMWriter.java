@@ -245,27 +245,42 @@ public class DOMWriter
             out.print('<');
             out.print(nodeName);
             
-            String prefix = node.getPrefix();
-            String nsURI = (prefix != null ? getNamespaceURI(prefix, element, rootNode) : null);
+            Map nsMap = new HashMap();
+            String elPrefix = node.getPrefix();
+            if (elPrefix != null)
+            {
+               String nsURI = getNamespaceURI(elPrefix, element, rootNode);
+               nsMap.put(elPrefix, nsURI);
+            }
             
             Attr attrs[] = sortAttributes(node.getAttributes());
             for (int i = 0; i < attrs.length; i++)
             {
                Attr attr = attrs[i];
-               String attrName = attr.getNodeName();
-               String attrValue = normalize(attr.getNodeValue());
+               String atPrefix = attr.getPrefix();
+               String atName = attr.getNodeName();
+               String atValue = normalize(attr.getNodeValue());
                
-               if (prefix != null && attrName.equals("xmlns:" + prefix))
-                  nsURI = attrValue;
+               if (atPrefix != null && atPrefix.equals("xmlns") == false)
+               {
+                  String nsURI = getNamespaceURI(atPrefix, element, rootNode);
+                  nsMap.put(atPrefix, nsURI);
+               }
                
-               out.print(" " + attrName + "='" + attrValue + "'");
+               out.print(" " + atName + "='" + atValue + "'");
             }
             
             // Add missing namespace declaration
-            if (prefix != null && nsURI == null)
+            Iterator itPrefix = nsMap.keySet().iterator();
+            while (itPrefix.hasNext())
             {
-               nsURI = getNamespaceURI(prefix, element, null);
-               out.print(" xmlns:" + prefix + "='" + nsURI + "'");
+               String prefix = (String)itPrefix.next();
+               String nsURI = (String)nsMap.get(prefix);
+               if (nsURI == null)
+               {
+                  nsURI = getNamespaceURI(prefix, element, null);
+                  out.print(" xmlns:" + prefix + "='" + nsURI + "'");
+               }
             }
 
             if (hasChildNodes)
