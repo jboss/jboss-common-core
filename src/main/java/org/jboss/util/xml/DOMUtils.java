@@ -338,7 +338,14 @@ public final class DOMUtils
         for (int i = 0; i < attribs.getLength(); i++)
         {
             Attr attr = (Attr)attribs.item(i);
-            destElement.setAttributeNS(attr.getNamespaceURI(), attr.getName(), attr.getNodeValue());
+            String uri = attr.getNamespaceURI();
+            String qname = attr.getName();
+            String value = attr.getNodeValue();
+            
+            // Prevent DOMException: NAMESPACE_ERR: An attempt is made to create or 
+            // change an object in a way which is incorrect with regard to namespaces.
+            if (("xmlns".equals(qname) && "".equals(value)) == false)
+               destElement.setAttributeNS(uri, qname, value);
         }
     }
 
