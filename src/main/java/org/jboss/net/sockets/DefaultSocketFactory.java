@@ -121,12 +121,25 @@ public class DefaultSocketFactory extends ServerSocketFactory
         return activeSocket;
     }
 
-    public boolean equals(Object obj)
-    {
-        return obj instanceof DefaultSocketFactory;
-    }
-    public int hashCode()
-    {
-        return getClass().getName().hashCode();
-    }
+   public boolean equals(Object obj)
+   {
+      boolean equals = obj instanceof DefaultSocketFactory;
+      if( equals && bindAddress != null )
+      {
+         DefaultSocketFactory dsf = (DefaultSocketFactory) obj;
+         InetAddress dsfa = dsf.bindAddress;
+         if( dsfa != null )
+            equals = bindAddress.equals(dsfa);
+         else
+            equals = false;
+      }
+      return equals;
+   }
+   public int hashCode()
+   {
+      int hashCode = getClass().getName().hashCode();
+      if( bindAddress != null )
+         hashCode += bindAddress.toString().hashCode();
+      return hashCode;
+   }
 }
