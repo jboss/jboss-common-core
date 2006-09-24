@@ -4,7 +4,7 @@
   <groupId>jboss.common.core</groupId>
   <artifactId>jboss-common-core</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0</version>
+  <version>2.0.1.GA</version>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>A set of commonly used classed classes</description>
