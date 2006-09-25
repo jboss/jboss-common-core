@@ -142,4 +142,13 @@ public class DefaultSocketFactory extends ServerSocketFactory
          hashCode += bindAddress.toString().hashCode();
       return hashCode;
    }
+   public String toString()
+   {
+      StringBuffer tmp = new StringBuffer(super.toString());
+      tmp.append('[');
+      tmp.append("bindAddress=");
+      tmp.append(bindAddress);
+      tmp.append(']');
+      return tmp.toString();
+   }
 }
