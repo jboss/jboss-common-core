@@ -57,9 +57,8 @@
   
   <build>
      <sourceDirectory>src/main/java</sourceDirectory>
-  <plugins>
-  
-
+     <finalName>${artifactId}</finalName>
+     <plugins>
     
       <!-- define how we want compilation to take place
            here, we accept most of the defaults but say that we want the
@@ -79,13 +78,13 @@
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
         <inherited>true</inherited>
-       <executions>
-        <execution>
-          <goals>
-            <goal>jar</goal>
-          </goals>
-        </execution>
-      </executions>
+         <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>     
     
     </plugins>
@@ -112,14 +111,9 @@
       <version>2.0</version>
     </dependency>   
     <dependency>
-      <groupId>apache-log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.8</version>
-    </dependency>      
-    <dependency>
       <groupId>jboss</groupId>
       <artifactId>jboss-logging-spi</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1.GA</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

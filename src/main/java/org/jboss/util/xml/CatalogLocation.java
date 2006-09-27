@@ -30,7 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
+import org.jboss.logging.Logger;
 import org.jboss.util.xml.catalog.CatalogManager;
 import org.jboss.util.xml.catalog.Resolver;
 import org.xml.sax.InputSource;
