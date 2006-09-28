@@ -53,9 +53,9 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.jboss.util.xml;
+package org.jboss.ws.utils;
 
-// $Id$
+// $Id:DOMWriter.java 1085 2006-09-28 08:16:31Z thomas.diesler@jboss.com $
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -78,7 +78,7 @@ import org.w3c.dom.NodeList;
  *
  * @author Andy Clark, IBM
  * @author Thomas.Diesler@jboss.org
- * @version $Revision$
+ * @version $Revision:1085 $
  */
 public class DOMWriter
 {
@@ -269,8 +269,10 @@ public class DOMWriter
                   String nsURI = getNamespaceURI(atPrefix, element, rootNode);
                   nsMap.put(atPrefix, nsURI);
                }
-               
-               out.print(" " + atName + "='" + atValue + "'");
+
+               // Ignore xmlns=''
+               if (atName.equals("xmlns") && atValue.equals("") == false)
+            	   out.print(" " + atName + "='" + atValue + "'");
             }
             
             // Add missing namespace declaration
