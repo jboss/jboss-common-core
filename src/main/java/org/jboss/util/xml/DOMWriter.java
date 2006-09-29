@@ -271,7 +271,7 @@ public class DOMWriter
                }
 
                // Ignore xmlns=''
-               if (atName.equals("xmlns") && atValue.equals("") == false)
+               if ((atName.equals("xmlns") && atValue.equals("")) == false)
             	   out.print(" " + atName + "='" + atValue + "'");
             }
             
