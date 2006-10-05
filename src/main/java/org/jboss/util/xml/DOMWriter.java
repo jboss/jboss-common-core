@@ -270,9 +270,7 @@ public class DOMWriter
                   nsMap.put(atPrefix, nsURI);
                }
 
-               // Ignore xmlns=''
-               if ((atName.equals("xmlns") && atValue.equals("")) == false)
-            	   out.print(" " + atName + "='" + atValue + "'");
+               out.print(" " + atName + "='" + atValue + "'");
             }
             
             // Add missing namespace declaration
