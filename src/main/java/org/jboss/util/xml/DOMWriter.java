@@ -53,7 +53,7 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.jboss.ws.utils;
+package org.jboss.util.xml;
 
 // $Id:DOMWriter.java 1085 2006-09-28 08:16:31Z thomas.diesler@jboss.com $
 
