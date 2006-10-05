@@ -319,7 +319,13 @@ public class JBossEntityResolver implements EntityResolver
          }
          else
          {
-            log.warn("Cannot load publicId from resource: " + filename);
+            log.trace("Cannot load publicId from classpath resource: " + filename);
+            
+            // Try the file name as a URI
+            inputSource = resolveSystemIDasURL(filename, trace);
+            
+            if (inputSource == null)
+               log.warn("Cannot load publicId from resource: " + filename);
          }
       }
 
