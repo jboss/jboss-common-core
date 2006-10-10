@@ -53,9 +53,9 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.jboss.util.xml;
+package org.jboss.ws.utils;
 
-// $Id:DOMWriter.java 1085 2006-09-28 08:16:31Z thomas.diesler@jboss.com $
+// $Id$
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -78,7 +78,7 @@ import org.w3c.dom.NodeList;
  *
  * @author Andy Clark, IBM
  * @author Thomas.Diesler@jboss.org
- * @version $Revision:1085 $
+ * @version $Revision$
  */
 public class DOMWriter
 {
@@ -98,10 +98,19 @@ public class DOMWriter
    private boolean wroteXMLDeclaration;
    // The node that started the write
    private Node rootNode;
-   
+   // True if we want namespace completion
+   private boolean completeNamespaces = true;
+
    public DOMWriter(Writer w)
    {
       this.out = new PrintWriter(w);
+   }
+
+   public DOMWriter(Writer w, String charsetName)
+   {
+      this.out = new PrintWriter(w);
+      this.charsetName = charsetName;
+      this.writeXMLDeclaration = true;
    }
 
    public DOMWriter(OutputStream stream)
@@ -157,6 +166,17 @@ public class DOMWriter
       return this;
    }
 
+   /**
+    * Set wheter subelements should have their namespaces completed.
+    * Setting this to false may lead to invalid XML fragments.
+    * The default is true.
+    */
+   public DOMWriter setCompleteNamespaces(boolean complete)
+   {
+      this.completeNamespaces = complete;
+      return this;
+   }
+
    public boolean isPrettyprint()
    {
       return prettyprint;
@@ -181,9 +201,9 @@ public class DOMWriter
     * Set wheter the XML declaration should be written.
     * The default is false.
     */
-   public DOMWriter setWriteXMLDeclaration(boolean writeXMLDeclaration)
+   public DOMWriter setWriteXMLDeclaration(boolean flag)
    {
-      this.writeXMLDeclaration = writeXMLDeclaration;
+      this.writeXMLDeclaration = flag;
       return this;
    }
 
@@ -210,7 +230,10 @@ public class DOMWriter
          if (charsetName != null)
             out.print(" encoding='" + charsetName + "'");
 
-         out.println("?>");
+         out.print("?>");
+         if (prettyprint)
+            out.println();
+         
          wroteXMLDeclaration = true;
       }
 
@@ -232,7 +255,7 @@ public class DOMWriter
             break;
          }
 
-         // print element with attributes
+            // print element with attributes
          case Node.ELEMENT_NODE:
          {
             Element element = (Element)node;
@@ -247,7 +270,7 @@ public class DOMWriter
 
             out.print('<');
             out.print(nodeName);
-            
+
             Map nsMap = new HashMap();
             String elPrefix = node.getPrefix();
             if (elPrefix != null)
@@ -255,15 +278,15 @@ public class DOMWriter
                String nsURI = getNamespaceURI(elPrefix, element, rootNode);
                nsMap.put(elPrefix, nsURI);
             }
-            
+
             Attr attrs[] = sortAttributes(node.getAttributes());
             for (int i = 0; i < attrs.length; i++)
             {
                Attr attr = attrs[i];
                String atPrefix = attr.getPrefix();
                String atName = attr.getNodeName();
-               String atValue = normalize(attr.getNodeValue());
-               
+               String atValue = normalize(attr.getNodeValue(), canonical);
+
                if (atPrefix != null && (atPrefix.equals("xmlns") || atPrefix.equals("xml")) == false)
                {
                   String nsURI = getNamespaceURI(atPrefix, element, rootNode);
@@ -272,17 +295,20 @@ public class DOMWriter
 
                out.print(" " + atName + "='" + atValue + "'");
             }
-            
+
             // Add missing namespace declaration
-            Iterator itPrefix = nsMap.keySet().iterator();
-            while (itPrefix.hasNext())
+            if (completeNamespaces)
             {
-               String prefix = (String)itPrefix.next();
-               String nsURI = (String)nsMap.get(prefix);
-               if (nsURI == null)
+               Iterator itPrefix = nsMap.keySet().iterator();
+               while (itPrefix.hasNext())
                {
-                  nsURI = getNamespaceURI(prefix, element, null);
-                  out.print(" xmlns:" + prefix + "='" + nsURI + "'");
+                  String prefix = (String)itPrefix.next();
+                  String nsURI = (String)nsMap.get(prefix);
+                  if (nsURI == null)
+                  {
+                     nsURI = getNamespaceURI(prefix, element, null);
+                     out.print(" xmlns:" + prefix + "='" + nsURI + "'");
+                  }
                }
             }
 
@@ -338,7 +364,7 @@ public class DOMWriter
          {
             if (canonical)
             {
-               out.print(normalize(node.getNodeValue()));
+               out.print(normalize(node.getNodeValue(), canonical));
             }
             else
             {
@@ -352,7 +378,7 @@ public class DOMWriter
             // print text
          case Node.TEXT_NODE:
          {
-            String text = normalize(node.getNodeValue());
+            String text = normalize(node.getNodeValue(), canonical);
             if (prettyprint == false || text.trim().length() > 0)
                out.print(text);
             break;
@@ -492,7 +518,7 @@ public class DOMWriter
    }
 
    /** Normalizes the given string. */
-   private String normalize(String s)
+   public static String normalize(String s, boolean canonical)
    {
       StringBuffer str = new StringBuffer();
 
