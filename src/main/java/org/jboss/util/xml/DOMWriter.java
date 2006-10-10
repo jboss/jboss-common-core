@@ -53,7 +53,7 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-package org.jboss.ws.utils;
+package org.jboss.util.xml;
 
 // $Id$
 
