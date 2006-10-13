@@ -22,9 +22,11 @@
 package org.jboss.util.file;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URISyntaxException;
+import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Iterator;
 
 /**
@@ -51,7 +53,7 @@ public abstract class ArchiveBrowser
          }
          catch (URISyntaxException e)
          {
-            throw new RuntimeException( "Not a valid URL: " + url, e );
+            throw new RuntimeException("Not a valid URL: " + url, e);
          }
          if (f.isDirectory())
          {
@@ -62,9 +64,32 @@ public abstract class ArchiveBrowser
             return new JarArchiveBrowser(f, filter);
          }
       }
-      else
+      else if (url.getProtocol().startsWith("jar"))
       {
-         throw new RuntimeException("NOT IMPLEMENTED");
+         if (url.toString().endsWith("!/"))
+         {
+            try
+            {
+               return new JarArchiveBrowser((JarURLConnection) url.openConnection(), filter);
+            }
+            catch (IOException e)
+            {
+               throw new RuntimeException(e);
+            }
+         }
+         else
+         {
+            try
+            {
+               return new JarStreamBrowser(url.openStream(), filter);
+            }
+            catch (IOException e)
+            {
+               throw new RuntimeException(e);
+            }
+         }
+
       }
+      else throw new RuntimeException("Archive browser cannot handle protocol: " + url);
    }
 }

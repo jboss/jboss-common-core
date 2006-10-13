@@ -23,10 +23,14 @@ package org.jboss.util.file;
 
 import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.JarURLConnection;
 
 /**
  * Comment
@@ -37,17 +41,32 @@ import java.io.IOException;
  **/
 public class JarArchiveBrowser implements Iterator
 {
-   ZipFile zip;
+   JarFile zip;
    Enumeration entries;
-   ZipEntry next;
+   JarEntry next;
    ArchiveBrowser.Filter filter;
+
+   public JarArchiveBrowser(JarURLConnection url,  ArchiveBrowser.Filter filter)
+   {
+      this.filter = filter;
+      try
+      {
+         zip = url.getJarFile();
+         entries = zip.entries();
+      }
+      catch (IOException e)
+      {
+         throw new RuntimeException(e);  //To change body of catch statement use Options | File Templates.
+      }
+      setNext();
+   }
 
    public JarArchiveBrowser(File f, ArchiveBrowser.Filter filter)
    {
       this.filter = filter;
       try
       {
-         zip = new ZipFile(f);
+         zip = new JarFile(f);
          entries = zip.entries();
       }
       catch (IOException e)
@@ -69,7 +88,7 @@ public class JarArchiveBrowser implements Iterator
       {
          do
          {
-            next = (ZipEntry) entries.nextElement();
+            next = (JarEntry)entries.nextElement();
          } while (entries.hasMoreElements() && next.isDirectory());
          if (next.isDirectory()) next = null;
 
