@@ -74,7 +74,7 @@ public abstract class ArchiveBrowser
             }
             catch (IOException e)
             {
-               throw new RuntimeException(e);
+               throw new RuntimeException("Unable to browse url: " + url, e);
             }
          }
          else
@@ -85,7 +85,7 @@ public abstract class ArchiveBrowser
             }
             catch (IOException e)
             {
-               throw new RuntimeException(e);
+               throw new RuntimeException("Unable to browse url: " + url, e);
             }
          }
 
