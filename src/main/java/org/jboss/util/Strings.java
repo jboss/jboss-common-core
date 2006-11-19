@@ -24,7 +24,10 @@ package org.jboss.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -812,6 +815,25 @@ public final class Strings
       return url;
    }
 
+   public static URI toURI(String urispec, final String relativePrefix)
+      throws URISyntaxException
+   {
+      urispec = urispec.trim();
+
+      URI uri;
+
+      if( urispec.startsWith("file:") )
+      {
+         uri = makeURIFromFilespec(urispec.substring(5), relativePrefix);
+      }
+      else
+      {
+         uri = new URI(urispec);
+      }
+
+      return uri;
+   }
+
    /** A helper to make a URL from a filespec. */
    private static URL makeURLFromFilespec(final String filespec, final String relativePrefix)
       throws IOException
@@ -830,6 +852,19 @@ public final class Strings
 
       return file.toURL();
    }
+   private static URI makeURIFromFilespec(final String filespec, final String relativePrefix)
+   {
+      // make sure the file is absolute & canonical file url
+      File file = new File(filespec);
+      
+      // if we have a prefix and the file is not abs then prepend
+      if (relativePrefix != null && !file.isAbsolute())
+      {
+         file = new File(relativePrefix, filespec);
+      }
+      
+      return file.toURI();
+   }
 
    /**
     * Make a URL from the given string.
@@ -844,6 +879,18 @@ public final class Strings
    public static URL toURL(final String urlspec) throws MalformedURLException
    {
       return toURL(urlspec, null);
+   }
+
+   /**
+    * 
+    * @param urispec
+    * @return
+    * @throws MalformedURLException
+    */
+   public static URI toURI(final String urispec)
+      throws URISyntaxException
+   {
+      return toURI(urispec, null);
    }
 
    /**

@@ -25,6 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.jboss.util.NestedRuntimeException;
+import org.jboss.util.Strings;
 
 /**
  * A property editor for {@link java.net.URI}.
@@ -45,8 +46,7 @@ public class URIEditor extends TextPropertyEditorSupport
    {
       try
       {
-         // TODO - more strict checking, like URLEditor
-         return new URI(getAsText());
+         return Strings.toURI(getAsText());
       }
       catch (URISyntaxException e)
       {
