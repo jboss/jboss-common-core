@@ -4,7 +4,7 @@
   <groupId>jboss</groupId>
   <artifactId>jboss-common-core</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.2.GA</version>
+  <version>2.0.3.Alpha</version>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>A set of commonly used classed classes</description>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>jboss</groupId>
       <artifactId>jboss-logging-spi</artifactId>
-      <version>2.0.2.GA</version>
+      <version>2.0.3.Alpha</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
