@@ -21,6 +21,8 @@
   */
 package org.jboss.util.file;
 
+import EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -28,9 +30,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Comment
+ *
+ * @deprecated
  *
  * @author <a href="mailto:bill@jboss.org">Bill Burke</a>
  * @version $Revision$
@@ -42,54 +48,18 @@ public abstract class ArchiveBrowser
       boolean accept(String filename);
    }
 
+   public static Map factoryFinder = new ConcurrentReaderHashMap();
+
+   static
+   {
+      factoryFinder.put("file", new FileProtocolArchiveBrowserFactory());
+      factoryFinder.put("jar", new JarProtocolArchiveBrowserFactory());
+   }
+
    public static Iterator getBrowser(URL url, Filter filter)
    {
-      if (url.getProtocol().equals("file"))
-      {
-         File f = null;
-         try
-         {
-            f = new File(new URI(url.toString()));
-         }
-         catch (URISyntaxException e)
-         {
-            throw new RuntimeException("Not a valid URL: " + url, e);
-         }
-         if (f.isDirectory())
-         {
-            return new DirectoryArchiveBrowser(f, filter);
-         }
-         else
-         {
-            return new JarArchiveBrowser(f, filter);
-         }
-      }
-      else if (url.getProtocol().startsWith("jar"))
-      {
-         if (url.toString().endsWith("!/"))
-         {
-            try
-            {
-               return new JarArchiveBrowser((JarURLConnection) url.openConnection(), filter);
-            }
-            catch (IOException e)
-            {
-               throw new RuntimeException("Unable to browse url: " + url, e);
-            }
-         }
-         else
-         {
-            try
-            {
-               return new JarStreamBrowser(url.openStream(), filter);
-            }
-            catch (IOException e)
-            {
-               throw new RuntimeException("Unable to browse url: " + url, e);
-            }
-         }
-
-      }
-      else throw new RuntimeException("Archive browser cannot handle protocol: " + url);
+      ArchiveBrowserFactory factory = (ArchiveBrowserFactory)factoryFinder.get(url.getProtocol());
+      if (factory == null) throw new RuntimeException("Archive browser cannot handle protocol: " + url);
+      return factory.create(url, filter);
    }
 }
