@@ -113,7 +113,7 @@
     <dependency>
       <groupId>jboss</groupId>
       <artifactId>jboss-logging-spi</artifactId>
-      <version>2.0.3.Alpha</version>
+      <version>2.0.3.GA</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -123,5 +123,15 @@
     </dependency>
   </dependencies>  
 
+  <distributionManagement>
+    <repository>
+      <id>cvs-file-repository</id>
+      <!-- Set maven.cvs.root in your settings.xml
+        See http://wiki.jboss.org/wiki/Wiki.jsp?page=JBossCommonProject
+      -->
+      <url>file://${maven.cvs.root}</url>
+    </repository>
+  </distributionManagement>
+  
 </project>
 
