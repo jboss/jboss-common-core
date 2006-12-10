@@ -42,18 +42,7 @@
            <updatePolicy>never</updatePolicy>
         </snapshots>
      </pluginRepository>
-      <pluginRepository>
-        <id>central</id>
-        <name>LSU maven2 mirror</name>
-        <url>http://ibiblio.lsu.edu/main/pub/packages/maven2</url>
-        <layout>default</layout>
-        <snapshots>
-           <enabled>false</enabled>
-           <updatePolicy>never</updatePolicy>
-        </snapshots>
-     </pluginRepository>
   </pluginRepositories>
-
   
   <build>
      <sourceDirectory>src/main/java</sourceDirectory>
