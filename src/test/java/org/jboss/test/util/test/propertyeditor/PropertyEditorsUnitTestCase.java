@@ -1,4 +1,4 @@
-package org.jboss.test.util.test;
+package org.jboss.test.util.test.propertyeditor;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
