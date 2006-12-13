@@ -51,7 +51,7 @@
     
       <!-- define how we want compilation to take place
            here, we accept most of the defaults but say that we want the
-           optimization flag set, and define the source and target to be 1.4,
+           optimization flag set, and define the source and target to be 1.5,
            these setting will be inherited by child projects -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
