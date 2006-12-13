@@ -22,8 +22,11 @@
 package org.jboss.util.graph;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * A named graph vertex with optional data.
+ * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
@@ -44,13 +47,18 @@ public class Vertex<T>
       this(null, null);
    }
    /**
-    * Create a vertex with the given name
+    * Create a vertex with the given name and no data
     * @param n
     */ 
    public Vertex(String n)
    {
-      this(null, null);
+      this(n, null);
    }
+   /**
+    * Create a Vertex with name n and given data
+    * @param n - name of vertex
+    * @param data - data associated with vertex
+    */
    public Vertex(String n, T data)
    {
       incomingEdges = new ArrayList<Edge<T>>();
@@ -60,13 +68,16 @@ public class Vertex<T>
       this.data = data;
    }
 
+   /**
+    * @return the possibly null name of the vertex
+    */
    public String getName()
    {
       return name;
    }
 
    /**
-    * @return Returns the data.
+    * @return the possibly null data of the vertex
     */
    public T getData()
    {
@@ -81,8 +92,12 @@ public class Vertex<T>
    }
 
    /**
+    * Add an edge to the vertex. If edge.from is this vertex, its an
+    * outgoing edge. If edge.to is this vertex, its an incoming
+    * edge. If neither from or to is this vertex, the edge is
+    * not added.
     * 
-    * @param e
+    * @param e - the edge to add
     * @return true if the edge was added, false otherwise
     */ 
    public boolean addEdge(Edge<T> e)
@@ -95,10 +110,35 @@ public class Vertex<T>
          return false;
       return true;
    }
-   
+
    /**
+    * Add an outgoing edge ending at to.
     * 
-    * @param e
+    * @param to - the destination vertex
+    * @param cost the edge cost
+    */
+   public void addOutgoingEdge(Vertex<T> to, int cost)
+   {
+      Edge<T> out = new Edge<T>(this, to, cost);
+      outgoingEdges.add(out);
+   }
+   /**
+    * Add an incoming edge starting at from
+    * 
+    * @param from - the starting vertex
+    * @param cost the edge cost
+    */
+   public void addIncomingEdge(Vertex<T> from, int cost)
+   {
+      Edge<T> out = new Edge<T>(this, from, cost);
+      incomingEdges.add(out);
+   }
+
+   /**
+    * Check the vertex for either an incoming or outgoing edge
+    * mathcing e.
+    * 
+    * @param e the edge to check
     * @return
     */ 
    public boolean hasEdge(Edge<T> e)
@@ -111,7 +151,13 @@ public class Vertex<T>
          return false;
    }
    
-   // Remove an edge from this vertex
+   /**
+    * Remove an edge from this vertex
+    * 
+    * @param e - the edge to remove
+    * @return true if the edge was removed, false if the
+    * edge was not connected to this vertex 
+    */
    public boolean remove(Edge<T> e)
    {
       if (e.getFrom() == this)
@@ -122,54 +168,103 @@ public class Vertex<T>
          return false;
       return true;
    }
-   
+
+   /**
+    * 
+    * @return the count of incoming edges
+    */
    public int getIncomingEdgeCount()
    {
       return incomingEdges.size();
    }
-   
+
+   /**
+    * Get the ith incoming edge
+    * @param i the index into incoming edges
+    * @return ith incoming edge
+    */
    public Edge<T> getIncomingEdge(int i)
    {
       Edge<T> e = incomingEdges.get(i);
       return e;
    }
 
+   /**
+    * Get the incoming edges
+    * @return incoming edge list
+    */
+   public List getIncomingEdges()
+   {
+      return this.incomingEdges;
+   }
+
+   /**
+    * 
+    * @return the count of incoming edges
+    */
    public int getOutgoingEdgeCount()
    {
       return outgoingEdges.size();
    }
+   /**
+    * Get the ith outgoing edge
+    * @param i the index into outgoing edges
+    * @return ith outgoing edge
+    */
    public Edge<T> getOutgoingEdge(int i)
    {
       Edge<T> e = outgoingEdges.get(i);
       return e;
    }
-   
-   // Do we have an edge that goes to dest?
+
+   /**
+    * Get the outgoing edges
+    * @return outgoing edge list
+    */
+   public List getOutgoingEdges()
+   {
+      return this.outgoingEdges;
+   }
+
+   /**
+    * Search the outgoing edges looking for an edge whose's
+    * edge.to == dest.
+    * @return the outgoing edge going to dest if one exists,
+    *    null otherwise.
+    */
    public Edge<T> findEdge(Vertex<T> dest)
    {
-      for (int i = 0; i < incomingEdges.size(); i++)
+      for (int i = 0; i < outgoingEdges.size(); i++)
       {
-         Edge<T> e = incomingEdges.get(i);
+         Edge<T> e = outgoingEdges.get(i);
          if (e.getTo() == dest)
             return e;
       }
       return null;
    }  
    
-   // Do we have the edge e?  Only looks at sucessors
+   /**
+    * Search the outgoing edges for a match to e.
+    * 
+    * @param e - the edge to check
+    * @return e if its a member of the outgoing edges, null
+    *    otherwise.
+    */
    public Edge<T> findEdge(Edge<T> e)
    {
-      if (incomingEdges.contains(e))
+      if (outgoingEdges.contains(e))
          return e;
       else
          return null;
-   }  
+   }
 
    /**
-    * What is the cost to this vertex.
-    * Return Integer.MAX_VALUE if we have no edge to dest
-    * @param dest
-    * @return
+    * What is the cost from this vertext to the dest vertex.
+    * 
+    * @param dest - the destination vertex.
+    * @return Return Integer.MAX_VALUE if we have no edge to dest,
+    * 0 if dest is this vertex, the cost of the outgoing edge
+    * otherwise.
     */ 
    public int cost(Vertex<T> dest)
    {
@@ -177,52 +272,87 @@ public class Vertex<T>
          return 0;
          
       Edge<T> e = findEdge(dest);
+      int cost = Integer.MAX_VALUE;
       if (e != null)
-         return e.getCost();
-      else
-         return Integer.MAX_VALUE;
+         cost = e.getCost();
+      return cost;
    }
-      
-   // Do we have an edge to dest?
+
+   /**
+    * Is there an outgoing edge ending at dest.
+    * 
+    * @param dest - the vertex to check
+    * @return true if there is an outgoing edge ending
+    *    at vertex, false otherwise.
+    */
    public boolean hasEdge(Vertex<T> dest)
    {
       return (findEdge(dest) != null);
    }
    
-   // Have we been here before?
+   /**
+    * Has this vertex been marked during a visit
+    * @return true is visit has been called
+    */
    public boolean visited()
    {
       return mark;
    }
-   
+
+   /**
+    * Set the vertex mark flag.
+    *
+    */
    public void mark()
    {
       mark = true;
    }
+   /**
+    * Set the mark state to state.
+    * 
+    * @param state 
+    */
    public void setMarkState(int state)
    {
       markState = state;
    }
+   /**
+    * Get the mark state value.
+    * @return
+    */
    public int getMarkState()
    {
       return markState;
    }
 
+   /**
+    * Visit the vertex and set the mark flag to true. 
+    *
+    */
    public void visit()
    {
       mark();
    }
-   
-   // Clear the mark
+
+   /**
+    * Clear the visited mark flag.
+    *
+    */
    public void clearMark()
    {
       mark = false;
    }
-   
+
+   /**
+    * @return a string form of the vertex with in and out
+    * edges.
+    */
    public String toString()
    {
       StringBuffer tmp = new StringBuffer("Vertex(");
       tmp.append(name);
+      tmp.append(", data=");
+      tmp.append(data);
       tmp.append("), in:[");
       for (int i = 0; i < incomingEdges.size(); i++)
       {

@@ -23,7 +23,6 @@ package org.jboss.util.graph;
 
 /**
  * A graph visitor interface.
- * TODO, the spanning tree visitor method should really be a separate interface
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$

@@ -22,6 +22,9 @@
 package org.jboss.util.graph;
 
 /**
+ * A spanning tree visitor callback interface
+ * 
+ * @see Graph#dfsSpanningTree(Vertex, DFSVisitor)
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$

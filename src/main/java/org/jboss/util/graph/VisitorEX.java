@@ -22,8 +22,8 @@
 package org.jboss.util.graph;
 
 /**
- * A graph visitor interface.
- * TODO, the spanning tree visitor method should really be a separate interface
+ * A graph visitor interface that can throw an exception during
+ * a visit callback.
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$

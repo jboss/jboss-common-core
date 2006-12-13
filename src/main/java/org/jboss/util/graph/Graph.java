@@ -21,8 +21,11 @@
  */
 package org.jboss.util.graph;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A directed graph data structure.
@@ -43,7 +46,9 @@ public class Graph<T>
    /** Vector<Edge> of edges in the graph */
    private ArrayList<Edge<T>> edges;
 
-   // Construct a new graph
+   /**
+    * Construct a new graph without any vertices or edges
+    */
    public Graph()
    {
       verticies = new ArrayList<Vertex<T>>();
@@ -66,7 +71,12 @@ public class Graph<T>
     */ 
    public boolean addVertex(Vertex<T> v)
    {
-      return verticies.add(v);
+      boolean added = false;
+      if( verticies.contains(v) == false )
+      {
+         added = verticies.add(v);
+      }
+      return added;
    }
 
    /**
@@ -90,14 +100,32 @@ public class Graph<T>
    }
 
    /**
-    * Insert a directed, weighted Edge<T> into the graph
+    * Get the graph verticies
+    * 
+    * @return the graph verticies
+    */
+   public List<Vertex<T>> getVerticies()
+   {
+      return this.verticies;
+   }
+
+   /**
+    * Insert a directed, weighted Edge<T> into the graph.
+    * 
     * @param from - the Edge<T> starting vertex
     * @param to - the Edge<T> ending vertex
     * @param cost - the Edge<T> weight/cost
     * @return true if the Edge<T> was added, false if from already has this Edge<T>
+    * @throws IllegalArgumentException if from/to are not verticies in
+    * the graph
     */ 
    public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost)
+      throws IllegalArgumentException
    {
+      if( verticies.contains(from) == false )
+         throw new IllegalArgumentException("from is not in graph");
+      if( verticies.contains(to) == false )
+         throw new IllegalArgumentException("to is not in graph");
       Edge<T> e = new Edge<T>(from, to, cost);
       if (from.findEdge(to) != null)
          return false;
@@ -112,14 +140,27 @@ public class Graph<T>
 
    /**
     * Insert a bidirectional Edge<T> in the graph
+    * 
     * @param from - the Edge<T> starting vertex
     * @param to - the Edge<T> ending vertex
     * @param cost - the Edge<T> weight/cost
     * @return true if edges between both nodes were added, false otherwise
+    * @throws IllegalArgumentException if from/to are not verticies in
+    * the graph
     */ 
    public boolean insertBiEdge(Vertex<T> from, Vertex<T> to, int cost)
+      throws IllegalArgumentException
    {
       return addEdge(from, to, cost) && addEdge(to, from, cost);
+   }
+
+   /**
+    * Get the graph edges
+    * @return the graph edges
+    */
+   public List<Edge<T>> getEdges()
+   {
+      return this.edges;
    }
 
    /**
@@ -216,6 +257,15 @@ public class Graph<T>
       };
       this.depthFirstSearch(v, wrapper);
    }
+   /**
+    * Perform a depth first serach using recursion. The search may
+    * be cut short if the visitor throws an exception.
+    * 
+    * @param v - the Vertex to start the search from
+    * @param visitor - the vistor to inform prior to 
+    * @see Visitor#visit(Graph, Vertex)
+    * @throws Exception if visitor.visit throws an exception 
+    */ 
    public <E extends Exception> void depthFirstSearch(Vertex<T> v, VisitorEX<T, E> visitor)
       throws E
    {
@@ -232,7 +282,13 @@ public class Graph<T>
       }
    }
 
-   // Breadth First Search
+   /**
+    * Perform a breadth first search of this graph, starting at v.
+    * 
+    * @param v - the search starting point
+    * @param visitor - the vistor whose vist method is called prior
+    * to visting a vertex.
+    */
    public void breadthFirstSearch(Vertex<T> v, final Visitor<T> visitor)
    {
       VisitorEX<T, RuntimeException> wrapper = new VisitorEX<T, RuntimeException>()
@@ -244,6 +300,16 @@ public class Graph<T>
       };
       this.breadthFirstSearch(v, wrapper);
    }
+   /**
+    * Perform a breadth first search of this graph, starting at v. The
+    * vist may be cut short if visitor throws an exception during
+    * a vist callback.
+    * 
+    * @param v - the search starting point
+    * @param visitor - the vistor whose vist method is called prior
+    * to visting a vertex.
+    * @throws Exception if vistor.visit throws an exception
+    */
    public <E extends Exception> void breadthFirstSearch(Vertex<T> v, VisitorEX<T, E> visitor)
       throws E
    {
@@ -270,7 +336,12 @@ public class Graph<T>
       }
    }
 
-   // Find Spanning Tree
+   /**
+    * Find the spanning tree using a DFS starting from v.
+    * @param v - the vertex to start the search from
+    * @param visitor - visitor invoked after each vertex
+    * is visited and an edge is added to the tree.
+    */
    public void dfsSpanningTree(Vertex<T> v, DFSVisitor<T> visitor)
    {
       v.visit();
@@ -290,14 +361,58 @@ public class Graph<T>
       }
    }
 
+   /**
+    * Search the verticies for one with name.
+    * 
+    * @param name - the vertex name
+    * @return the first vertex with a matching name, null if no
+    *    matches are found
+    */
+   public Vertex<T> findVertexByName(String name)
+   {
+      Vertex<T> match = null;
+      for(Vertex<T> v : verticies)
+      {
+         if( name.equals(v.getName()) )
+         {
+            match = v;
+            break;
+         }
+      }
+      return match;
+   }
 
-   /*
-   In order to detect cycles, we use a modified depth first search called a
-   colored DFS. All nodes are initially marked white. When a node is
-   encountered, it is marked grey, and when its descendants are completely
-   visited, it is marked black. If a grey node is ever encountered, then there
-   is a cycle. 
-   */
+   /**
+    * Search the verticies for one with data.
+    * 
+    * @param data - the vertex data to match
+    * @param compare - the comparator to perform the match
+    * @return the first vertex with a matching data, null if no
+    *    matches are found
+    */
+   public Vertex<T> findVertexByData(T data, Comparator<T> compare)
+   {
+      Vertex<T> match = null;
+      for(Vertex<T> v : verticies)
+      {
+         if( compare.compare(data, v.getData()) == 0 )
+         {
+            match = v;
+            break;
+         }
+      }
+      return match;
+   }
+
+   /** Search the graph for cycles. In order to detect cycles, we use
+    * a modified depth first search called a colored DFS. All nodes are
+    * initially marked white. When a node is encountered, it is marked
+    * grey, and when its descendants are completely visited, it is
+    * marked black. If a grey node is ever encountered, then there is
+    * a cycle.
+    * @return the edges that form cycles in the graph. The array will
+    * be empty if there are no cycles. 
+    */
    public Edge<T>[] findCycles()
    {
       ArrayList<Edge<T>> cycleEdges = new ArrayList<Edge<T>>();
@@ -312,6 +427,7 @@ public class Graph<T>
          Vertex<T> v = getVertex(n);
          visit(v, cycleEdges);
       }
+
       Edge<T>[] cycles = new Edge[cycleEdges.size()];
       cycleEdges.toArray(cycles);
       return cycles;
