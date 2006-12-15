@@ -172,6 +172,7 @@ public class JBossEntityResolver implements EntityResolver
    {
       return warnOnNonFileURLs;
    }
+
    public static void setWarnOnNonFileURLs(boolean warnOnNonFileURLs)
    {
       JBossEntityResolver.warnOnNonFileURLs = warnOnNonFileURLs;
@@ -290,7 +291,7 @@ public class JBossEntityResolver implements EntityResolver
     @return the InputSource for the schema file found on the classpath, null
       if the publicId is not registered or found.
     */
-   private InputSource resolvePublicID(String publicId, boolean trace)
+   protected InputSource resolvePublicID(String publicId, boolean trace)
    {
       if( publicId == null )
          return null;
@@ -342,7 +343,7 @@ public class JBossEntityResolver implements EntityResolver
     @return the URL InputSource if the URL input stream can be opened, null
       if the systemId is not a URL or could not be opened.
     */
-   private InputSource resolveSystemID(String systemId, boolean trace)
+   protected InputSource resolveSystemID(String systemId, boolean trace)
    {
       if( systemId == null )
          return null;
@@ -388,7 +389,7 @@ public class JBossEntityResolver implements EntityResolver
    @return the URL InputSource if the URL input stream can be opened, null
      if the systemId is not a URL or could not be opened.
    */
-  private InputSource resolveSystemIDasURL(String systemId, boolean trace)
+  protected InputSource resolveSystemIDasURL(String systemId, boolean trace)
   {
      if( systemId == null )
         return null;
@@ -446,7 +447,7 @@ public class JBossEntityResolver implements EntityResolver
     @return the InputSource for the schema file found on the classpath, null
       if the systemId is not registered or found.
     */
-   private InputSource resolveClasspathName(String systemId, boolean trace)
+   protected InputSource resolveClasspathName(String systemId, boolean trace)
    {
       if( systemId == null )
          return null;
@@ -500,7 +501,7 @@ public class JBossEntityResolver implements EntityResolver
     @param trace - trace level logging flag
     @return the resource InputStream if found, null if not found.
     */
-   private InputStream loadClasspathResource(String resource, boolean trace)
+   protected InputStream loadClasspathResource(String resource, boolean trace)
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
       URL url = loader.getResource(resource);
