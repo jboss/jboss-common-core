@@ -107,16 +107,9 @@
     </dependency>
     <dependency>
       <groupId>jboss</groupId>
-      <artifactId>jboss-logging-log4j</artifactId>
-      <!-- v >= 2.0.2.GA -->
-      <version>(,2.0.2.GA]</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>jboss</groupId>
       <artifactId>jboss-test</artifactId>
-      <!-- v >= 1.0.0.GA -->
-      <version>(,1.0.0.GA]</version>
+      <!-- v >= 1.0.1.GA -->
+      <version>(,1.0.1.GA]</version>
       <scope>test</scope>
     </dependency>
     <dependency>
