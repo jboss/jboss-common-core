@@ -45,6 +45,8 @@ public class Graph<T>
    private ArrayList<Vertex<T>> verticies;
    /** Vector<Edge> of edges in the graph */
    private ArrayList<Edge<T>> edges;
+   /** The vertex identified as the root of the graph */
+   private Vertex<T> rootVertex;
 
    /**
     * Construct a new graph without any vertices or edges
@@ -86,6 +88,26 @@ public class Graph<T>
    public int size()
    {
       return verticies.size();
+   }
+
+   /**
+    * Get the root vertex
+    * @return the root vertex if one is set, null if no vertex has been set as the root.
+    */
+   public Vertex<T> getRootVertex()
+   {
+      return rootVertex;
+   }
+   /**
+    * Set a root vertex. If root does no exist in the graph it is added.
+    * @param root - the vertex to set as the root and optionally add if it
+    *    does not exist in the graph.
+    */
+   public void setRootVertex(Vertex<T> root)
+   {
+      this.rootVertex = root;
+      if( verticies.contains(root) == false )
+         this.addVertex(root);
    }
 
    /**
@@ -165,27 +187,31 @@ public class Graph<T>
 
    /**
     * Remove a vertex from the graph
-    * @param from the Vertex to remove
+    * @param v the Vertex to remove
     * @return true if the Vertex was removed
     */ 
-   public boolean removeVertex(Vertex<T> from)
+   public boolean removeVertex(Vertex<T> v)
    {
-      if (!verticies.contains(from))
+      if (!verticies.contains(v))
          return false;
 
-      verticies.remove(from);
-      for(int n = 0; n < from.getOutgoingEdgeCount(); n ++)
+      verticies.remove(v);
+      if( v == rootVertex )
+         rootVertex = null;
+
+      // Remove the edges associated with v
+      for(int n = 0; n < v.getOutgoingEdgeCount(); n ++)
       {
-         Edge<T> e = from.getOutgoingEdge(n);
-         from.remove(e);
+         Edge<T> e = v.getOutgoingEdge(n);
+         v.remove(e);
          Vertex<T> to = e.getTo();
          to.remove(e);
          edges.remove(e);
       }
-      for(int n = 0; n < from.getIncomingEdgeCount(); n ++)
+      for(int n = 0; n < v.getIncomingEdgeCount(); n ++)
       {
-         Edge<T> e = from.getIncomingEdge(n);
-         from.remove(e);
+         Edge<T> e = v.getIncomingEdge(n);
+         v.remove(e);
          Vertex<T> predecessor = e.getFrom();
          predecessor.remove(e);
       }
