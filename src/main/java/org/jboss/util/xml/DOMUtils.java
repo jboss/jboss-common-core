@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jboss.logging.Logger;
+import org.jboss.util.StringPropertyReplacer;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -385,8 +386,17 @@ public final class DOMUtils
     }
 
     /** Get the concatenated text content, or null.
+     * @return getTextContent(node, false).
      */
     public static String getTextContent(Node node)
+    {
+       return getTextContent(node, false);
+    }
+    /** Get the concatenated text content, or null.
+     * @param the node to search for TEXT_NODE conent
+     * @param replaceProps flag indicating if ${x} property refs should be replace
+     */
+    public static String getTextContent(Node node, boolean replaceProps)
     {
         boolean hasTextContent = false;
         StringBuffer buffer = new StringBuffer();
@@ -400,7 +410,11 @@ public final class DOMUtils
                 hasTextContent = true;
             }
         }
-        return (hasTextContent ? buffer.toString() : null);
+        String text = (hasTextContent ? buffer.toString() : null);
+        if ( text != null && replaceProps)
+           text = StringPropertyReplacer.replaceProperties(text);
+
+        return text;
     }
 
     /** Gets the first child element
