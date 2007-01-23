@@ -1,24 +1,24 @@
 /*
-  * JBoss, Home of Professional Open Source
-  * Copyright 2005, JBoss Inc., and individual contributors as indicated
-  * by the @authors tag. See the copyright.txt in the distribution for a
-  * full listing of individual contributors.
-  *
-  * This is free software; you can redistribute it and/or modify it
-  * under the terms of the GNU Lesser General Public License as
-  * published by the Free Software Foundation; either version 2.1 of
-  * the License, or (at your option) any later version.
-  *
-  * This software is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  * Lesser General Public License for more details.
-  *
-  * You should have received a copy of the GNU Lesser General Public
-  * License along with this software; if not, write to the Free
-  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
-  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
-  */
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2006, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.jboss.util.platform;
 
 
@@ -31,11 +31,12 @@ package org.jboss.util.platform;
  *
  * <p>Classes are loaded in the following order:
  *    <ol>
- *    <li><tt>java.lang.Enum</tt> was introduced in JDK 1.5</li>
- *    <li><tt>java.lang.StackTraceElement</tt> was introduced in JDK 1.4</li>
- *    <li><tt>java.lang.StrictMath</tt> was introduced in JDK 1.3</li>
- *    <li><tt>java.lang.ThreadLocal</tt> was introduced in JDK 1.2</li>
  *    <li><tt>java.lang.Void</tt> was introduced in JDK 1.1</li>
+ *    <li><tt>java.lang.ThreadLocal</tt> was introduced in JDK 1.2</li>
+ *    <li><tt>java.lang.StrictMath</tt> was introduced in JDK 1.3</li>
+ *    <li><tt>java.lang.StackTraceElement</tt> was introduced in JDK 1.4</li>
+ *    <li><tt>java.lang.Enum</tt> was introduced in JDK 1.5</li>
+ *    <li><tt>java.lang.management.LockInfo</tt> was introduced in JDK 1.6</li>
  *    </ol>
  * </p>
  *
@@ -65,6 +66,9 @@ public final class Java
    
    /** Java version 1.5 token */
    public static final int VERSION_1_5 = 0x06;
+   
+   /** Java version 1.6 token */
+   public static final int VERSION_1_6 = 0x07;
    
    /** 
     * Private to avoid over optimization by the compiler.
@@ -100,6 +104,10 @@ public final class Java
          // check for 1.5
          Class.forName("java.lang.Enum");
          version = VERSION_1_5;
+         
+         // check for 1.6
+         Class.forName("java.lang.management.LockInfo");
+         version = VERSION_1_6;         
       }
       catch (ClassNotFoundException ignore)
       {
