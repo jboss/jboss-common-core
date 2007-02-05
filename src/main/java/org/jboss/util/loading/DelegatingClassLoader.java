@@ -86,7 +86,19 @@ public class DelegatingClassLoader
          return super.loadClass(className, resolve);
 
       // Ask the parent
-      Class clazz = getParent().loadClass(className);
+      Class clazz = null;
+      try
+      {
+         clazz = getParent().loadClass(className);
+      }
+      catch (ClassNotFoundException e)
+      {
+         // Not found in parent,
+         // maybe it is a proxy registered against this classloader?
+         clazz = findLoadedClass(className);
+         if (clazz == null)
+            throw e;
+      }
 
       // Link the class
       if (resolve)
