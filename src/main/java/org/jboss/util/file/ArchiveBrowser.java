@@ -48,6 +48,7 @@ public abstract class ArchiveBrowser
       boolean accept(String filename);
    }
 
+   //use concurrent hashmap since a protocol can be added on the fly through the public attribute
    public static Map factoryFinder = new ConcurrentReaderHashMap();
 
    static
