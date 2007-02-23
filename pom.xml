@@ -12,6 +12,9 @@
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>A set of commonly used classed classes</description>
+  <scm>
+    <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</connection>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>apache-xerces</groupId>
@@ -37,7 +40,7 @@
       <groupId>jboss</groupId>
       <artifactId>jboss-logging-spi</artifactId>
       <!-- v >= 2.0.2.GA -->
-      <version>[2.0.2.GA,)</version>
+      <version>[2.0.2,)</version>
     </dependency>
     <dependency>
       <groupId>jboss</groupId>
