@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
-  <description>A set of commonly used classed classes</description>
+  <description>JBoss Common Core Utility classes</description>
   <scm>
     <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</connection>
   </scm>
@@ -56,4 +56,9 @@
       <scope>test</scope>
     </dependency>
   </dependencies>  
+  <properties>
+    <!-- The tagBase property is needed during the release process so that the maven release plugin
+      will create the release tag in the appropriate location. -->
+    <tagBase>https://svn.jboss.org/repos/common/common-core/tags</tagBase>
+  </properties>
 </project>
