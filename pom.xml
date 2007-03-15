@@ -1,19 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>jboss</groupId>
 		<artifactId>jboss-common</artifactId>
-		<version>2.0.4-SNAPSHOT</version>
+		<version>2.0.4-beta</version>
 	  <relativePath>../build/pom.xml</relativePath>
 	</parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jboss-common-core</artifactId>
+  <version>2.0.4-beta</version>
   <packaging>jar</packaging>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>JBoss Common Core Utility classes</description>
   <scm>
-    <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</connection>
+    <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/tags/jboss-common-core-2.0.4-beta</connection>
   </scm>
   <build>
     <plugins>
@@ -51,14 +51,12 @@
     <dependency>
       <groupId>jboss</groupId>
       <artifactId>jboss-logging-spi</artifactId>
-      <!-- v >= 2.0.2.GA -->
-      <version>[2.0.2,)</version>
+      <version>2.0.2.GA</version>
     </dependency>
     <dependency>
       <groupId>jboss</groupId>
       <artifactId>jboss-test</artifactId>
-      <!-- v >= 1.0.1.GA -->
-      <version>[1.0.1.GA,)</version>
+      <version>1.0.3.GA</version>
       <scope>test</scope>
     </dependency>
     <dependency>
