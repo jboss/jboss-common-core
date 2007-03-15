@@ -7,13 +7,13 @@
 	</parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jboss-common-core</artifactId>
-  <version>2.0.4-SNAPSHOT</version>
+  <version>2.0.4-beta</version>
   <packaging>jar</packaging>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>JBoss Common Core Utility classes</description>
   <scm>
-    <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</connection>
+    <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/tags/jboss-common-core-2.0.4-beta</connection>
   </scm>
   <build>
     <plugins>
