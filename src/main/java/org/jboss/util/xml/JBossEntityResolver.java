@@ -48,6 +48,7 @@ import EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap;
  *
  * @author Scott.Stark@jboss.org
  * @author Thomas.Diesler@jboss.org
+ * @author Dimitris.Andreadis@jboss.org
  * @version $Revision$
  */
 public class JBossEntityResolver implements EntityResolver
@@ -107,6 +108,8 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD J2EE Application 1.3//EN", "jboss-app_3_0.dtd");
       registerEntity("-//JBoss//DTD J2EE Application 1.3V2//EN", "jboss-app_3_2.dtd");
       registerEntity("-//JBoss//DTD J2EE Application 1.4//EN", "jboss-app_4_0.dtd");
+      registerEntity("-//JBoss//DTD J2EE Application 4.2//EN", "jboss-app_4_2.dtd");
+      registerEntity("-//JBoss//DTD J2EE Application 5.0//EN", "jboss-app_5_0.dtd");       
       registerEntity("-//JBoss//DTD JAWS//EN", "jaws.dtd");
       registerEntity("-//JBoss//DTD JAWS 2.4//EN", "jaws_2_4.dtd");
       registerEntity("-//JBoss//DTD JAWS 3.0//EN", "jaws_3_0.dtd");
@@ -115,20 +118,26 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD JBOSS 3.0//EN", "jboss_3_0.dtd");
       registerEntity("-//JBoss//DTD JBOSS 3.2//EN", "jboss_3_2.dtd");
       registerEntity("-//JBoss//DTD JBOSS 4.0//EN", "jboss_4_0.dtd");
+      registerEntity("-//JBoss//DTD JBOSS 4.2//EN", "jboss_4_2.dtd");
       registerEntity("-//JBoss//DTD JBOSS 5.0//EN", "jboss_5_0.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 3.0//EN", "jbosscmp-jdbc_3_0.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 3.2//EN", "jbosscmp-jdbc_3_2.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 4.0//EN", "jbosscmp-jdbc_4_0.dtd");
+      registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 4.2//EN", "jbosscmp-jdbc_4_2.dtd");      
       registerEntity("-//JBoss//DTD Web Application 2.2//EN", "jboss-web.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.3//EN", "jboss-web_3_0.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.3V2//EN", "jboss-web_3_2.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.4//EN", "jboss-web_4_0.dtd");
+      registerEntity("-//JBoss//DTD Web Application 4.2//EN", "jboss-web_4_2.dtd");      
       registerEntity("-//JBoss//DTD Web Application 5.0//EN", "jboss-web_5_0.dtd");
       registerEntity("-//JBoss//DTD Application Client 3.2//EN", "jboss-client_3_2.dtd");
       registerEntity("-//JBoss//DTD Application Client 4.0//EN", "jboss-client_4_0.dtd");
+      registerEntity("-//JBoss//DTD Application Client 4.2//EN", "jboss-client_4_2.dtd");      
       registerEntity("-//JBoss//DTD Application Client 5.0//EN", "jboss-client_5_0.dtd");
       registerEntity("-//JBoss//DTD MBean Service 3.2//EN", "jboss-service_3_2.dtd");
       registerEntity("-//JBoss//DTD MBean Service 4.0//EN", "jboss-service_4_0.dtd");
+      registerEntity("-//JBoss//DTD MBean Service 4.2//EN", "jboss-service_4_2.dtd");
+      registerEntity("-//JBoss//DTD MBean Service 5.0//EN", "jboss-service_5_0.dtd");       
       registerEntity("-//JBoss//DTD JBOSS XMBEAN 1.0//EN", "jboss_xmbean_1_0.dtd");
       registerEntity("-//JBoss//DTD JBOSS XMBEAN 1.1//EN", "jboss_xmbean_1_1.dtd");
       registerEntity("-//JBoss//DTD JBOSS XMBEAN 1.2//EN", "jboss_xmbean_1_2.dtd");
