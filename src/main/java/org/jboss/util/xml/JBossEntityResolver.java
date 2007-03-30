@@ -134,6 +134,9 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD Application Client 4.0//EN", "jboss-client_4_0.dtd");
       registerEntity("-//JBoss//DTD Application Client 4.2//EN", "jboss-client_4_2.dtd");      
       registerEntity("-//JBoss//DTD Application Client 5.0//EN", "jboss-client_5_0.dtd");
+      registerEntity("-//JBoss//DTD Web Service Reference 4.0//EN", "service-ref_4_0.dtd");
+      registerEntity("-//JBoss//DTD Web Service Reference 4.2//EN", "service-ref_4_2.dtd");   
+      registerEntity("-//JBoss//DTD Web Service Reference 5.0//EN", "service-ref_5_0.dtd");       
       registerEntity("-//JBoss//DTD MBean Service 3.2//EN", "jboss-service_3_2.dtd");
       registerEntity("-//JBoss//DTD MBean Service 4.0//EN", "jboss-service_4_0.dtd");
       registerEntity("-//JBoss//DTD MBean Service 4.2//EN", "jboss-service_4_2.dtd");
