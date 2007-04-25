@@ -21,13 +21,6 @@
   */
 package org.jboss.util.file;
 
-import EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.JarURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -49,7 +42,7 @@ public abstract class ArchiveBrowser
    }
 
    //use concurrent hashmap since a protocol can be added on the fly through the public attribute
-   public static Map factoryFinder = new ConcurrentReaderHashMap();
+   public static Map factoryFinder = new ConcurrentHashMap();
 
    static
    {

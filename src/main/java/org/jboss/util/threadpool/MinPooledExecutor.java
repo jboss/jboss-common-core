@@ -21,8 +21,10 @@
   */
 package org.jboss.util.threadpool;
 
-import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
-import EDU.oswego.cs.dl.util.concurrent.Channel;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /** A pooled executor where the minimum pool size threads are kept alive. This
 is needed in order for the waitWhenBlocked option to work because of a
@@ -46,7 +48,7 @@ size must be > 0.
 @author adrian@jboss.org
 @version $Revision$
  */
-public class MinPooledExecutor extends PooledExecutor
+public class MinPooledExecutor extends ThreadPoolExecutor
 {
    // Constants -----------------------------------------------------
 
@@ -67,18 +69,18 @@ public class MinPooledExecutor extends PooledExecutor
     */
    public MinPooledExecutor(int poolSize)
    {
-      super(poolSize);
+      super(poolSize, 2*poolSize, 60, TimeUnit.SECONDS, new LinkedBlockingQueue(1024));
    }
-   
+
    /**
     * Construct a new executor
     * 
     * @param channel the queue for any requests
     * @param poolSize the maximum pool size
     */
-   public MinPooledExecutor(Channel channel, int poolSize)
+   public MinPooledExecutor(BlockingQueue queue, int poolSize)
    {
-      super(channel, poolSize);
+      super(poolSize, 2*poolSize, 60, TimeUnit.SECONDS, queue);
    }
 
    // Public --------------------------------------------------------
@@ -99,35 +101,9 @@ public class MinPooledExecutor extends PooledExecutor
       this.keepAliveSize = keepAliveSize;
    }
 
-   // PooledExecutor overrides --------------------------------------
-   
-   protected Runnable getTask() throws InterruptedException
-   {
-      Runnable task = super.getTask();
-      while (task == null && keepAlive())
-      {
-         task = super.getTask();
-      }
-      return task;
-   }
-
    // Package protected ---------------------------------------------
 
    // Protected -----------------------------------------------------
-
-   /**
-    * We keep alive unless we are told to shutdown
-    * or there are more than keepAliveSize threads in the pool
-    *
-    * @return whether to keep alive
-    */
-   protected synchronized boolean keepAlive()
-   {
-      if (shutdown_)
-         return false;
-
-      return poolSize_ <= keepAliveSize;
-   }
 
    // Private -------------------------------------------------------
 

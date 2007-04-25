@@ -31,13 +31,12 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.logging.Logger;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap;
 
 /**
  * Local entity resolver to handle standard J2EE DTDs and Schemas as well as JBoss
@@ -56,7 +55,7 @@ public class JBossEntityResolver implements EntityResolver
    private static final Logger log = Logger.getLogger(JBossEntityResolver.class);
 
    /** A class wide Map<String, String> of publicId/systemId to dtd/xsd file */
-   private static Map entities = new ConcurrentReaderHashMap();
+   private static Map entities = new ConcurrentHashMap ();
    /** A class flag indicating whether an attempt to resolve a systemID as a
     non-file URL should produce a warning rather than a trace level log msg.
     */
@@ -218,7 +217,7 @@ public class JBossEntityResolver implements EntityResolver
    public synchronized void registerLocalEntity(String id, String dtdOrSchema)
    {
       if( localEntities == null )
-         localEntities = new ConcurrentReaderHashMap();
+         localEntities = new ConcurrentHashMap();
       localEntities.put(id, dtdOrSchema);
    }
 

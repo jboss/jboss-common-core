@@ -21,7 +21,7 @@
   */
 package org.jboss.util.id;
 
-import EDU.oswego.cs.dl.util.concurrent.SynchronizedLong;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A unique identifier (uniqueness only guarantied inside of the virtual
@@ -53,7 +53,7 @@ public class UID
    private static final long serialVersionUID = -8093336932569424512L;
 
    /** A counter for generating identity values */
-   protected static final SynchronizedLong COUNTER = new SynchronizedLong(0);
+   protected static final AtomicLong COUNTER = new AtomicLong(0);
 
    /** The time portion of the UID */
    protected final long time;
@@ -66,7 +66,7 @@ public class UID
     */
    public UID() {
       time = System.currentTimeMillis();
-      id = COUNTER.increment();
+      id = COUNTER.incrementAndGet();
    }
 
    /**

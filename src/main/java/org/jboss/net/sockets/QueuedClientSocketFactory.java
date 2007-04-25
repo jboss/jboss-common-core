@@ -24,7 +24,8 @@ package org.jboss.net.sockets;
 import java.io.IOException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.net.Socket;
-import EDU.oswego.cs.dl.util.concurrent.FIFOSemaphore;
+import java.util.concurrent.Semaphore;
+
 /**
  *
  * @author Scott.Stark@jboss.org
@@ -33,7 +34,7 @@ import EDU.oswego.cs.dl.util.concurrent.FIFOSemaphore;
 public class QueuedClientSocketFactory
    implements RMIClientSocketFactory, java.io.Externalizable
 {
-   private transient FIFOSemaphore permits;
+   private transient Semaphore permits;
    private long numPermits;
    public QueuedClientSocketFactory()
    {
@@ -41,7 +42,7 @@ public class QueuedClientSocketFactory
 
    public QueuedClientSocketFactory(long nPermits)
    {
-      permits = new FIFOSemaphore(nPermits);
+      permits = new Semaphore((int)nPermits, true);
       numPermits = nPermits;
    }
    /**
@@ -88,6 +89,6 @@ public class QueuedClientSocketFactory
       throws IOException, ClassNotFoundException
    {
       numPermits = in.readLong();
-      permits = new FIFOSemaphore(numPermits);
+      permits = new Semaphore((int)numPermits, true);
    }
 }

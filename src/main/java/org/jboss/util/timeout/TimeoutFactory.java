@@ -21,13 +21,13 @@
  */
 package org.jboss.util.timeout;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.jboss.util.NestedRuntimeException;
 import org.jboss.util.ThrowableHandler;
 import org.jboss.util.threadpool.BasicThreadPool;
 import org.jboss.util.threadpool.BlockingMode;
 import org.jboss.util.threadpool.ThreadPool;
-
-import EDU.oswego.cs.dl.util.concurrent.SynchronizedBoolean;
 
 /**
  * The timeout factory.
@@ -83,7 +83,7 @@ public class TimeoutFactory
    }
 
    /** Used for graceful exiting */
-   private SynchronizedBoolean cancelled = new SynchronizedBoolean(false);
+   private AtomicBoolean cancelled = new AtomicBoolean(false);
    
    /** The daemon thread that dequeues timeouts tasks and issues
        them for execution to the thread pool */ 
@@ -189,7 +189,7 @@ public class TimeoutFactory
       // be cancelled since its reference is not accessible
       
       // let the worker thread cleanup
-      if (cancelled.set(true) == false);
+      if (cancelled.getAndSet(true) == false)
       {
          // Cancel the priority queue
          queue.cancel();

@@ -21,9 +21,9 @@
  */
 package org.jboss.util.timeout;
 
-import org.jboss.util.JBossStringBuilder;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import EDU.oswego.cs.dl.util.concurrent.SynchronizedBoolean;
+import org.jboss.util.JBossStringBuilder;
 
 /**
  * HashedTimeoutPriorityQueueImpl.
@@ -186,7 +186,7 @@ public class HashedTimeoutPriorityQueueImpl implements TimeoutPriorityQueue
    /** The hashed queues */
    private InternalPriorityQueue[] queues;
 
-   private SynchronizedBoolean cancelled = new SynchronizedBoolean(false);
+   private AtomicBoolean cancelled = new AtomicBoolean(false);
    
    /**
     * Create a new TimeoutPriorityQueueImpl.

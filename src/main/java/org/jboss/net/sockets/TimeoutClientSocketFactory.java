@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.server.RMIClientSocketFactory;
 import java.net.Socket;
-import EDU.oswego.cs.dl.util.concurrent.FIFOSemaphore;
 
 /**
  * A RMIClientSocketFactory that installs a InterruptableInputStream to be

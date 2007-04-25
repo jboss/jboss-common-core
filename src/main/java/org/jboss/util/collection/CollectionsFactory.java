@@ -24,14 +24,13 @@ package org.jboss.util.collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.jboss.util.collection.LazyList;
 import org.jboss.util.collection.LazyMap;
 import org.jboss.util.collection.LazySet;
-
-import EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap;
-import EDU.oswego.cs.dl.util.concurrent.CopyOnWriteArrayList;
-import EDU.oswego.cs.dl.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Collections factory.
@@ -70,7 +69,7 @@ public class CollectionsFactory
     */
    public static final Map createConcurrentReaderMap()
    {
-      return new ConcurrentReaderHashMap();
+      return new ConcurrentHashMap();
    }
 
    /**

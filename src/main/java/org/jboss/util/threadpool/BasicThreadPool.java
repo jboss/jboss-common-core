@@ -23,18 +23,21 @@ package org.jboss.util.threadpool;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.jboss.util.collection.WeakValueHashMap;
 import org.jboss.logging.Logger;
+import org.jboss.util.collection.WeakValueHashMap;
 
-import EDU.oswego.cs.dl.util.concurrent.BoundedLinkedQueue;
-import EDU.oswego.cs.dl.util.concurrent.SynchronizedBoolean;
-import EDU.oswego.cs.dl.util.concurrent.SynchronizedInt;
-import EDU.oswego.cs.dl.util.concurrent.ThreadFactory;
-import EDU.oswego.cs.dl.util.concurrent.Heap;
 
 /**
  * A basic thread pool.
+ * TODO: this port to jdk concurrent still needs to be tested.
  *
  * @author <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  * @author Scott.Stark@jboss.org
@@ -51,7 +54,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    private static final Map threadGroups = Collections.synchronizedMap(new WeakValueHashMap());
 
    /** The internal pool number */
-   private static final SynchronizedInt lastPoolNumber = new SynchronizedInt(0);
+   private static final AtomicInteger lastPoolNumber = new AtomicInteger(0);
 
    private static Logger log = Logger.getLogger(BasicThreadPool.class);
 
@@ -67,21 +70,21 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    private BlockingMode blockingMode = BlockingMode.ABORT;
 
    /** The pooled executor */
-   private MinPooledExecutor executor;
+   private ThreadPoolExecutor executor;
 
    /** The queue */
-   private BoundedLinkedQueue queue;
+   private LinkedBlockingQueue queue;
 
    /** The thread group */
    private ThreadGroup threadGroup;
 
    /** The last thread number */
-   private SynchronizedInt lastThreadNumber = new SynchronizedInt(0);
+   private AtomicInteger lastThreadNumber = new AtomicInteger(0);
 
    /** Has the pool been stopped? */
-   private SynchronizedBoolean stopped = new SynchronizedBoolean(false);
+   private AtomicBoolean stopped = new AtomicBoolean(false);
    /** The Heap<TimeoutInfo> of tasks ordered by their completion timeout */
-   private Heap tasksWithTimeouts = new Heap(13);
+   private PriorityQueue<TimeoutInfo> tasksWithTimeouts = new PriorityQueue<TimeoutInfo>(13);
    /** The task completion timeout monitor runnable */
    private TimeoutMonitor timeoutTask;
    /** The trace level logging flag */
@@ -122,15 +125,14 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       trace = log.isTraceEnabled();
       ThreadFactory factory = new ThreadPoolThreadFactory();
 
-      queue = new BoundedLinkedQueue(1024);
+      queue = new LinkedBlockingQueue(1024);
 
-      executor = new MinPooledExecutor(queue, 100);
-      executor.setMinimumPoolSize(4);
-      executor.setKeepAliveTime(60 * 1000);
+      
+      executor = new ThreadPoolExecutor(4, 4, 60, TimeUnit.SECONDS, queue);
       executor.setThreadFactory(factory);
-      executor.abortWhenBlocked();
+      executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
 
-      poolNumber = lastPoolNumber.increment();
+      poolNumber = lastPoolNumber.incrementAndGet();
       setName(name);
       this.threadGroup = threadGroup;
    }
@@ -146,16 +148,16 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       if (immediate)
          executor.shutdownNow();
       else
-         executor.shutdownAfterProcessingCurrentlyQueuedTasks();
+         executor.shutdown();
    }
 
    public void waitForTasks() throws InterruptedException
    {
-      executor.awaitTerminationAfterShutdown();
+      executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
    }
    public void waitForTasks(long maxWaitTime) throws InterruptedException
    {
-      executor.awaitTerminationAfterShutdown(maxWaitTime);
+      executor.awaitTermination(maxWaitTime, TimeUnit.MILLISECONDS);
    }
 
    public void runTaskWrapper(TaskWrapper wrapper)
@@ -177,7 +179,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
          checkTimeoutMonitor();
          // Install the task in the
          info = new TimeoutInfo(wrapper, completionTimeout);
-         tasksWithTimeouts.insert(info);
+         tasksWithTimeouts.add(info);
       }
       int waitType = wrapper.getTaskWaitType();
       switch (waitType)
@@ -261,12 +263,12 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
 
    public int getMaximumQueueSize()
    {
-      return queue.capacity();
+      return queue.remainingCapacity();
    }
 
    public void setMaximumQueueSize(int size)
    {
-      queue.setCapacity(size);
+      //
    }
 
    public int getPoolSize()
@@ -276,18 +278,17 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
 
    public int getMinimumPoolSize()
    {
-      return executor.getMinimumPoolSize();
+      return executor.getCorePoolSize();
    }
 
    public void setMinimumPoolSize(int size)
    {
       synchronized (executor)
       {
-         executor.setKeepAliveSize(size);
          // Don't let the min size > max size
          if (executor.getMaximumPoolSize() < size)
          {
-            executor.setMinimumPoolSize(size);
+            executor.setCorePoolSize(size);
             executor.setMaximumPoolSize(size);
          }
       }
@@ -302,22 +303,19 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    {
       synchronized (executor)
       {
-         executor.setMinimumPoolSize(size);
+         executor.setCorePoolSize(size);
          executor.setMaximumPoolSize(size);
-         // Don't let the min size > max size
-         if (executor.getKeepAliveSize() > size)
-            executor.setKeepAliveSize(size);
       }
    }
 
    public long getKeepAliveTime()
    {
-      return executor.getKeepAliveTime();
+      return executor.getKeepAliveTime(TimeUnit.MILLISECONDS);
    }
 
    public void setKeepAliveTime(long time)
    {
-      executor.setKeepAliveTime(time);
+      executor.setKeepAliveTime(time, TimeUnit.MILLISECONDS);
    }
 
    public BlockingMode getBlockingMode()
@@ -331,23 +329,23 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       
       if( blockingMode == BlockingMode.RUN )
       {
-         executor.runWhenBlocked();
+         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
       }
       else if( blockingMode == BlockingMode.WAIT )
       {
-         executor.waitWhenBlocked();
+         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
       }
       else if( blockingMode == BlockingMode.DISCARD )
       {
-         executor.discardWhenBlocked();
+         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
       }
       else if( blockingMode == BlockingMode.DISCARD_OLDEST )
       {
-         executor.discardOldestWhenBlocked();
+         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardOldestPolicy());
       }
       else if( blockingMode == BlockingMode.ABORT )
       {
-         executor.abortWhenBlocked();
+         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
       }
       else
       {
@@ -451,7 +449,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    }
    protected TimeoutInfo getNextTimeout()
    {
-      TimeoutInfo info = (TimeoutInfo) this.tasksWithTimeouts.extract();
+      TimeoutInfo info = (TimeoutInfo) this.tasksWithTimeouts.remove();
       return info;
    }
 
@@ -466,7 +464,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    {
       public Thread newThread(Runnable runnable)
       {
-         String threadName = BasicThreadPool.this.toString() + "-" + lastThreadNumber.increment();
+         String threadName = BasicThreadPool.this.toString() + "-" + lastThreadNumber.incrementAndGet();
          Thread thread = new Thread(threadGroup, runnable, threadName);
          thread.setDaemon(true);
          return thread;
@@ -593,7 +591,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
                      {
                         // Requeue the TimeoutInfo to see that the task exits run
                         info.setTimeout(1000);
-                        tasksWithTimeouts.insert(info);
+                        tasksWithTimeouts.add(info);
                         if( trace )
                            log.trace("Rescheduled completion check for wrapper="+wrapper);
                      }
