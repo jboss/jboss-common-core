@@ -21,10 +21,12 @@
   */
 package org.jboss.util.threadpool;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -263,12 +265,33 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
 
    public int getMaximumQueueSize()
    {
-      return queue.remainingCapacity();
+      int maxSize = queue.remainingCapacity() + queue.size();
+      return maxSize;
    }
 
+   /**
+    * This resets the work queue capacity. This requires recreating the
+    * work queue and ThreadPoolExecutor, so this needs to be called
+    * before doing any work with the pool.
+    *
+    * @param new work queue capacity
+    */
    public void setMaximumQueueSize(int size)
    {
-      //
+      // Reset the executor work queue
+      ArrayList tmp = new ArrayList();
+      queue.drainTo(tmp);
+      queue = new LinkedBlockingQueue(size);
+      queue.addAll(tmp);
+
+      ThreadFactory tf = executor.getThreadFactory();
+      RejectedExecutionHandler handler = executor.getRejectedExecutionHandler();
+      long keepAlive = executor.getKeepAliveTime(TimeUnit.SECONDS);
+      int cs = executor.getCorePoolSize();
+      int mcs = executor.getMaximumPoolSize();
+      executor = new ThreadPoolExecutor(cs, mcs, keepAlive, TimeUnit.SECONDS, queue);
+      executor.setThreadFactory(tf);
+      executor.setRejectedExecutionHandler(handler);
    }
 
    public int getPoolSize()
