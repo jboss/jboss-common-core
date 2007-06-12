@@ -1,9 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-    <groupId>jboss</groupId>
-    <artifactId>jboss-common</artifactId>
-    <version>2.2.1</version>
-    <relativePath>../build/pom.xml</relativePath>
+    <groupId>org.jboss</groupId>
+    <artifactId>jboss-parent</artifactId>
+    <version>3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>jboss-common-core</artifactId>
@@ -25,8 +24,35 @@
           <tagBase>https://svn.jboss.org/repos/common/common-core/tags</tagBase>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>jboss.maven-plugins</groupId>
+        <artifactId>jboss-deploy-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>repository.jboss.org</id>
+      <name>JBoss Repository</name>
+      <layout>default</layout>
+      <url>http://repository.jboss.org/maven2/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>snapshots.jboss.org</id>
+      <name>JBoss Snapshot Repository</name>
+      <layout>default</layout>
+      <url>http://snapshots.jboss.org/maven2/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>apache-xerces</groupId>
