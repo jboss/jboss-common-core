@@ -55,7 +55,9 @@ public class MarshalledValueInputStream
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
       String className = v.getName();
-      return loader.loadClass(className);
+      
+      // JDK 6, by default, only supports array types (ex. [[B)  using Class.forName() 
+      return Class.forName(className, false, loader);
    }
 
    protected Class resolveProxyClass(String[] interfaces)
