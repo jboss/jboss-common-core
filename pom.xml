@@ -84,6 +84,12 @@
       <artifactId>jboss-test</artifactId>
       <version>1.0.3.GA</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>jboss</groupId>
+          <artifactId>jboss-common-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
