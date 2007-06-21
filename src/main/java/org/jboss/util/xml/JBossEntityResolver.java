@@ -153,6 +153,7 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("urn:jboss:bean-deployer:2.0", "bean-deployer_2_0.xsd");
       registerEntity("urn:jboss:javabean:1.0", "javabean_1_0.xsd");
       registerEntity("urn:jboss:javabean:2.0", "javabean_2_0.xsd");
+      registerEntity("urn:jboss:spring-beans:2.0", "mc-spring-beans_2_0.xsd");
       registerEntity("urn:jboss:policy:1.0", "policy_1_0.xsd");
       registerEntity("urn:jboss:osgi-beans:1.0", "osgi-beans_1_0.xsd");
       registerEntity("urn:jboss:seam-components:1.0", "seam-components_1_0.xsd");

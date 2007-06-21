@@ -348,7 +348,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
          DateEditor.initialize();
       }
    }
-   
+
    /** 
     * Tests the DOM Document and Element editors.
     */
