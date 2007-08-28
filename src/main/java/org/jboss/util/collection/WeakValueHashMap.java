@@ -21,72 +21,33 @@
   */
 package org.jboss.util.collection;
 
-import java.util.Map;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Set;
-
-import java.lang.ref.WeakReference;
 import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
  * This Map will remove entries when the value in the map has been
  * cleaned from garbage collection
  *
- * @version <tt>$Revision$</tt>
+ * @param <K> the key type
+ * @param <V> the value type
  * @author  <a href="mailto:bill@jboss.org">Bill Burke</a>
+ * @author  <a href="mailto:adrian@jboss.org">Adrian Brock</a>
+ * @version <tt>$Revision$</tt>
  */
-public class WeakValueHashMap
-   extends AbstractMap
-   implements Map 
+public class WeakValueHashMap<K, V> extends AbstractMap<K, V> 
 {
-   private static class WeakValueRef extends WeakReference
-   {
-      public Object key;
+   /** Hash table mapping keys to weak values */
+   private Map<K, WeakValueRef<K, V>> hash;
 
-      private WeakValueRef(Object key, Object val, ReferenceQueue q)
-      {
-         super(val, q);
-         this.key = key;
-      }
-      
-      private static WeakValueRef create(Object key, Object val, ReferenceQueue q)
-      {
-         if (val == null) return null;
-         else return new WeakValueRef(key, val, q);
-      }
-      
-   }
-   public Set entrySet() 
-   { 
-      processQueue();
-      return hash.entrySet();
-   }
-
-   /* Hash table mapping WeakKeys to values */
-   private Map hash;
-
-   /* Reference queue for cleared WeakKeys */
-   private ReferenceQueue queue = new ReferenceQueue();
-   
-   /* Remove all invalidated entries from the map, that is, remove all entries
-      whose values have been discarded.  
-    */
-   private void processQueue()
-   {
-      WeakValueRef ref;
-      while ((ref = (WeakValueRef)queue.poll()) != null) {
-         if (ref == (WeakValueRef) hash.get(ref.key)) {
-            // only remove if it is the *exact* same WeakValueRef
-            //
-            hash.remove(ref.key);
-         }
-      }
-   }
-
-
-   /* -- Constructors -- */
+   /** Reference queue for cleared WeakKeys */
+   private ReferenceQueue<V> queue = new ReferenceQueue<V>();
 
    /**
     * Constructs a new, empty <code>WeakHashMap</code> with the given
@@ -103,7 +64,7 @@ public class WeakValueHashMap
     */
    public WeakValueHashMap(int initialCapacity, float loadFactor)
    {
-      hash = new HashMap(initialCapacity, loadFactor);
+      hash = new HashMap<K, WeakValueRef<K, V>>(initialCapacity, loadFactor);
    }
 
    /**
@@ -119,7 +80,7 @@ public class WeakValueHashMap
     */
    public WeakValueHashMap(int initialCapacity)
    {
-      hash = new HashMap(initialCapacity);
+      hash = new HashMap<K, WeakValueRef<K, V>>(initialCapacity);
    }
 
    /**
@@ -129,7 +90,7 @@ public class WeakValueHashMap
     */
    public WeakValueHashMap()
    {
-      hash = new HashMap();
+      hash = new HashMap<K, WeakValueRef<K, V>>();
    }
 
    /**
@@ -140,109 +101,198 @@ public class WeakValueHashMap
     * <tt>0.75</tt>.
     *
     * @param   t the map whose mappings are to be placed in this map.
-    * @since	1.3
+    * @since    1.3
     */
-   public WeakValueHashMap(Map t)
+   public WeakValueHashMap(Map<K, V> t)
    {
       this(Math.max(2*t.size(), 11), 0.75f);
       putAll(t);
    }
 
-   /* -- Simple queries -- */
-
-   /**
-    * Returns the number of key-value mappings in this map.
-    * <strong>Note:</strong> <em>In contrast with most implementations of the
-    * <code>Map</code> interface, the time required by this operation is
-    * linear in the size of the map.</em>
-    */
+   @Override
    public int size()
    {
       processQueue();
       return hash.size();
    }
 
-   /**
-    * Returns <code>true</code> if this map contains no key-value mappings.
-    */
-   public boolean isEmpty()
-   {
-      processQueue();
-      return hash.isEmpty();
-   }
-
-   /**
-    * Returns <code>true</code> if this map contains a mapping for the
-    * specified key.
-    *
-    * @param   key   The key whose presence in this map is to be tested
-    */
+   @Override
    public boolean containsKey(Object key)
    {
       processQueue();
       return hash.containsKey(key);
    }
 
-   /* -- Lookup and modification operations -- */
-
-   /**
-    * Returns the value to which this map maps the specified <code>key</code>.
-    * If this map does not contain a value for this key, then return
-    * <code>null</code>.
-    *
-    * @param  key  The key whose associated value, if any, is to be returned
-    */
-   public Object get(Object key)
+   @Override
+   public V get(Object key)
    {
       processQueue();
-      WeakReference ref = (WeakReference)hash.get(key);
-      if (ref != null) return ref.get();
+      WeakValueRef<K, V> ref = hash.get(key);
+      if (ref != null)
+         return ref.get();
       return null;
    }
 
-   /**
-    * Updates this map so that the given <code>key</code> maps to the given
-    * <code>value</code>.  If the map previously contained a mapping for
-    * <code>key</code> then that mapping is replaced and the previous value is
-    * returned.
-    *
-    * @param  key    The key that is to be mapped to the given
-    *                <code>value</code> 
-    * @param  value  The value to which the given <code>key</code> is to be
-    *                mapped
-    *
-    * @return  The previous value to which this key was mapped, or
-    *          <code>null</code> if if there was no mapping for the key
-    */
-   public Object put(Object key, Object value) 
+   @Override
+   public V put(K key, V value) 
    {
       processQueue();
-      Object rtn = hash.put(key, WeakValueRef.create(key, value, queue));
-      if (rtn != null) rtn = ((WeakReference)rtn).get();
-      return rtn;
+      WeakValueRef<K, V> ref = WeakValueRef.create(key, value, queue);
+      WeakValueRef<K, V> result = hash.put(key, ref);
+      if (result != null)
+         return result.get();
+      return null;
    }
 
-   /**
-    * Removes the mapping for the given <code>key</code> from this map, if
-    * present.
-    *
-    * @param  key  The key whose mapping is to be removed
-    *
-    * @return  The value to which this key was mapped, or <code>null</code> if
-    *          there was no mapping for the key
-    */
-   public Object remove(Object key) 
+   @Override
+   public V remove(Object key) 
    {
       processQueue();
-      return hash.remove(key);
+      WeakValueRef<K, V> result = hash.remove(key);
+      if (result != null)
+         return result.get();
+      return null;
+   }
+   
+   @Override
+   public Set<Entry<K,V>> entrySet() 
+   { 
+      processQueue();
+      return new EntrySet();
    }
 
-   /**
-    * Removes all mappings from this map.
-    */
+   @Override
    public void clear()
    {
       processQueue();
       hash.clear();
+   }
+   
+   /**
+    * Remove all entries whose values have been discarded.  
+    */
+   @SuppressWarnings("unchecked")
+   private void processQueue()
+   {
+      WeakValueRef<K, V> ref = (WeakValueRef<K, V>) queue.poll();
+      while (ref != null)
+      {
+         // only remove if it is the *exact* same WeakValueRef
+         if (ref == hash.get(ref.key))
+            hash.remove(ref.key);
+         
+         ref = (WeakValueRef<K, V>) queue.poll();
+      }
+   }
+   
+   /**
+    * EntrySet.
+    */
+   private class EntrySet extends AbstractSet<Entry<K, V>>
+   {
+      @Override
+      public Iterator<Entry<K, V>> iterator()
+      {
+         return new EntrySetIterator(hash.entrySet().iterator());
+      }
+
+      @Override
+      public int size()
+      {
+         return WeakValueHashMap.this.size();
+      }
+   }
+   
+   /**
+    * EntrySet iterator
+    */
+   private class EntrySetIterator implements Iterator<Entry<K, V>>
+   {
+      /** The delegate */
+      private Iterator<Entry<K, WeakValueRef<K, V>>> delegate;
+      
+      /**
+       * Create a new EntrySetIterator.
+       * 
+       * @param delegate the delegate
+       */
+      public EntrySetIterator(Iterator<Entry<K, WeakValueRef<K, V>>> delegate)
+      {
+         this.delegate = delegate;
+      }
+
+      public boolean hasNext()
+      {
+         return delegate.hasNext();
+      }
+
+      public Entry<K, V> next()
+      {
+         Entry<K, WeakValueRef<K, V>> next = delegate.next();
+         return next.getValue();
+      }
+
+      public void remove()
+      {
+         throw new UnsupportedOperationException("remove");
+      }
+   }
+   
+   /**
+    * WeakValueRef.
+    * 
+    * @param <K> the key type
+    * @param <V> the value type
+    */
+   private static class WeakValueRef<K, V> extends WeakReference<V> implements Map.Entry<K, V>
+   {
+      /** The key */
+      public K key;
+
+      /**
+       * Safely create a new WeakValueRef
+       * 
+       * @param <K> the key type
+       * @param <V> the value type
+       * @param key the key
+       * @param val the value
+       * @param q the reference queue
+       * @return the reference or null if the value is null
+       */
+      private static <K, V> WeakValueRef<K, V> create(K key, V val, ReferenceQueue<V> q)
+      {
+         if (val == null)
+            return null;
+         else 
+            return new WeakValueRef<K, V>(key, val, q);
+      }
+
+      /**
+       * Create a new WeakValueRef.
+       * 
+       * @param key the key
+       * @param val the value
+       * @param q the reference queue
+       */
+      private WeakValueRef(K key, V val, ReferenceQueue<V> q)
+      {
+         super(val, q);
+         this.key = key;
+      }
+
+      public K getKey()
+      {
+         return key;
+      }
+
+      public V getValue()
+      {
+         return get();
+      }
+
+      public V setValue(V value)
+      {
+         throw new UnsupportedOperationException("setValue");
+      }
    }
 }
