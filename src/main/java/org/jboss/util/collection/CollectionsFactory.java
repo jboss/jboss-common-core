@@ -42,49 +42,69 @@ public class CollectionsFactory
 {
    /**
     * Defines the map implementation
+    * 
+    * @param <K> the key type
+    * @param <V> the value type
+    * @return the map
     */
-   public static final Map createLazyMap()
+   public static final <K, V> Map<K, V> createLazyMap()
    {
-      return new LazyMap();
+      return new LazyMap<K, V>();
    }
 
    /**
     * Defines the list implementation
+    * 
+    * @param <T> the type
+    * @return the list
     */
-   public static final List createLazyList()
+   public static final <T> List<T> createLazyList()
    {
-      return new LazyList();
+      return new LazyList<T>();
    }
 
    /**
     * Defines the set implementation
+    * 
+    * @param <T> the type
+    * @return the set
     */
-   public static final Set createLazySet()
+   public static final <T> Set<T> createLazySet()
    {
-      return new LazySet();
+      return new LazySet<T>();
    }
 
    /**
     * Defines the concurrent map implementation
+    * 
+    * @param <K> the key type
+    * @param <V> the value type
+    * @return the map
     */
-   public static final Map createConcurrentReaderMap()
+   public static final <K, V> Map<K, V> createConcurrentReaderMap()
    {
-      return new ConcurrentHashMap();
+      return new ConcurrentHashMap<K, V>();
    }
 
    /**
     * Defines the concurrent list implementation
+    * 
+    * @param <T> the type
+    * @return the list
     */
-   public static final List createCopyOnWriteList()
+   public static final <T> List<T> createCopyOnWriteList()
    {
-      return new CopyOnWriteArrayList();
+      return new CopyOnWriteArrayList<T>();
    }
 
    /**
     * Defines the concurrent set implementation
+    * 
+    * @param <T> the type
+    * @return the set
     */
-   public static final Set createCopyOnWriteSet()
+   public static final <T> Set<T> createCopyOnWriteSet()
    {
-      return new CopyOnWriteArraySet();
+      return new CopyOnWriteArraySet<T>();
    }
 }

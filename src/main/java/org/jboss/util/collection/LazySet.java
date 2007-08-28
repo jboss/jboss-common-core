@@ -30,39 +30,50 @@ import java.util.Set;
 /**
  * LazySet.
  * 
+ * @param <T> the element type
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
-public class LazySet implements Set
+public class LazySet<T> implements Set<T>
 {
    /** The delegate set */
-   private Set delegate = Collections.EMPTY_SET;
-   
-   public boolean add(Object o)
+   private Set<T> delegate = Collections.emptySet();
+
+   /**
+    * Create the set implementation
+    * 
+    * @return the set
+    */
+   private Set<T> createImplementation()
    {
-      if (delegate == Collections.EMPTY_SET)
+      if (delegate instanceof HashSet == false)
+         return new HashSet<T>(delegate);
+      return delegate;
+   }
+
+   public boolean add(T o)
+   {
+      if (delegate.isEmpty())
       {
          delegate = Collections.singleton(o);
          return true;
       }
       else
       {
-         if (delegate instanceof HashSet == false)
-            delegate = new HashSet(delegate);
+         delegate = createImplementation();
          return delegate.add(o);
       }
    }
 
-   public boolean addAll(Collection c)
+   public boolean addAll(Collection<? extends T> c)
    {
-      if (delegate instanceof HashSet == false)
-         delegate = new HashSet(delegate);
+      delegate = createImplementation();
       return delegate.addAll(c);
    }
 
    public void clear()
    {
-      delegate = Collections.EMPTY_SET;
+      delegate = Collections.emptySet();
    }
 
    public boolean contains(Object o)
@@ -70,7 +81,7 @@ public class LazySet implements Set
       return delegate.contains(o);
    }
 
-   public boolean containsAll(Collection c)
+   public boolean containsAll(Collection<?> c)
    {
       return delegate.containsAll(c);
    }
@@ -80,29 +91,26 @@ public class LazySet implements Set
       return delegate.isEmpty();
    }
 
-   public Iterator iterator()
+   public Iterator<T> iterator()
    {
       return delegate.iterator();
    }
 
    public boolean remove(Object o)
    {
-      if (delegate instanceof HashSet == false)
-         delegate = new HashSet(delegate);
+      delegate = createImplementation();
       return delegate.remove(o);
    }
 
-   public boolean removeAll(Collection c)
+   public boolean removeAll(Collection<?> c)
    {
-      if (delegate instanceof HashSet == false)
-         delegate = new HashSet(delegate);
+      delegate = createImplementation();
       return delegate.removeAll(c);
    }
 
-   public boolean retainAll(Collection c)
+   public boolean retainAll(Collection<?> c)
    {
-      if (delegate instanceof HashSet == false)
-         delegate = new HashSet(delegate);
+      delegate = createImplementation();
       return delegate.retainAll(c);
    }
 
@@ -116,7 +124,7 @@ public class LazySet implements Set
       return delegate.toArray();
    }
 
-   public Object[] toArray(Object[] a)
+   public <U> U[] toArray(U[] a)
    {
       return delegate.toArray(a);
    }

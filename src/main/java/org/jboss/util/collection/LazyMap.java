@@ -30,17 +30,31 @@ import java.util.Set;
 /**
  * LazyMap.
  * 
+ * @param <K> the key type
+ * @param <V> the value type
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
-public class LazyMap implements Map
+public class LazyMap<K, V> implements Map<K, V>
 {
    /** The delegate map */
-   private Map delegate = Collections.EMPTY_MAP;
-   
+   private Map<K, V> delegate = Collections.emptyMap();
+
+   /**
+    * Create the map implementation
+    * 
+    * @return the map
+    */
+   private Map<K, V> createImplementation()
+   {
+      if (delegate instanceof HashMap == false)
+         return new HashMap<K, V>(delegate);
+      return delegate;
+   }
+
    public void clear()
    {
-      delegate = Collections.EMPTY_MAP;
+      delegate = Collections.emptyMap();
    }
 
    public boolean containsKey(Object key)
@@ -53,12 +67,12 @@ public class LazyMap implements Map
       return delegate.containsValue(value);
    }
 
-   public Set entrySet()
+   public Set<Entry<K, V>> entrySet()
    {
       return delegate.entrySet();
    }
 
-   public Object get(Object key)
+   public V get(Object key)
    {
       return delegate.get(key);
    }
@@ -68,37 +82,34 @@ public class LazyMap implements Map
       return delegate.isEmpty();
    }
 
-   public Set keySet()
+   public Set<K> keySet()
    {
       return delegate.keySet();
    }
 
-   public Object put(Object key, Object value)
+   public V put(K key, V value)
    {
-      if (delegate == Collections.EMPTY_MAP)
+      if (delegate.isEmpty())
       {
          delegate = Collections.singletonMap(key, value);
          return null;
       }
       else
       {
-         if (delegate instanceof HashMap == false)
-            delegate = new HashMap(delegate);
+         delegate = createImplementation();
          return delegate.put(key, value);
       }
    }
 
-   public void putAll(Map t)
+   public void putAll(Map<? extends K, ? extends V> t)
    {
-      if (delegate instanceof HashMap == false)
-         delegate = new HashMap(delegate);
+      delegate = createImplementation();
       delegate.putAll(t);
    }
 
-   public Object remove(Object key)
+   public V remove(Object key)
    {
-      if (delegate instanceof HashMap == false)
-         delegate = new HashMap(delegate);
+      delegate = createImplementation();
       return delegate.remove(key);
    }
 
@@ -107,7 +118,7 @@ public class LazyMap implements Map
       return delegate.size();
    }
 
-   public Collection values()
+   public Collection<V> values()
    {
       return delegate.values();
    }

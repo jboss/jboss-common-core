@@ -31,53 +31,62 @@ import java.util.ListIterator;
 /**
  * LazyList.
  * 
+ * @param <T> the collection type
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
-public class LazyList implements List
+public class LazyList<T> implements List<T>
 {
    /** The delegate list */
-   private List delegate = Collections.EMPTY_LIST; 
+   private List<T> delegate = Collections.emptyList(); 
 
-   public void add(int index, Object element)
+   /**
+    * Create the list implementation
+    * 
+    * @return the list
+    */
+   private List<T> createImplementation()
    {
       if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+         return new ArrayList<T>(delegate);
+      return delegate;
+   }
+   
+   public void add(int index, T element)
+   {
+      delegate = createImplementation();
       delegate.add(index, element);
    }
 
-   public boolean add(Object o)
+   public boolean add(T o)
    {
-      if (delegate == Collections.EMPTY_LIST)
+      if (delegate.isEmpty())
       {
          delegate = Collections.singletonList(o);
          return true;
       }
       else
       {
-         if (delegate instanceof ArrayList == false)
-            delegate = new ArrayList(delegate);
+         delegate = createImplementation();
          return delegate.add(o);
       }
    }
 
-   public boolean addAll(Collection c)
+   public boolean addAll(Collection<? extends T> c)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+      delegate = createImplementation();
       return delegate.addAll(c);
    }
 
-   public boolean addAll(int index, Collection c)
+   public boolean addAll(int index, Collection<? extends T> c)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+      delegate = createImplementation();
       return delegate.addAll(index, c);
    }
 
    public void clear()
    {
-      delegate = Collections.EMPTY_LIST;
+      delegate = Collections.emptyList();
    }
 
    public boolean contains(Object o)
@@ -85,12 +94,12 @@ public class LazyList implements List
       return delegate.contains(o);
    }
 
-   public boolean containsAll(Collection c)
+   public boolean containsAll(Collection<?> c)
    {
       return delegate.containsAll(c);
    }
 
-   public Object get(int index)
+   public T get(int index)
    {
       return delegate.get(index);
    }
@@ -105,7 +114,7 @@ public class LazyList implements List
       return delegate.isEmpty();
    }
 
-   public Iterator iterator()
+   public Iterator<T> iterator()
    {
       return delegate.iterator();
    }
@@ -115,48 +124,43 @@ public class LazyList implements List
       return delegate.lastIndexOf(o);
    }
 
-   public ListIterator listIterator()
+   public ListIterator<T> listIterator()
    {
       return delegate.listIterator();
    }
 
-   public ListIterator listIterator(int index)
+   public ListIterator<T> listIterator(int index)
    {
       return delegate.listIterator(index);
    }
 
-   public Object remove(int index)
+   public T remove(int index)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+      delegate = createImplementation();
       return delegate.remove(index);
    }
 
    public boolean remove(Object o)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+      delegate = createImplementation();
       return delegate.remove(o);
    }
 
-   public boolean removeAll(Collection c)
+   public boolean removeAll(Collection<?> c)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
-      return delegate.remove(c);
+      delegate = createImplementation();
+      return delegate.removeAll(c);
    }
 
-   public boolean retainAll(Collection c)
+   public boolean retainAll(Collection<?> c)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+      delegate = createImplementation();
       return delegate.retainAll(c);
    }
 
-   public Object set(int index, Object element)
+   public T set(int index, T element)
    {
-      if (delegate instanceof ArrayList == false)
-         delegate = new ArrayList(delegate);
+      delegate = createImplementation();
       return delegate.set(index, element);
    }
 
@@ -165,7 +169,7 @@ public class LazyList implements List
       return delegate.size();
    }
 
-   public List subList(int fromIndex, int toIndex)
+   public List<T> subList(int fromIndex, int toIndex)
    {
       return delegate.subList(fromIndex, toIndex);
    }
@@ -175,7 +179,7 @@ public class LazyList implements List
       return delegate.toArray();
    }
 
-   public Object[] toArray(Object[] a)
+   public <U> U[] toArray(U[] a)
    {
       return delegate.toArray(a);
    }
