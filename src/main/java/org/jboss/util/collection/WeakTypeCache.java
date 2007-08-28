@@ -54,7 +54,7 @@ public abstract class WeakTypeCache<T>
     * @param type the type
     * @return the info
     */
-   @SuppressWarnings("unchecked")
+   @SuppressWarnings({"unchecked", "cast"})
    public T get(Type type)
    {
       if (type == null)
@@ -65,7 +65,8 @@ public abstract class WeakTypeCache<T>
       else if (type instanceof Class)
          return getClass((Class<?>) type);
       else if (type instanceof TypeVariable)
-         return getTypeVariable((TypeVariable) type);
+         // TODO Figure out why we need this cast with the Sun compiler? 
+         return (T) getTypeVariable((TypeVariable) type);
       else if (type instanceof GenericArrayType)
          return getGenericArrayType((GenericArrayType) type);
       else if (type instanceof WildcardType)
