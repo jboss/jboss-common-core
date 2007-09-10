@@ -108,7 +108,7 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD J2EE Application 1.3V2//EN", "jboss-app_3_2.dtd");
       registerEntity("-//JBoss//DTD J2EE Application 1.4//EN", "jboss-app_4_0.dtd");
       registerEntity("-//JBoss//DTD J2EE Application 4.2//EN", "jboss-app_4_2.dtd");
-      registerEntity("-//JBoss//DTD J2EE Application 5.0//EN", "jboss-app_5_0.dtd");       
+      registerEntity("-//JBoss//DTD Java EE Application 5.0///EN", "jboss-app_5_0.dtd");
       registerEntity("-//JBoss//DTD JAWS//EN", "jaws.dtd");
       registerEntity("-//JBoss//DTD JAWS 2.4//EN", "jaws_2_4.dtd");
       registerEntity("-//JBoss//DTD JAWS 3.0//EN", "jaws_3_0.dtd");
