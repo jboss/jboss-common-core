@@ -472,7 +472,11 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    }
    protected TimeoutInfo getNextTimeout()
    {
-      TimeoutInfo info = (TimeoutInfo) this.tasksWithTimeouts.remove();
+      TimeoutInfo info = null;
+      if(this.tasksWithTimeouts.isEmpty() == false)
+      {
+         info = (TimeoutInfo) this.tasksWithTimeouts.remove();
+      }
       return info;
    }
 
