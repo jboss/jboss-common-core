@@ -87,9 +87,9 @@ public class DateEditor extends PropertyEditorSupport
     */
    public void setValue(Object value)
    {
-      if (value instanceof Date)
+      if (value instanceof Date || value == null)
       {
-         text = null;
+         this.text = null;
          super.setValue(value);
       }
       else
