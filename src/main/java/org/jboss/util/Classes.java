@@ -38,7 +38,8 @@ import java.util.*;
  *
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
- * @author Scott.Stark@jboss.org
+ * @author  <a href="mailto:scott.stark@jboss.org">Scott Stark</a>
+ * @author  <a href="mailto:dimitris@jboss.org">Dimitris Andreadis<a/>
  */
 public final class Classes
 {
@@ -401,23 +402,45 @@ public final class Classes
    }
 
    /**
-    * Object a list of all interfaces starting with the argument class c through
-    * all superclasses
+    * Populates a list with all the interfaces implemented by the argument
+    * class c and all its superclasses.
     * 
-    * @param allIfaces - the list to populate for 
+    * @param allIfaces - the list to populate with the interfaces 
     * @param c - the class to start scanning for interfaces
     */
    public static void getAllInterfaces(List allIfaces, Class c)
    {
-      while( c != null )
+      while (c != null)
       {
          Class[] ifaces = c.getInterfaces();
-         for(int n = 0; n < ifaces.length; n ++)
+         for (int n = 0; n < ifaces.length; n ++)
          {
             allIfaces.add(ifaces[n]);
          }
          c = c.getSuperclass();
       }
+   }
+
+   /**
+    * Returns an array containing all the unique interfaces implemented
+    * by the argument class c and all its superclasses. Interfaces that
+    * appear multiple times through inheritence are only accounted for once.
+    * 
+    * @param c - the class to start scanning for interfaces
+    */   
+   public static Class[] getAllUniqueInterfaces(Class c)
+   {
+      Set uniqueIfaces = new HashSet();
+      while (c != null )
+      {
+         Class[] ifaces = c.getInterfaces();
+         for (int n = 0; n < ifaces.length; n ++)
+         {
+            uniqueIfaces.add(ifaces[n]);
+         }
+         c = c.getSuperclass();
+      }
+      return (Class[])uniqueIfaces.toArray(new Class[uniqueIfaces.size()]);
    }
 
    /**
