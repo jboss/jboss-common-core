@@ -21,10 +21,9 @@
  */
 package org.jboss.util.graph;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,9 +41,9 @@ public class Graph<T>
    /** Color used to mark nodes after descendants are completely visited */
    public static final int VISIT_COLOR_BLACK = 3;
    /** Vector<Vertex> of graph verticies */
-   private ArrayList<Vertex<T>> verticies;
+   private List<Vertex<T>> verticies;
    /** Vector<Edge> of edges in the graph */
-   private ArrayList<Edge<T>> edges;
+   private List<Edge<T>> edges;
    /** The vertex identified as the root of the graph */
    private Vertex<T> rootVertex;
 
@@ -98,6 +97,7 @@ public class Graph<T>
    {
       return rootVertex;
    }
+
    /**
     * Set a root vertex. If root does no exist in the graph it is added.
     * @param root - the vertex to set as the root and optionally add if it
@@ -117,8 +117,7 @@ public class Graph<T>
     */ 
    public Vertex<T> getVertex(int n)
    {
-      Vertex<T> v = verticies.get(n);
-      return v;
+      return verticies.get(n);
    }
 
    /**
@@ -148,6 +147,7 @@ public class Graph<T>
          throw new IllegalArgumentException("from is not in graph");
       if( verticies.contains(to) == false )
          throw new IllegalArgumentException("to is not in graph");
+
       Edge<T> e = new Edge<T>(from, to, cost);
       if (from.findEdge(to) != null)
          return false;
@@ -245,11 +245,8 @@ public class Graph<T>
     */ 
    public void clearMark()
    {
-      for (int i = 0; i < verticies.size(); i++)
-      {
-         Vertex<T> w = verticies.get(i);
+      for (Vertex<T> w : verticies)
          w.clearMark();
-      }
    }
 
    /**
@@ -259,11 +256,8 @@ public class Graph<T>
     */ 
    public void clearEdges()
    {
-      for (int i = 0; i < edges.size(); i++)
-      {
-         Edge<T> e = (Edge<T>) edges.get(i);
+      for (Edge<T> e : edges)
          e.clearMark();
-      }
    }
 
    /**
@@ -278,7 +272,8 @@ public class Graph<T>
       {
          public void visit(Graph<T> g, Vertex<T> v) throws RuntimeException
          {
-            visitor.visit(g, v);
+            if (visitor != null)
+               visitor.visit(g, v);
          }
       };
       this.depthFirstSearch(v, wrapper);
@@ -290,7 +285,7 @@ public class Graph<T>
     * @param v - the Vertex to start the search from
     * @param visitor - the vistor to inform prior to 
     * @see Visitor#visit(Graph, Vertex)
-    * @throws Exception if visitor.visit throws an exception 
+    * @throws E if visitor.visit throws an exception
     */ 
    public <E extends Exception> void depthFirstSearch(Vertex<T> v, VisitorEX<T, E> visitor)
       throws E
@@ -321,11 +316,13 @@ public class Graph<T>
       {
          public void visit(Graph<T> g, Vertex<T> v) throws RuntimeException
          {
-            visitor.visit(g, v);
+            if (visitor != null)
+               visitor.visit(g, v);
          }
       };
       this.breadthFirstSearch(v, wrapper);
    }
+
    /**
     * Perform a breadth first search of this graph, starting at v. The
     * vist may be cut short if visitor throws an exception during
@@ -334,7 +331,7 @@ public class Graph<T>
     * @param v - the search starting point
     * @param visitor - the vistor whose vist method is called prior
     * to visting a vertex.
-    * @throws Exception if vistor.visit throws an exception
+    * @throws E if vistor.visit throws an exception
     */
    public <E extends Exception> void breadthFirstSearch(Vertex<T> v, VisitorEX<T, E> visitor)
       throws E
@@ -351,12 +348,13 @@ public class Graph<T>
          for (int i = 0; i < v.getOutgoingEdgeCount(); i++)
          {
             Edge<T> e = v.getOutgoingEdge(i);
-            if (!e.getTo().visited())
+            Vertex<T> to = e.getTo();
+            if (!to.visited())
             {
-               q.add(e.getTo());
+               q.add(to);
                if( visitor != null )
-                  visitor.visit(this, e.getTo());
-               e.getTo().visit();
+                  visitor.visit(this, to);
+               to.visit();
             }
          }
       }
@@ -483,11 +481,8 @@ public class Graph<T>
    public String toString()
    {
       StringBuffer tmp = new StringBuffer("Graph[");
-      for (int i = 0; i < verticies.size(); i++)
-      {
-         Vertex<T> v = verticies.get(i);
+      for (Vertex<T> v : verticies)
          tmp.append(v);
-      }
       tmp.append(']');
       return tmp.toString();
    }

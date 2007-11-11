@@ -32,8 +32,8 @@ import java.util.List;
  */
 public class Vertex<T>
 {
-   private ArrayList<Edge<T>> incomingEdges;
-   private ArrayList<Edge<T>> outgoingEdges;
+   private List<Edge<T>> incomingEdges;
+   private List<Edge<T>> outgoingEdges;
    private String name;
    private boolean mark;
    private int markState;
@@ -63,7 +63,7 @@ public class Vertex<T>
    {
       incomingEdges = new ArrayList<Edge<T>>();
       outgoingEdges = new ArrayList<Edge<T>>();
-      name = new String(n);
+      name = n;
       mark = false;
       this.data = data;
    }
@@ -83,6 +83,7 @@ public class Vertex<T>
    {
       return this.data;
    }
+
    /**
     * @param data The data to set.
     */
@@ -122,6 +123,7 @@ public class Vertex<T>
       Edge<T> out = new Edge<T>(this, to, cost);
       outgoingEdges.add(out);
    }
+
    /**
     * Add an incoming edge starting at from
     * 
@@ -185,8 +187,7 @@ public class Vertex<T>
     */
    public Edge<T> getIncomingEdge(int i)
    {
-      Edge<T> e = incomingEdges.get(i);
-      return e;
+      return incomingEdges.get(i);
    }
 
    /**
@@ -206,6 +207,7 @@ public class Vertex<T>
    {
       return outgoingEdges.size();
    }
+
    /**
     * Get the ith outgoing edge
     * @param i the index into outgoing edges
@@ -213,8 +215,7 @@ public class Vertex<T>
     */
    public Edge<T> getOutgoingEdge(int i)
    {
-      Edge<T> e = outgoingEdges.get(i);
-      return e;
+      return outgoingEdges.get(i);
    }
 
    /**
@@ -229,14 +230,14 @@ public class Vertex<T>
    /**
     * Search the outgoing edges looking for an edge whose's
     * edge.to == dest.
+    * @param dest the destination
     * @return the outgoing edge going to dest if one exists,
     *    null otherwise.
     */
    public Edge<T> findEdge(Vertex<T> dest)
    {
-      for (int i = 0; i < outgoingEdges.size(); i++)
+      for (Edge<T> e : outgoingEdges)
       {
-         Edge<T> e = outgoingEdges.get(i);
          if (e.getTo() == dest)
             return e;
       }
@@ -307,15 +308,17 @@ public class Vertex<T>
    {
       mark = true;
    }
+
    /**
     * Set the mark state to state.
     * 
-    * @param state 
+    * @param state the state
     */
    public void setMarkState(int state)
    {
       markState = state;
    }
+
    /**
     * Get the mark state value.
     * @return
