@@ -41,6 +41,7 @@ import java.util.WeakHashMap;
  * generate - fills in the details
  *
  * @param <T> the cached type
+ * @author Scott.Stark@jboss.org
  * @author <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  */
 public abstract class WeakTypeCache<T>
@@ -129,7 +130,7 @@ public abstract class WeakTypeCache<T>
    /**
     * Get the information for a parameterized type
     * 
-    * @param type the paremeterized type
+    * @param type the parameterized type
     * @return the info
     */
    protected T getParameterizedType(ParameterizedType type)
@@ -194,7 +195,7 @@ public abstract class WeakTypeCache<T>
     * @param type the type
     * @return the value
     */
-   private T peek(ParameterizedType type)
+   protected T peek(ParameterizedType type)
    {
       Class<?> rawType = (Class<?>) type.getRawType();
       Map<String, T> classLoaderCache = getClassLoaderCache(rawType.getClassLoader());
@@ -211,7 +212,7 @@ public abstract class WeakTypeCache<T>
     * @param type the type
     * @param result the value
     */
-   private void put(ParameterizedType type, T result)
+   protected void put(ParameterizedType type, T result)
    {
       Class<?> rawType = (Class<?>) type.getRawType();
       Map<String, T> classLoaderCache = getClassLoaderCache(rawType.getClassLoader());
@@ -239,7 +240,7 @@ public abstract class WeakTypeCache<T>
       // Instantiate
       result = instantiate(clazz);
 
-      // Put the perlimanary result into the cache
+      // Put the preliminary result into the cache
       put(clazz, result);
 
       // Generate the details
@@ -254,7 +255,7 @@ public abstract class WeakTypeCache<T>
     * @param clazz the class
     * @return the value
     */
-   private T peek(Class<?> clazz)
+   protected T peek(Class<?> clazz)
    {
       Map<String, T> classLoaderCache = getClassLoaderCache(clazz.getClassLoader());
 
@@ -270,7 +271,7 @@ public abstract class WeakTypeCache<T>
     * @param clazz the class
     * @param result the value
     */
-   private void put(Class<?> clazz, T result)
+   protected void put(Class<?> clazz, T result)
    {
       Map<String, T> classLoaderCache = getClassLoaderCache(clazz.getClassLoader());
 
@@ -286,7 +287,7 @@ public abstract class WeakTypeCache<T>
     * @param cl the classloader
     * @return the map
     */
-   private Map<String, T> getClassLoaderCache(ClassLoader cl)
+   protected Map<String, T> getClassLoaderCache(ClassLoader cl)
    {
       synchronized (cache)
       {
