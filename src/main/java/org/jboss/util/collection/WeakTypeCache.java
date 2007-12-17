@@ -132,7 +132,7 @@ public abstract class WeakTypeCache<T>
     * @param type the paremeterized type
     * @return the info
     */
-   private T getParameterizedType(ParameterizedType type)
+   protected T getParameterizedType(ParameterizedType type)
    {
       // First check if we already have it
       T result = peek(type);
@@ -157,7 +157,7 @@ public abstract class WeakTypeCache<T>
     * @param type the paremeterized type
     * @return the info
     */
-   private T getWildcardType(WildcardType type)
+   protected T getWildcardType(WildcardType type)
    {
       // TODO JBMICROCONT-131 improve this
       return get(type.getUpperBounds()[0]);
@@ -170,7 +170,7 @@ public abstract class WeakTypeCache<T>
     * @param type the type variable
     * @return the info
     */
-   private <D extends GenericDeclaration> T getTypeVariable(TypeVariable<D> type)
+   protected <D extends GenericDeclaration> T getTypeVariable(TypeVariable<D> type)
    {
       // TODO JBMICROCONT-131 improve this
       return get(type.getBounds()[0]);
@@ -182,7 +182,7 @@ public abstract class WeakTypeCache<T>
     * @param type the array type
     * @return the info
     */
-   private T getGenericArrayType(GenericArrayType type)
+   protected T getGenericArrayType(GenericArrayType type)
    {
       // TODO JBMICROCONT-131 this needs implementing properly
       return get(Object[].class);
@@ -229,7 +229,7 @@ public abstract class WeakTypeCache<T>
     * @param clazz the class
     * @return the info
     */
-   private T getClass(Class<?> clazz)
+   protected T getClass(Class<?> clazz)
    {
       // First check if we already have it
       T result = peek(clazz);

@@ -27,15 +27,17 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.io.Serializable;
 
 /**
  * LazyList.
+ * It's serializable if the elements are serializable.
  * 
  * @param <T> the collection type
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
-public class LazyList<T> implements List<T>
+public class LazyList<T> implements List<T>, Serializable
 {
    /** The delegate list */
    private List<T> delegate = Collections.emptyList(); 

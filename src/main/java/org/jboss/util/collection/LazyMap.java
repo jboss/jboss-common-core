@@ -26,16 +26,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.io.Serializable;
 
 /**
  * LazyMap.
+ * It's serializable if the elements are serializable.
  * 
  * @param <K> the key type
  * @param <V> the value type
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
-public class LazyMap<K, V> implements Map<K, V>
+public class LazyMap<K, V> implements Map<K, V>, Serializable
 {
    /** The delegate map */
    private Map<K, V> delegate = Collections.emptyMap();

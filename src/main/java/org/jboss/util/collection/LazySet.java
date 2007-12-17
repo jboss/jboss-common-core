@@ -26,15 +26,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.io.Serializable;
 
 /**
  * LazySet.
- * 
+ * It's serializable if the elements are serializable.
+ *
  * @param <T> the element type
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
-public class LazySet<T> implements Set<T>
+public class LazySet<T> implements Set<T>, Serializable
 {
    /** The delegate set */
    private Set<T> delegate = Collections.emptySet();
