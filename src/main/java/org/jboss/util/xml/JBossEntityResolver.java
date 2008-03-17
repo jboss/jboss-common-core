@@ -255,9 +255,31 @@ public class JBossEntityResolver implements EntityResolver
 
       boolean trace = log.isTraceEnabled();
 
-      // Look for a registered publicID
-      InputSource inputSource = resolvePublicID(publicId, trace);
-
+      boolean resolvePublicIdFirst = true;
+      if(publicId != null && systemId != null)
+      {
+         String registeredSystemId = (String) localEntities.get(publicId);
+         if(registeredSystemId == null)
+            registeredSystemId = (String) entities.get(publicId);
+         
+         if(registeredSystemId != null && !registeredSystemId.equals(systemId))
+         {
+            resolvePublicIdFirst = false;
+            if(trace)
+               log.trace("systemId argument '" + systemId + "' for publicId '" +
+                     publicId + "' is different from the registered systemId '" +
+                     registeredSystemId + "', resolution will be based on the argument");
+         }
+      }
+      
+      InputSource inputSource = null;
+      
+      if(resolvePublicIdFirst)
+      {
+         // Look for a registered publicID
+         inputSource = resolvePublicID(publicId, trace);
+      }
+      
       if( inputSource == null )
       {
          // Try to resolve the systemID from the registry
