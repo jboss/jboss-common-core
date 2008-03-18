@@ -258,7 +258,9 @@ public class JBossEntityResolver implements EntityResolver
       boolean resolvePublicIdFirst = true;
       if(publicId != null && systemId != null)
       {
-         String registeredSystemId = (String) localEntities.get(publicId);
+         String registeredSystemId = null;
+         if(localEntities != null)
+            registeredSystemId = (String) localEntities.get(publicId);
          if(registeredSystemId == null)
             registeredSystemId = (String) entities.get(publicId);
          
