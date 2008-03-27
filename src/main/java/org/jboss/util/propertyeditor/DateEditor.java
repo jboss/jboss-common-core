@@ -66,7 +66,7 @@ public class DateEditor extends PropertyEditorSupport
             String defaultFormat = System.getProperty("org.jboss.util.propertyeditor.DateEditor.format", "MMM d, yyyy");
             String defaultLocale = System.getProperty("org.jboss.util.propertyeditor.DateEditor.locale");
             DateFormat defaultDateFormat;
-            if (defaultLocale == null)
+            if (defaultLocale == null || defaultLocale.length() == 0)
             {
                defaultDateFormat = new SimpleDateFormat(defaultFormat);
             }
