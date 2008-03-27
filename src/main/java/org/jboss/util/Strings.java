@@ -1226,6 +1226,10 @@ public final class Strings
       {
          return str;
       }
+
+      if (checker == null)
+         throw new IllegalArgumentException("Null character checker");
+
       StringBuffer buf = new StringBuffer(str);
       while (buf.length() > 0 && checker.isCharacterLegal(buf.charAt(0)))
       {
