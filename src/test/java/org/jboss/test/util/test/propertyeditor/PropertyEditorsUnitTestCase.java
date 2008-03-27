@@ -191,6 +191,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
          int[].class,
          Date.class,
          java.util.Properties.class,
+         Locale.class,
       };
       // The input string data for each type
       String[][] inputData = {
@@ -216,6 +217,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
          {"Jan 4, 2005", "Tue Jan  4 23:38:21 PST 2005", "Tue, 04 Jan 2005 23:38:48 -0800"},
          // java.util.Properties.class
          {"prop1=value1\nprop2=value2\nprop3=value3\nprop32=${prop3}\nprop4=${user.home}\nprop5=${some.win32.path}"},
+         {Locale.getDefault().toString(), "ja_JP"},
       };
       // The expected instance for each inputData value
       calendar.set(2005, 0, 4, 0, 0, 0);
@@ -247,6 +249,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
          {new int[]{0, 0x123, -123}},
          {date1, date2, date3},
          {props},
+         {Locale.getDefault(), Locale.JAPAN},
       };
       // The expected string output from getAsText()
       String[][] expectedStringData = {
@@ -272,6 +275,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
          {"Jan 4, 2005", "Tue Jan  4 23:38:21 PST 2005", "Tue, 04 Jan 2005 23:38:48 -0800"},            
          // java.util.Properties.class
          {props.toString()},
+         {Locale.getDefault().toString(), Locale.JAPAN.toString()},
       };
       // The Comparator for non-trival types
       Comparator[] comparators = {
@@ -286,9 +290,10 @@ public class PropertyEditorsUnitTestCase extends TestCase
          new IntArrayComparator(), // int[]
          null, // Date
          null, // Properties
+         null, // Locale
       };
 
-      //doTests(types, inputData, expectedData, expectedStringData, comparators);
+      doTests(types, inputData, expectedData, expectedStringData, comparators);
    }
    
    public void testDateEditor() throws Exception

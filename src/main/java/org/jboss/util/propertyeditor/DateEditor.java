@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jboss.util.NestedRuntimeException;
+import org.jboss.util.Strings;
 
 /**
  * A property editor for {@link java.util.Date}.
@@ -38,6 +39,7 @@ import org.jboss.util.NestedRuntimeException;
  * @author <a href="mailto:d_jencks@users.sourceforge.net">David Jencks</a>
  * @author <a href="mailto:scott.stark@jboss.org">Scott Stark</a>
  * @author <a href="mailto:adrian.brock@jboss.org">Adrian Brock</a>
+ * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision$</tt>
  */
@@ -61,11 +63,21 @@ public class DateEditor extends PropertyEditorSupport
       {
          public Object run()
          {
-            String defaultFormat = System.getProperty("org.jboss.util.propertyeditor.DateEditor.format",
-                  "MMM d, yyyy");
+            String defaultFormat = System.getProperty("org.jboss.util.propertyeditor.DateEditor.format", "MMM d, yyyy");
+            String defaultLocale = System.getProperty("org.jboss.util.propertyeditor.DateEditor.locale");
+            DateFormat defaultDateFormat;
+            if (defaultLocale == null)
+            {
+               defaultDateFormat = new SimpleDateFormat(defaultFormat);
+            }
+            else
+            {
+               defaultDateFormat = new SimpleDateFormat(defaultFormat, Strings.parseLocaleString(defaultLocale));
+            }
+
             formats = new DateFormat[]
             {
-               new SimpleDateFormat(defaultFormat),
+               defaultDateFormat,
                // Tue Jan 04 00:00:00 PST 2005
                new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy"),
                // Wed, 4 Jul 2001 12:08:56 -0700
@@ -74,7 +86,7 @@ public class DateEditor extends PropertyEditorSupport
             return null;
          }
       };
-      AccessController.doPrivileged(action);      
+      AccessController.doPrivileged(action);
    }
 
    /** Keep the text version of the date */
