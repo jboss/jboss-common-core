@@ -21,10 +21,12 @@
   */
 package org.jboss.util.threadpool;
 
+import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
@@ -35,6 +37,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jboss.logging.Logger;
 import org.jboss.util.collection.WeakValueHashMap;
+import org.jboss.util.loading.ClassLoaderSource;
+import org.jboss.util.loading.ContextClassLoaderSwitcher;
 
 
 /**
@@ -79,7 +83,12 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
 
    /** The thread group */
    private ThreadGroup threadGroup;
+   
+   /** Source for the thread contrext classloader to assign to threads */
+   private ClassLoaderSource classLoaderSource;
 
+   private ContextClassLoaderSwitcher classLoaderSwitcher;
+   
    /** The last thread number */
    private AtomicInteger lastThreadNumber = new AtomicInteger(0);
 
@@ -130,10 +139,10 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       queue = new LinkedBlockingQueue(1024);
 
       
-      executor = new ThreadPoolExecutor(4, 4, 60, TimeUnit.SECONDS, queue);
+      executor = new RestoreTCCLThreadPoolExecutor(4, 4, 60, TimeUnit.SECONDS, queue);
       executor.setThreadFactory(factory);
       executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
-
+      
       poolNumber = lastPoolNumber.incrementAndGet();
       setName(name);
       this.threadGroup = threadGroup;
@@ -400,6 +409,37 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
          blockingMode = BlockingMode.ABORT;
    }
 
+   public ClassLoaderSource getClassLoaderSource()
+   {
+      return classLoaderSource;
+   }
+
+   public void setClassLoaderSource(ClassLoaderSource classLoaderSource)
+   {
+      if (classLoaderSource == null)
+      {
+         this.classLoaderSource = null;
+         this.classLoaderSwitcher = null;
+      }
+      else if (classLoaderSwitcher == null)
+      {
+         try
+         {
+            this.classLoaderSwitcher = (ContextClassLoaderSwitcher) AccessController.doPrivileged(ContextClassLoaderSwitcher.INSTANTIATOR);
+            this.classLoaderSource = classLoaderSource;
+         }
+         catch (SecurityException e)
+         {
+            log.error("Cannot manage context classloader for pool threads; " +
+                      "Do not have setContextClassLoader permission");
+         }
+      }
+      else
+      {
+         this.classLoaderSource = classLoaderSource;
+      }
+   }
+
    public ThreadPool getInstance()
    {
       return this;
@@ -479,6 +519,15 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       }
       return info;
    }
+   
+   protected void setDefaultThreadContextClassLoader(Thread thread)
+   {
+      if (classLoaderSwitcher != null)
+      {
+         ClassLoader cl = classLoaderSource == null ? null : classLoaderSource.getClassLoader();
+         classLoaderSwitcher.setContextClassLoader(thread, cl);
+      }
+   }
 
    // Private -------------------------------------------------------
 
@@ -494,8 +543,36 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
          String threadName = BasicThreadPool.this.toString() + "-" + lastThreadNumber.incrementAndGet();
          Thread thread = new Thread(threadGroup, runnable, threadName);
          thread.setDaemon(true);
+         BasicThreadPool.this.setDefaultThreadContextClassLoader(thread);
          return thread;
       }
+   }
+   
+   private class RestoreTCCLThreadPoolExecutor extends ThreadPoolExecutor
+   {      
+      public RestoreTCCLThreadPoolExecutor(int corePoolSize, int maximumPoolSize, 
+                                           long keepAliveTime, TimeUnit unit,
+                                           BlockingQueue<Runnable> workQueue)
+      {
+         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+      }
+
+      @Override
+      protected void afterExecute(Runnable r, Throwable t)
+      {
+         try
+         {
+            super.afterExecute(r, t);
+         }
+         finally
+         {
+
+            BasicThreadPool.this.setDefaultThreadContextClassLoader(Thread.currentThread());
+         }
+      }
+      
+      
+      
    }
 
    /** An encapsulation of a task and its completion timeout

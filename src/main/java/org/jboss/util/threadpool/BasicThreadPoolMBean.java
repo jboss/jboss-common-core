@@ -21,6 +21,8 @@
   */
 package org.jboss.util.threadpool;
 
+import org.jboss.util.loading.ClassLoaderSource;
+
 /**
  * Management interface for the thread pool.
  *
@@ -100,6 +102,34 @@ public interface BasicThreadPoolMBean extends ThreadPoolMBean
     * @param time the keep alive time
     */
    void setKeepAliveTime(long time);
+
+   /** 
+    * Gets the source of the classloader that will be set as the 
+    * {@link Thread#getContextClassLoader() thread context classloader}
+    * for pool threads.
+    * 
+    * @return the {@link ClassLoaderSource}. May return <code>null</code>.
+    */
+   ClassLoaderSource getClassLoaderSource();
+
+   /** 
+    * Sets the source of the classloader that will be set as the 
+    * {@link Thread#getContextClassLoader() thread context classloader}
+    * for pool threads. If set, whenever any new pool thread is created, it's
+    * context classloader will be set to the loader provided by this source.
+    * Further, when any thread is returned to the pool, its context classloader
+    * will be reset to the loader provided by this source.
+    * <p> 
+    * If set to <code>null</code> (the default), the pool will not attempt to 
+    * manage the context classloader for pool threads; instead a newly created 
+    * pool thread will inherit its context classloader from whatever thread 
+    * triggered the addition to the pool.  A thread returned to the pool will
+    * not have its context classloader changed from whatever it was.
+    * </p>
+    * 
+    * @param classLoaderSource the {@link ClassLoaderSource}. May be <code>null</code>.
+    */
+   void setClassLoaderSource(ClassLoaderSource classLoaderSource);
 
    // Inner classes -------------------------------------------------
 }
