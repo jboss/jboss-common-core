@@ -18,7 +18,7 @@ import org.jboss.util.stream.MarshalledValueOutputStream;
  * @see org.jboss.util.propertyeditor.PropertyEditors
  * 
  * @author Jason.Greene@jboss.org 
- * @version $Revision:$
+ * @version $Revision$
  */
 public class MarshallValueStreamTestCase extends TestCase
 {
