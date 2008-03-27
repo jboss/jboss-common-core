@@ -1,3 +1,24 @@
+/*
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2006, Red Hat Middleware LLC, and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
 package org.jboss.test.util.test.propertyeditor;
 
 import java.beans.PropertyEditor;
@@ -236,10 +257,11 @@ public class PropertyEditorsUnitTestCase extends TestCase
       props.setProperty("prop4", System.getProperty("user.home"));
       System.setProperty("some.win32.path", "C:\\disk1\\root\\");
       props.setProperty("prop5", "C:\\disk1\\root\\");
+      
       Object[][] expectedData = {
          {new File("/tmp/test1").getCanonicalFile(), new File("/tmp/test2").getCanonicalFile()},
-         {new URL("http://www.jboss.org"), new URL("file:/path with space/tst.xml")},
-         {new URI("http://www.jboss.org"), new URI("file:/path%20with%20space/tst.xml")},
+         {new URL("http://www.jboss.org"), new File("/path with space/tst.xml").getCanonicalFile().toURL()},
+         {new URI("http://www.jboss.org"), new File("/path with space/tst.xml").getCanonicalFile().toURI()}, 
          {new String("JBoss, Home of Professional Open Source")},
          {java.util.Arrays.class},
          {InetAddress.getByName("127.0.0.1"), InetAddress.getByName("localhost")},
