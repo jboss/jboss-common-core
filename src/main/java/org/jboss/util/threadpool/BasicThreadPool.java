@@ -489,7 +489,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       }
       catch (Throwable t)
       {
-         wrapper.rejectTask(new ThreadPoolFullException(t.toString()));
+         wrapper.rejectTask(new ThreadPoolFullException("Error scheduling work: " + wrapper, t));
       }
    }
 

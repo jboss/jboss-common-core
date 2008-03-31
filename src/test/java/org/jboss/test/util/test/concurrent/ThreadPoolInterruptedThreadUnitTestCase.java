@@ -21,19 +21,12 @@
  */
 package org.jboss.test.util.test.concurrent;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.jboss.util.threadpool.BasicTaskWrapper;
-import org.jboss.util.threadpool.BasicThreadPool;
-import org.jboss.util.threadpool.RunnableTaskWrapper;
-import org.jboss.util.threadpool.Task;
-import org.jboss.logging.Logger;
 import junit.framework.TestCase;
+
+import org.jboss.util.threadpool.BasicThreadPool;
 
 /**
  * Tests of thread pool with Tasks added to the pool

@@ -31,13 +31,6 @@ public class ThreadPoolFullException extends RuntimeException
 {
    /** The serialVersionUID */
    private static final long serialVersionUID = 1L;
-   // Constants -----------------------------------------------------
-
-   // Attributes ----------------------------------------------------
-
-   // Static --------------------------------------------------------
-
-   // Constructors --------------------------------------------------
 
    /**
     * Create a new ThreadPoolFullException
@@ -56,15 +49,15 @@ public class ThreadPoolFullException extends RuntimeException
    {
       super(message);
    }
-
-   // Public --------------------------------------------------------
-
-
-   // Package protected ---------------------------------------------
-
-   // Protected -----------------------------------------------------
-
-   // Private -------------------------------------------------------
-
-   // Inner classes -------------------------------------------------
+   
+   /**
+    * Create a new ThreadPoolFullException.
+    * 
+    * @param message the message
+    * @param t the throwable
+    */
+   public ThreadPoolFullException(String message, Throwable t)
+   {
+      super(message, t);
+   }
 }
