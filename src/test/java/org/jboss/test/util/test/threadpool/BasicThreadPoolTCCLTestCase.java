@@ -22,7 +22,7 @@
 
 package org.jboss.test.util.test.threadpool;
 
-import org.jboss.test.BaseTestCase;
+import junit.framework.TestCase;
 import org.jboss.util.loading.ClassLoaderSource;
 import org.jboss.util.threadpool.BasicThreadPool;
 
@@ -31,7 +31,7 @@ import org.jboss.util.threadpool.BasicThreadPool;
  * 
  * @author Brian Stansberry
  */
-public class BasicThreadPoolTCCLTestCase extends BaseTestCase
+public class BasicThreadPoolTCCLTestCase extends TestCase
 {
    protected ClassLoader origCl;
    

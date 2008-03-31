@@ -22,7 +22,7 @@
 
 package org.jboss.test.util.test.loading;
 
-import org.jboss.test.BaseTestCase;
+import junit.framework.TestCase;
 import org.jboss.util.loading.ClassLoaderSource;
 
 /**
@@ -30,7 +30,7 @@ import org.jboss.util.loading.ClassLoaderSource;
  * 
  * @author Brian Stansberry
  */
-public abstract class ClassLoaderSourceTestBase extends BaseTestCase
+public abstract class ClassLoaderSourceTestBase extends TestCase
 {
    protected ClassLoader origCl;
    

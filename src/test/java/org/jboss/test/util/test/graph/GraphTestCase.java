@@ -24,7 +24,8 @@ package org.jboss.test.util.test.graph;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import org.jboss.test.BaseTestCase;
+import junit.framework.TestCase;
+
 import org.jboss.util.graph.Graph;
 import org.jboss.util.graph.Edge;
 import org.jboss.util.graph.Vertex;
@@ -36,7 +37,7 @@ import org.jboss.util.graph.Visitor;
  * @author Scott.Stark@jboss.org
  * @version $Revision: 1.1 $
  */
-public class GraphTestCase extends BaseTestCase
+public class GraphTestCase extends TestCase
 {
    Vertex<String> a = new Vertex<String>("A", "x.ear");
    Vertex b = new Vertex("B");
@@ -70,7 +71,7 @@ public class GraphTestCase extends BaseTestCase
       {
          public void visit(Graph g, Vertex v)
          {
-            log.debug("visit "+v.getName());
+            System.out.println("visit "+v.getName());
             order.add(v);
          }
          public void visit(Graph g, Vertex v, Edge e)
@@ -84,7 +85,7 @@ public class GraphTestCase extends BaseTestCase
       for(int n = 0; n < order.size(); n ++)
       {
          Vertex v = (Vertex) order.get(n);
-         log.debug(v);
+         System.out.println(v);
          assertTrue(v.getName()+" is visited", v.visited());
       }
       String[] names = {"A", "B", "C", "H", "G", "I", "E", "F"};
@@ -109,7 +110,7 @@ public class GraphTestCase extends BaseTestCase
       {
          public void visit(Graph g, Vertex v)
          {
-            log.debug("visit "+v.getName());
+            System.out.println("visit "+v.getName());
             order.add(v);
          }
          public void visit(Graph g, Vertex v, Edge e)
@@ -123,7 +124,7 @@ public class GraphTestCase extends BaseTestCase
       for(int n = 0; n < order.size(); n ++)
       {
          Vertex v = (Vertex) order.get(n);
-         log.debug(v);
+         System.out.println(v);
          assertTrue(v.getName()+" is visited", v.visited());
       }
       String[] names = {"A", "B", "F", "C", "G", "E", "I", "H"};
@@ -152,7 +153,7 @@ public class GraphTestCase extends BaseTestCase
       Edge[] cycleEdges = g.findCycles();
       assertTrue("There is a cycle", cycleEdges.length == 1);
       for(int n = 0; n < cycleEdges.length; n ++)
-         log.debug(cycleEdges[n]);
+         System.out.println(cycleEdges[n]);
 
       Edge e = cycleEdges[0];
       Vertex vx = e.getFrom();
@@ -175,7 +176,7 @@ public class GraphTestCase extends BaseTestCase
       }
       catch(IllegalArgumentException e)
       {
-         log.debug("Saw IAE as expected");
+         System.out.println("Saw IAE as expected");
       }
       assertTrue("Added e1", g.addVertex(e1));
       assertTrue("Added E(ear, e1)", g.addEdge(ear, e1, 0));
