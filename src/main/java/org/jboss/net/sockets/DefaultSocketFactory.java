@@ -50,18 +50,22 @@ public class DefaultSocketFactory extends ServerSocketFactory
       this(null, 200);
    }
    /** Create a socket factory with the given bind address
+    * @param bindAddress 
     */
    public DefaultSocketFactory(InetAddress bindAddress)
    {
       this(bindAddress, 200);
    }
    /** Create a socket factory with the given backlog
+    * @param backlog 
     */
    public DefaultSocketFactory(int backlog)
    {
       this(null, backlog);
    }
    /** Create a socket factory with the given bind address and backlog
+    * @param bindAddress 
+    * @param backlog 
     */
    public DefaultSocketFactory(InetAddress bindAddress, int backlog)
    {
@@ -111,7 +115,7 @@ public class DefaultSocketFactory extends ServerSocketFactory
     * @param port - the port to listen to
     * @param backlog - how many connections are queued
     * @param inetAddress - the network interface address to use
-    * @return
+    * @return the server socket
     * @throws IOException
     */ 
    public ServerSocket createServerSocket(int port, int backlog,

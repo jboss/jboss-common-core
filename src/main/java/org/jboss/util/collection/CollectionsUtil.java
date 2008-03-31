@@ -31,6 +31,7 @@ import java.util.List;
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class CollectionsUtil
 {
    /**

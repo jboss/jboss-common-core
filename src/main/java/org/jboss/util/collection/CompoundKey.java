@@ -37,6 +37,8 @@ import org.jboss.util.Strings;
 public class CompoundKey
    implements Serializable, Cloneable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The elements of the key */
    private final Object elements[];
 

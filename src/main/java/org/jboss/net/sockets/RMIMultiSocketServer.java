@@ -35,6 +35,7 @@ import java.rmi.NoSuchObjectException;
  * @author bill@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class RMIMultiSocketServer
 {
    private static HashMap handlermap = new HashMap();

@@ -41,7 +41,7 @@ public class StringArrayEditor
 
    static String[] parseList(String text)
    {
-      ArrayList list = new ArrayList();
+      ArrayList<String> list = new ArrayList<String>();
       StringBuffer tmp = new StringBuffer();
       for(int n = 0; n < text.length(); n ++)
       {

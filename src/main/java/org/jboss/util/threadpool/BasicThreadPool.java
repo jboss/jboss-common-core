@@ -49,6 +49,7 @@ import org.jboss.util.loading.ContextClassLoaderSwitcher;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
 {
    // Constants -----------------------------------------------------
@@ -283,7 +284,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
     * work queue and ThreadPoolExecutor, so this needs to be called
     * before doing any work with the pool.
     *
-    * @param new work queue capacity
+    * @param size new work queue capacity
     */
    public void setMaximumQueueSize(int size)
    {
@@ -515,7 +516,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       TimeoutInfo info = null;
       if(this.tasksWithTimeouts.isEmpty() == false)
       {
-         info = (TimeoutInfo) this.tasksWithTimeouts.remove();
+         info = this.tasksWithTimeouts.remove();
       }
       return info;
    }
@@ -641,6 +642,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
     */ 
    private class TimeoutMonitor implements Runnable
    {
+      @SuppressWarnings("hiding")
       final Logger log;
       TimeoutMonitor(String name, Logger log)
       {

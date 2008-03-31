@@ -71,6 +71,7 @@ public class UID
 
    /**
     * Copy a UID.
+    * @param uid 
     */
    protected UID(final UID uid) {
       time = uid.time;

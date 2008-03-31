@@ -37,6 +37,7 @@ import org.jboss.util.graph.Visitor;
  * @author Scott.Stark@jboss.org
  * @version $Revision: 1.1 $
  */
+@SuppressWarnings("unchecked")
 public class GraphTestCase extends TestCase
 {
    Vertex<String> a = new Vertex<String>("A", "x.ear");
@@ -74,9 +75,6 @@ public class GraphTestCase extends TestCase
             System.out.println("visit "+v.getName());
             order.add(v);
          }
-         public void visit(Graph g, Vertex v, Edge e)
-         {
-         }
       };
       graph.depthFirstSearch(a, visitor);
 
@@ -113,9 +111,6 @@ public class GraphTestCase extends TestCase
             System.out.println("visit "+v.getName());
             order.add(v);
          }
-         public void visit(Graph g, Vertex v, Edge e)
-         {
-         }
       };
       graph.breadthFirstSearch(a, visitor);
 
@@ -123,14 +118,14 @@ public class GraphTestCase extends TestCase
       // Validate the expected order and visited state
       for(int n = 0; n < order.size(); n ++)
       {
-         Vertex v = (Vertex) order.get(n);
+         Vertex v = order.get(n);
          System.out.println(v);
          assertTrue(v.getName()+" is visited", v.visited());
       }
       String[] names = {"A", "B", "F", "C", "G", "E", "I", "H"};
       for(int n = 0; n < order.size(); n ++)
       {
-         Vertex v = (Vertex) order.get(n);
+         Vertex v = order.get(n);
          assertTrue("#"+n+" is "+names[n]+"("+v.getName()+")",
             v.getName().equals(names[n]));
       }

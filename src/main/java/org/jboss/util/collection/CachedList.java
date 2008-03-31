@@ -38,6 +38,7 @@ import org.jboss.util.Objects;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class CachedList
    extends AbstractList
 {

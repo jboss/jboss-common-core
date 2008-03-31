@@ -31,6 +31,8 @@ package org.jboss.util;
 public class NullArgumentException 
    extends IllegalArgumentException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The name of the argument that was <tt>null</tt>. */
    protected final String name;
 

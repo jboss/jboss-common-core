@@ -39,7 +39,7 @@ import java.net.URLStreamHandlerFactory;
 public class DelegatingClassLoader
    extends URLClassLoader
 {
-   /** The value returned by {@link getURLs}. */
+   /** The value returned by {@link #getURLs()}. */
    public static final URL[] EMPTY_URL_ARRAY = {};
 
    /** Whether to use standard loading */
@@ -60,7 +60,7 @@ public class DelegatingClassLoader
    /**
     * Constructor
     *
-    * @param parent, the parent classloader, cannot be null.
+    * @param parent the parent classloader, cannot be null.
     * @param factory the url stream factory.
     */
    public DelegatingClassLoader(ClassLoader parent, URLStreamHandlerFactory factory)
@@ -78,7 +78,7 @@ public class DelegatingClassLoader
     * @return the loaded class
     * @throws ClassNotFoundException when the class could not be found
     */
-   protected Class loadClass(String className, boolean resolve)
+   protected Class<?> loadClass(String className, boolean resolve)
       throws ClassNotFoundException
    {
       // Revert to standard rules
@@ -86,7 +86,7 @@ public class DelegatingClassLoader
          return super.loadClass(className, resolve);
 
       // Ask the parent
-      Class clazz = null;
+      Class<?> clazz = null;
       try
       {
          clazz = getParent().loadClass(className);

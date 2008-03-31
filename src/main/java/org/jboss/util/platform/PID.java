@@ -37,6 +37,8 @@ import java.util.Random;
 public class PID
    implements Serializable, Cloneable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The <tt>int</tt> process identifier. */
    protected final int id;
 
@@ -69,6 +71,7 @@ public class PID
 
    /**
     * Return a string representation of this PID.
+    * @param radix 
     *
     * @return  A string representation of this PID.
     */

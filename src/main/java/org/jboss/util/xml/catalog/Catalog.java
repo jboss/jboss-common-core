@@ -56,24 +56,24 @@
 
 package org.jboss.util.xml.catalog;
 
-import java.io.IOException;
+import java.io.DataInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.io.DataInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.net.URL;
-import java.net.MalformedURLException;
-import org.jboss.util.xml.catalog.CatalogManager;
+
+import javax.xml.parsers.SAXParserFactory;
+
 import org.jboss.util.xml.catalog.helpers.PublicId;
 import org.jboss.util.xml.catalog.readers.CatalogReader;
 import org.jboss.util.xml.catalog.readers.OASISXMLCatalogReader;
 import org.jboss.util.xml.catalog.readers.SAXCatalogReader;
 import org.jboss.util.xml.catalog.readers.TR9401CatalogReader;
-
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Represents OASIS Open Catalog files.
@@ -175,7 +175,7 @@ import javax.xml.parsers.SAXParserFactory;
  * catalogs, or any number of other storage formats.</p>
  *
  * <p>Additional catalogs may also be loaded with the
- * {@link #parseCatalog} method.</p>
+ * {@link #parseCatalog(String)} method.</p>
  * </dd>
  * </dl>
  *
@@ -217,6 +217,7 @@ import javax.xml.parsers.SAXParserFactory;
  * <p>Derived from public domain code originally published by Arbortext,
  * Inc.</p>
  */
+@SuppressWarnings("unchecked")
 public class Catalog {
   /** The BASE Catalog Entry type. */
   public static final int BASE     = CatalogEntry.addEntryType("BASE", 1);
@@ -394,13 +395,14 @@ public class Catalog {
    * <p>The constructor interrogates the relevant system properties
    * using the specified Catalog Manager
    * and initializes the catalog data structures.</p>
+ * @param manager 
    */
   public Catalog(CatalogManager manager) {
     catalogManager = manager;
   }
 
   /**
-   * Return the CatalogManager used by this catalog.
+   * @return the CatalogManager used by this catalog.
    *
    */
   public CatalogManager getCatalogManager() {
@@ -409,6 +411,7 @@ public class Catalog {
 
   /**
    * Establish the CatalogManager used by this catalog.
+ * @param manager 
    *
    */
   public void setCatalogManager(CatalogManager manager) {
@@ -514,6 +517,8 @@ public class Catalog {
    * <p>N.B. All Catalog subtypes should call newCatalog() to construct
    * a new Catalog. Do not simply use "new Subclass()" since that will
    * confuse future subclasses.</p>
+   * 
+   * @return the catalog
    */
   protected Catalog newCatalog() {
     String catalogClass = this.getClass().getName();
@@ -542,14 +547,14 @@ public class Catalog {
   }
 
   /**
-   * Returns the current base URI.
+   * @return the current base URI.
    */
   public String getCurrentBase() {
     return base.toString();
   }
 
   /**
-   * Returns the default override setting associated with this
+   * @return the default override setting associated with this
    * catalog.
    *
    * <p>All catalog files loaded by this catalog will have the
@@ -727,6 +732,8 @@ public class Catalog {
    *
    * <p>Catalogs may refer to other catalogs, this method parses
    * all of the currently pending catalog files.</p>
+   * @throws MalformedURLException 
+   * @throws IOException 
    */
   protected synchronized void parsePendingCatalogs()
     throws MalformedURLException, IOException {
@@ -826,11 +833,10 @@ public class Catalog {
    * @throws MalformedURLException The fileName cannot be turned into
    * a valid URL.
    * @throws IOException Error reading catalog file.
+   * @throws CatalogException for any error 
    */
   protected synchronized void parseCatalogFile(String fileName)
     throws MalformedURLException, IOException, CatalogException {
-
-    CatalogEntry entry;
 
     // The base-base is the cwd. If the catalog file is specified
     // with a relative path, this assures that it gets resolved
@@ -1096,6 +1102,7 @@ public class Catalog {
    *
    * <p>This method exists to allow subclasses to deal with unknown
    * entry types.</p>
+ * @param strings 
    */
   public void unknownEntry(Vector strings) {
     if (strings != null && strings.size() > 0) {
@@ -1616,7 +1623,7 @@ public class Catalog {
 
       if (e.getEntryType() == DELEGATE_PUBLIC
 	  && (over || systemId == null)) {
-	String p = (String) e.getEntryArg(0);
+	String p = e.getEntryArg(0);
 	if (p.length() <= publicId.length()
 	    && p.equals(publicId.substring(0, p.length()))) {
 	  // delegate this match to the other catalog
@@ -1707,6 +1714,8 @@ public class Catalog {
    * @param systemId The system ID to locate in the catalog
    *
    * @return The mapped system identifier or null
+   * @throws MalformedURLException 
+   * @throws IOException 
    */
   protected String resolveLocalSystem(String systemId)
     throws MalformedURLException, IOException {
@@ -1732,7 +1741,7 @@ public class Catalog {
       CatalogEntry e = (CatalogEntry) enumt.nextElement();
 
       if (e.getEntryType() == REWRITE_SYSTEM) {
-	String p = (String) e.getEntryArg(0);
+	String p = e.getEntryArg(0);
 	if (p.length() <= systemId.length()
 	    && p.equals(systemId.substring(0, p.length()))) {
 	  // Is this the longest prefix?
@@ -1757,7 +1766,7 @@ public class Catalog {
       CatalogEntry e = (CatalogEntry) enumt.nextElement();
 
       if (e.getEntryType() == DELEGATE_SYSTEM) {
-	String p = (String) e.getEntryArg(0);
+	String p = e.getEntryArg(0);
 	if (p.length() <= systemId.length()
 	    && p.equals(systemId.substring(0, p.length()))) {
 	  // delegate this match to the other catalog
@@ -1844,6 +1853,8 @@ public class Catalog {
    * @param uri The URI to locate in the catalog
    *
    * @return The mapped URI or null
+   * @throws MalformedURLException 
+   * @throws IOException 
    */
   protected String resolveLocalURI(String uri)
     throws MalformedURLException, IOException {
@@ -1864,7 +1875,7 @@ public class Catalog {
       CatalogEntry e = (CatalogEntry) enumt.nextElement();
 
       if (e.getEntryType() == REWRITE_URI) {
-	String p = (String) e.getEntryArg(0);
+	String p = e.getEntryArg(0);
 	if (p.length() <= uri.length()
 	    && p.equals(uri.substring(0, p.length()))) {
 	  // Is this the longest prefix?
@@ -1889,7 +1900,7 @@ public class Catalog {
       CatalogEntry e = (CatalogEntry) enumt.nextElement();
 
       if (e.getEntryType() == DELEGATE_URI) {
-	String p = (String) e.getEntryArg(0);
+	String p = e.getEntryArg(0);
 	if (p.length() <= uri.length()
 	    && p.equals(uri.substring(0, p.length()))) {
 	  // delegate this match to the other catalog

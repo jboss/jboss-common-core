@@ -37,6 +37,7 @@ import java.util.WeakHashMap;
  * @author  <a href="mailto:marc@jboss.org">Marc Fleury</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class MethodHashing
 {
    // Constants -----------------------------------------------------
@@ -122,7 +123,7 @@ public class MethodHashing
    * Calculate method hashes. This algo is taken from RMI.
    *
    * @param   intf  
-   * @return     
+   * @return    the map  
    */
    public static Map getInterfaceHashes(Class intf)
    {

@@ -37,8 +37,7 @@ public interface Translator
     *
     * <P> If a transformer has been registered with the class loading layer,
     * the transformer will be called for every new class definition.
-    * The request for a new class definition is made with
-    * {@link java.lang.ClassLoader#defineClass ClassLoader.defineClass}.
+    * The request for a new class definition is made with defineClass
     * The transformer is called during the processing of the request, before
     * the class file bytes have been verified or applied.
     *
@@ -65,7 +64,7 @@ public interface Translator
     */
    public byte[] transform(ClassLoader loader,
       String className,
-      Class classBeingRedefined,
+      Class<?> classBeingRedefined,
       ProtectionDomain protectionDomain,
       byte[] classfileBuffer)
       throws Exception;

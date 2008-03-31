@@ -38,6 +38,7 @@ import javax.naming.OperationNotSupportedException;
  @author Scott.Stark@jboss.org
  @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class ReadOnlyContext implements Context
 {
    /** The actual context we impose the read-only behavior on */

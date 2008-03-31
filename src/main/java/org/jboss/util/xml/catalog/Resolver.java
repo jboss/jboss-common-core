@@ -56,22 +56,21 @@
 
 package org.jboss.util.xml.catalog;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.FileNotFoundException;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.MalformedURLException;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.xml.parsers.SAXParserFactory;
 
 import org.jboss.util.xml.catalog.readers.ExtendedXMLCatalogReader;
 import org.jboss.util.xml.catalog.readers.OASISXMLCatalogReader;
 import org.jboss.util.xml.catalog.readers.SAXCatalogReader;
 import org.jboss.util.xml.catalog.readers.TR9401CatalogReader;
 import org.jboss.util.xml.catalog.readers.XCatalogReader;
-
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * An extension to OASIS Open Catalog files, this class supports
@@ -84,6 +83,7 @@ import javax.xml.parsers.SAXParserFactory;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class Resolver extends Catalog {
   /**
    * The URISUFFIX Catalog Entry type.
@@ -121,6 +121,7 @@ public class Resolver extends Catalog {
   /**
    * Setup readers.
    */
+  @SuppressWarnings("deprecation")
   public void setupReaders() {
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setNamespaceAware(true);
@@ -351,6 +352,8 @@ public class Resolver extends Catalog {
      * @param resolver The name of the resolver to use.
      *
      * @return The system identifier to use for the systemId.
+     * @throws MalformedURLException 
+     * @throws IOException 
      */
     protected String resolveExternalSystem(String systemId, String resolver)
 	throws MalformedURLException, IOException {
@@ -368,6 +371,8 @@ public class Resolver extends Catalog {
      * @param publicId The system ID to locate.
      * @param resolver The name of the resolver to use.
      *
+     * @throws MalformedURLException 
+     * @throws IOException 
      * @return The system identifier to use for the systemId.
      */
     protected String resolveExternalPublic(String publicId, String resolver)
@@ -394,11 +399,9 @@ public class Resolver extends Catalog {
 				     String command,
 				     String arg1,
 				     String arg2) {
-	InputStream iStream = null;
 	String RFC2483 = resolver + "?command=" + command 
 	    + "&format=tr9401&uri=" + arg1 
 	    + "&uri2=" + arg2;
-	String line = null;
 
 	try {
 	    URL url = new URL(RFC2483);
@@ -457,6 +460,8 @@ public class Resolver extends Catalog {
      *
      * @param systemId The system ID to locate.
      *
+     * @throws MalformedURLException 
+     * @throws IOException 
      * @return A vector of URNs that map to the systemId.
      */
     public Vector resolveAllSystemReverse(String systemId)
@@ -483,6 +488,8 @@ public class Resolver extends Catalog {
      *
      * @param systemId The system ID to locate.
      *
+     * @throws MalformedURLException 
+     * @throws IOException 
      * @return A (single) URN that maps to the systemId.
      */
     public String resolveSystemReverse(String systemId)

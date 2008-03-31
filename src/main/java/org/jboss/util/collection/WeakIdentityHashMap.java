@@ -46,6 +46,7 @@ import java.util.*;
  * @see		java.util.IdentityHashMap
  * @see		java.util.WeakHashMap
  */
+@SuppressWarnings("unchecked")
 public class WeakIdentityHashMap /*extends AbstractMap*/ implements Map {
 
     /**
@@ -154,7 +155,7 @@ public class WeakIdentityHashMap /*extends AbstractMap*/ implements Map {
      */
     public WeakIdentityHashMap() {
         this.loadFactor = DEFAULT_LOAD_FACTOR;
-        threshold = (int)(DEFAULT_INITIAL_CAPACITY);
+        threshold = DEFAULT_INITIAL_CAPACITY;
         table = new Entry[DEFAULT_INITIAL_CAPACITY];
     }
 
@@ -674,7 +675,6 @@ public class WeakIdentityHashMap /*extends AbstractMap*/ implements Map {
             return true;
         }
 
-        /** The common parts of next() across different types of iterators */
         protected Entry nextEntry() {
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
@@ -856,7 +856,6 @@ public class WeakIdentityHashMap /*extends AbstractMap*/ implements Map {
             if (!(o instanceof Map.Entry))
                 return false;
             Map.Entry e = (Map.Entry)o;
-            Object k = e.getKey();
             Entry candidate = getEntry(e.getKey());
             return candidate != null && candidate.equals(e);
         }
@@ -924,7 +923,6 @@ public class WeakIdentityHashMap /*extends AbstractMap*/ implements Map {
         }
 
         public int hashCode() {
-            Object v;
             return ((key   == null)   ? 0 :   key.hashCode()) ^
                    ((value == null)   ? 0 : value.hashCode());
         }

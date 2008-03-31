@@ -73,7 +73,9 @@ import org.xml.sax.*;
  *
  * @version 1.0
  */
+@SuppressWarnings("deprecation")
 public interface SAXCatalogParser extends ContentHandler, DocumentHandler {
-    /** Set the Catalog for which parsing is being performed. */
+    /** Set the Catalog for which parsing is being performed. 
+    * @param catalog */
     public void setCatalog(Catalog catalog);
 }

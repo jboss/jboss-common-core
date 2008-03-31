@@ -24,7 +24,6 @@ package org.jboss.test.util.test.loading;
 
 import org.jboss.util.loading.ClassLoaderSource;
 import org.jboss.util.loading.ConstructorTCCLClassLoaderSource;
-import org.jboss.util.loading.MyClassLoaderClassLoaderSource;
 
 /**
  * Unit tests of {@link ConstructorTCCLClassLoaderSource}.

@@ -40,6 +40,7 @@ import org.jboss.net.protocol.URLListerBase;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class FileURLLister extends URLListerBase
 {
    /** The Logger */
@@ -52,7 +53,7 @@ public class FileURLLister extends URLListerBase
       return listMembers(baseUrl, filter, false);
    }
 
-   public Collection listMembers(URL baseUrl, URLFilter filter, boolean scanNonDottedSubDirs) throws IOException
+   public Collection<URL> listMembers(URL baseUrl, URLFilter filter, boolean scanNonDottedSubDirs) throws IOException
    {
       // Make sure this is a directory URL
       String baseUrlString = baseUrl.toString();
@@ -69,7 +70,7 @@ public class FileURLLister extends URLListerBase
       }
       
       // The list of URLs to return
-      ArrayList resultList = new ArrayList();
+      ArrayList<URL> resultList = new ArrayList<URL>();
 
       // Do the actual job
       listFiles(baseUrl, filter, scanNonDottedSubDirs, resultList);
@@ -85,7 +86,7 @@ public class FileURLLister extends URLListerBase
     * resultList with the contents that pass the filter (in the form of URLs)
     * and possibly recurse into subdris not containing a '.' in their name.
     */
-   private void listFiles(final URL baseUrl, final URLFilter filter, boolean scanNonDottedSubDirs, ArrayList resultList)
+   private void listFiles(final URL baseUrl, final URLFilter filter, boolean scanNonDottedSubDirs, ArrayList<URL> resultList)
       throws IOException
    {      
       // List the files at the current dir level, using the provided filter

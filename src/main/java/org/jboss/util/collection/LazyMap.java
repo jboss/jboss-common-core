@@ -39,6 +39,8 @@ import java.io.Serializable;
  */
 public class LazyMap<K, V> implements Map<K, V>, Serializable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The delegate map */
    private Map<K, V> delegate = Collections.emptyMap();
 

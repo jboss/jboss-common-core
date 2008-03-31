@@ -70,6 +70,8 @@ package org.jboss.util.xml.catalog;
  * @version 1.0
  */
 public class CatalogException extends Exception {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
   /** A wrapper around another exception */
   public static final int WRAPPER = 1;
   /** An invalid entry */

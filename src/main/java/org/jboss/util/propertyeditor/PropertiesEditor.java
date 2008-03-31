@@ -36,6 +36,7 @@ import org.jboss.util.StringPropertyReplacer;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class PropertiesEditor extends TextPropertyEditorSupport
 {
    /**

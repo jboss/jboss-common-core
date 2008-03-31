@@ -32,6 +32,7 @@ import java.security.AccessController;
  * 
  * @author Brian Stansberry
  */
+@SuppressWarnings("unchecked")
 public class ConstructorTCCLClassLoaderSource implements ClassLoaderSource
 {
    private final WeakReference classLoaderRef;

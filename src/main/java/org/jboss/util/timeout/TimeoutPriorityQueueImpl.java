@@ -139,8 +139,6 @@ package org.jboss.util.timeout;
  *
  *  If you are interested, you can find this data structure and its
  *  associated operations in most textbooks on algorithmics.
- *
- *  @see checkTree
  * 
  * @author <a href="osh@sparre.dk">Ole Husgaard</a>
  * @author <a href="dimitris@jboss.org">Dimitris Andreadis</a>

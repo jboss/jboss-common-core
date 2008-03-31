@@ -43,6 +43,7 @@ import org.jboss.util.Strings;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision$</tt>
  */
+@SuppressWarnings("unchecked")
 public class DateEditor extends PropertyEditorSupport
 {
    /** The formats to use when parsing the string date */

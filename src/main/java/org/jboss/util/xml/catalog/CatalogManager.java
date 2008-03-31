@@ -158,6 +158,7 @@ import org.jboss.util.xml.catalog.helpers.Debug;
  * @version 1.0
  */
 
+@SuppressWarnings("unchecked")
 public class CatalogManager {
   private static String pFiles         = "xml.catalog.files";
   private static String pVerbosity     = "xml.catalog.verbosity";
@@ -249,7 +250,8 @@ public class CatalogManager {
     // to avoid it.
   }
 
-  /** Constructor that specifies an explicit property file. */
+  /** Constructor that specifies an explicit property file. 
+ * @param propertyFile */
   public CatalogManager(String propertyFile) {
     this.propertyFile = propertyFile;
 
@@ -261,12 +263,13 @@ public class CatalogManager {
     // to avoid it.
   }
 
-  /** Set the bootstrap resolver.*/
+  /** Set the bootstrap resolver.
+ * @param resolver */
   public void setBootstrapResolver(BootstrapResolver resolver) {
     bResolver = resolver;
   }
 
-  /** Get the bootstrap resolver.*/
+  /** @return the bootstrap resolver.*/
   public BootstrapResolver getBootstrapResolver() {
     return bResolver;
   }
@@ -316,6 +319,7 @@ public class CatalogManager {
 
   /**
    * Allow access to the static CatalogManager
+   * @return the catalog manager
    */
   public static CatalogManager getStaticManager() {
     return staticManager;
@@ -327,6 +331,7 @@ public class CatalogManager {
    * <p>If true, missing or unreadable property files will
    * not be reported. Otherwise, a message will be sent to System.err.
    * </p>
+   * @return the value
    */
   public boolean getIgnoreMissingProperties() {
     return ignoreMissingProperties;
@@ -338,6 +343,7 @@ public class CatalogManager {
    * <p>If ignore is true, missing or unreadable property files will
    * not be reported. Otherwise, a message will be sent to System.err.
    * </p>
+ * @param ignore 
    */
   public void setIgnoreMissingProperties(boolean ignore) {
     ignoreMissingProperties = ignore;
@@ -349,6 +355,7 @@ public class CatalogManager {
    * <p>If ignore is true, missing or unreadable property files will
    * not be reported. Otherwise, a message will be sent to System.err.
    * </p>
+ * @param ignore 
    *
    * @deprecated No longer static; use get/set methods.
    */
@@ -385,7 +392,7 @@ public class CatalogManager {
   }
 
   /**
-   * What is the current verbosity?
+   * @return the current verbosity?
    */
   public int getVerbosity() {
     if (verbosity == null) {
@@ -397,6 +404,7 @@ public class CatalogManager {
 
   /**
    * Set the current verbosity.
+ * @param verbosity 
    */
   public void setVerbosity (int verbosity) {
     this.verbosity = new Integer(verbosity);
@@ -404,7 +412,7 @@ public class CatalogManager {
   }
 
   /**
-   * What is the current verbosity?
+   * @return the current verbosity?
    *
    * @deprecated No longer static; use get/set methods.
    */
@@ -463,9 +471,7 @@ public class CatalogManager {
 
   /**
    * Set the relativeCatalogs setting.
-   *
-   * @return The relativeCatalogs setting from the propertyFile or the
-   * defaultRelativeCatalogs.
+   * @param relative 
    *
    * @see #getRelativeCatalogs()
    */
@@ -474,7 +480,7 @@ public class CatalogManager {
   }
 
   /**
-   * Get the relativeCatalogs setting.
+   * @return the relativeCatalogs setting.
    *
    * @deprecated No longer static; use get/set methods.
    */
@@ -545,6 +551,7 @@ public class CatalogManager {
 
   /**
    * Set the list of catalog files.
+ * @param fileList 
    */
   public void setCatalogFiles(String fileList) {
     catalogFiles = fileList;
@@ -606,8 +613,7 @@ public class CatalogManager {
 
   /**
    * Set the prefer public setting.
-   *
-   * @return True if public identifiers are preferred.
+   * @param preferPublic 
    */
   public void setPreferPublic (boolean preferPublic) {
     this.preferPublic = new Boolean(preferPublic);
@@ -656,7 +662,7 @@ public class CatalogManager {
   }
 
   /**
-   * Get the current use static catalog setting.
+   * @return the current use static catalog setting.
    */
   public boolean getUseStaticCatalog() {
     if (useStaticCatalog == null) {
@@ -668,13 +674,14 @@ public class CatalogManager {
 
   /**
    * Set the use static catalog setting.
+ * @param useStatic 
    */
   public void setUseStaticCatalog(boolean useStatic) {
     useStaticCatalog = new Boolean(useStatic);
   }
 
   /**
-   * Get the current use static catalog setting.
+   * @return the current use static catalog setting.
    *
    * @deprecated No longer static; use get/set methods.
    */
@@ -683,7 +690,7 @@ public class CatalogManager {
   }
 
   /**
-   * Get a new catalog instance.
+   * @return a new catalog instance.
    *
    * This method always returns a new instance of the underlying catalog class.
    */
@@ -712,7 +719,7 @@ public class CatalogManager {
 	  } catch (ClassCastException cnfe) {
 	    debug.message(1,"Class named '"
 			  + catalogClassName
-			  + "' is not a Catalog. Using default.");
+		  + "' is not a Catalog. Using default.");
 	    catalog = new Catalog();
 	  }
 	}
@@ -733,7 +740,7 @@ public class CatalogManager {
   }
 
   /**
-   * Get a catalog instance.
+   * @return a catalog instance.
    *
    * If this manager uses static catalogs, the same static catalog will
    * always be returned. Otherwise a new catalog will be returned.
@@ -787,7 +794,7 @@ public class CatalogManager {
   }
 
   /**
-   * Get the current XML Catalog PI setting.
+   * @return the current XML Catalog PI setting.
    */
   public boolean getAllowOasisXMLCatalogPI () {
     if (oasisXMLCatalogPI == null) {
@@ -799,13 +806,14 @@ public class CatalogManager {
 
   /**
    * Set the XML Catalog PI setting
+   * @param allowPI 
    */
   public void setAllowOasisXMLCatalogPI(boolean allowPI) {
     oasisXMLCatalogPI = new Boolean(allowPI);
   }
 
   /**
-   * Get the current XML Catalog PI setting.
+   * @return the current XML Catalog PI setting.
    *
    * @deprecated No longer static; use get/set methods.
    */
@@ -815,6 +823,7 @@ public class CatalogManager {
 
   /**
    * Obtain the Catalog class name setting from the properties.
+   * @return the name 
    *
    */
   public String queryCatalogClassName () {
@@ -834,7 +843,7 @@ public class CatalogManager {
   }
 
   /**
-   * Get the current Catalog class name.
+   * @return the current Catalog class name.
    */
   public String getCatalogClassName() {
     if (catalogClassName == null) {
@@ -846,13 +855,14 @@ public class CatalogManager {
 
   /**
    * Set the Catalog class name.
+ * @param className 
    */
   public void setCatalogClassName(String className) {
     catalogClassName = className;
   }
 
   /**
-   * Get the current Catalog class name.
+   * @return the current Catalog class name.
    *
    * @deprecated No longer static; use get/set methods.
    */

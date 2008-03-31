@@ -17,17 +17,17 @@ public class ClassesUnitTestCase extends TestCase
 {
    public void testGetAllInterfaces()
    {
-      List list = new ArrayList();
+      List<Class<?>> list = new ArrayList<Class<?>>();
       Classes.getAllInterfaces(list, ExtendedClass.class);
       assertEquals(3, list.size());
-      assertEquals(Interface1.class, (java.lang.Class)list.get(0));
-      assertEquals(Interface1.class, (java.lang.Class)list.get(1));
-      assertEquals(Interface2.class, (java.lang.Class)list.get(2));
+      assertEquals(Interface1.class, list.get(0));
+      assertEquals(Interface1.class, list.get(1));
+      assertEquals(Interface2.class, list.get(2));
    }
    
    public void testGetAllUniqueInterfaces()
    {
-      Class[] interfaces = Classes.getAllUniqueInterfaces(ExtendedClass.class);
+      Class<?>[] interfaces = Classes.getAllUniqueInterfaces(ExtendedClass.class);
       assertEquals(2, interfaces.length);
    }
    

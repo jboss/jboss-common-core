@@ -38,6 +38,7 @@ import java.security.PrivilegedAction;
  * @author  <a href="mailto:Adrian.Brock@JBoss.com">Adrian Brock</a>.
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class SerialVersion
 {
    // Static --------------------------------------------------------

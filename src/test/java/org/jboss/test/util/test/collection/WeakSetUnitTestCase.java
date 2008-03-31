@@ -12,6 +12,7 @@ import junit.framework.TestCase;
  * @author <a href="mailto:sven@meiers.net">Sven Meier</a> 
  * @version $Revision: 43534 $
  */
+@SuppressWarnings("unchecked")
 public class WeakSetUnitTestCase extends TestCase
 {
    public void testNullElement()

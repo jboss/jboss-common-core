@@ -30,6 +30,7 @@ import java.util.Iterator;
  * @author <a href="bill@jboss.com">Bill Burke</a>
  * @version $Revision: 1.1 $
  */
+@SuppressWarnings("unchecked")
 public interface ArchiveBrowserFactory
 {
    Iterator create(URL url, ArchiveBrowser.Filter filter);

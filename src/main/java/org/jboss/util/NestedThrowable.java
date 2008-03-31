@@ -128,7 +128,6 @@ public interface NestedThrowable
          return log;
       }
       
-      /** A helper to get a boolean property. */
       protected static boolean getBoolean(String name, boolean defaultValue)
       {
          name = NestedThrowable.class.getName() + "." + name;
@@ -142,17 +141,13 @@ public interface NestedThrowable
          return new Boolean(value).booleanValue();
       }
 
-      /**
-       * Check and possibly warn if the nested exception type is the same
-       * as the parent type (duplicate nesting).
-       */
       public static void checkNested(final NestedThrowable parent,
                                      final Throwable child)
       {
          if (!DETECT_DUPLICATE_NESTING || parent == null || child == null) return;
 
-         Class parentType = parent.getClass();
-         Class childType = child.getClass();
+         Class<?> parentType = parent.getClass();
+         Class<?> childType = child.getClass();
 
          //
          // This might be backwards... I always get this confused

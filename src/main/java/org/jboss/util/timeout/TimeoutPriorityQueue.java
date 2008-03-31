@@ -73,6 +73,7 @@ public interface TimeoutPriorityQueue
    
    /**
     * Removes the passed timeout from the queue
+    * @param timeout 
     * 
     * @return true when the timeout was removed
     */
@@ -89,7 +90,7 @@ public interface TimeoutPriorityQueue
    void cancel();
    
    /**
-    * The size of the queue
+    * @return the size of the queue
     */
    int size();
 }

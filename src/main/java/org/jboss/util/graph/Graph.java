@@ -31,7 +31,9 @@ import java.util.List;
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$
+ * @param <T> 
  */
+@SuppressWarnings("unchecked")
 public class Graph<T>
 {
    /** Color used to mark unvisited nodes */
@@ -252,7 +254,6 @@ public class Graph<T>
    /**
     * Clear the mark state of all edges in the graph by calling
     * clearMark() on all edges.
-    * @see Edge<T>#clearMark()
     */ 
    public void clearEdges()
    {
@@ -281,6 +282,7 @@ public class Graph<T>
    /**
     * Perform a depth first serach using recursion. The search may
     * be cut short if the visitor throws an exception.
+    * @param <E> 
     * 
     * @param v - the Vertex to start the search from
     * @param visitor - the vistor to inform prior to 
@@ -327,6 +329,7 @@ public class Graph<T>
     * Perform a breadth first search of this graph, starting at v. The
     * vist may be cut short if visitor throws an exception during
     * a vist callback.
+    * @param <E> 
     * 
     * @param v - the search starting point
     * @param visitor - the vistor whose vist method is called prior

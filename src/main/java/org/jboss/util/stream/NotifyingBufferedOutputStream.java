@@ -56,6 +56,7 @@ public class NotifyingBufferedOutputStream
     * @param os the output stream to be buffered
     * @param size the buffer size
     * @param chunkSize the chunk size
+    * @param listener 
     * @exception IllegalArgumentException for a size <= 0 or chunkSize <= size or a null listener
     */
    public NotifyingBufferedOutputStream(OutputStream os, int size, int chunkSize, StreamListener listener)

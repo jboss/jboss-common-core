@@ -42,6 +42,7 @@ public interface CachePolicy
     * was really requested.
     * 
     * @param key the key paired with the object
+    * @return the object
     * @see #peek
     */
    Object get(Object key);
@@ -57,6 +58,7 @@ public interface CachePolicy
     * 
     * @param key the key paired with the object
     * @see #get
+    * @return the object
     */	
    Object peek(Object key);
    
@@ -86,29 +88,17 @@ public interface CachePolicy
    void flush();
 
    /**
-    * Get the size of the cache.
+    * @return the size of the cache
     */
    int size();
 
 
 
-   /**
-    * create the service, do expensive operations etc 
-    */
    void create() throws Exception;
    
-   /**
-    * start the service, create is already called
-    */
    void start() throws Exception;
    
-   /**
-    * stop the service
-    */
    void stop();
    
-   /**
-    * destroy the service, tear down 
-    */
    void destroy();
 }

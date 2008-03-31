@@ -91,7 +91,7 @@ public interface Task
     * The task has been rejected
     *
     * @param time the time taken to reject the task
-    * @param throwable any error associated with the rejection
+    * @param t any error associated with the rejection
     */
    void rejected(long time, Throwable t);
 
@@ -106,7 +106,7 @@ public interface Task
     * The task has been completed
     *
     * @param time the time taken to reject the task
-    * @param throwable any error associated with the completion
+    * @param t any error associated with the completion
     */
    void completed(long time, Throwable t);
 

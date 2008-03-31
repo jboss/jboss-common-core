@@ -55,7 +55,7 @@ public final class ThrowableHandler
    /////////////////////////////////////////////////////////////////////////
 
    /** The list of listeners */
-   protected static List listeners = Collections.synchronizedList(new ArrayList());
+   protected static List<ThrowableListener> listeners = Collections.synchronizedList(new ArrayList<ThrowableListener>());
 
    /**
     * Add a ThrowableListener to the listener list.  Listener is added only

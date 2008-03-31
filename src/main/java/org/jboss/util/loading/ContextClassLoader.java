@@ -34,6 +34,7 @@ import java.security.PrivilegedAction;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public class ContextClassLoader
 {
    /**

@@ -32,9 +32,9 @@ import java.util.Iterator;
  * @author <a href="dimitris@jboss.org">Dimitris Andreadis</a>
  * @version $Revision: 2305 $
  */
+@SuppressWarnings("unchecked")
 public class FileProtocolArchiveBrowserFactory implements ArchiveBrowserFactory
 {
-
    public Iterator create(URL url, ArchiveBrowser.Filter filter)
    {
       File f = new File(url.getPath());

@@ -35,6 +35,7 @@ public interface Sync
     * Acquires this sync
     * 
     * @see #release
+    * @throws InterruptedException 
     */
    void acquire() throws InterruptedException;
    

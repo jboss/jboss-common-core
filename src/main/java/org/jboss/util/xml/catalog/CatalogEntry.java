@@ -85,6 +85,7 @@ import java.util.Vector;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class CatalogEntry {
   /** The nextEntry is the ordinal number of the next entry type. */
   protected static int nextEntry = 0;
@@ -124,8 +125,7 @@ public class CatalogEntry {
    *
    * @param name The name of the catalog entry type.
    * @return The type of the catalog entry with the specified name.
-   * @throws InvalidCatalogEntryTypeException if no entry has the
-   * specified name.
+   * @throws CatalogException for any error 
    */
   public static int getEntryType(String name)
     throws CatalogException {
@@ -147,8 +147,7 @@ public class CatalogEntry {
    *
    * @param name The name of the catalog entry type.
    * @return The number of arguments that entry type is required to have.
-   * @throws InvalidCatalogEntryTypeException if no entry has the
-   * specified name.
+   * @throws CatalogException for any error 
    */
   public static int getEntryArgCount(String name)
     throws CatalogException {
@@ -160,7 +159,7 @@ public class CatalogEntry {
    *
    * @param type A valid catalog entry type.
    * @return The number of arguments that entry type is required to have.
-   * @throws InvalidCatalogEntryTypeException if the type is invalid.
+   * @throws CatalogException for any error 
    */
   public static int getEntryArgCount(int type)
     throws CatalogException {
@@ -188,10 +187,7 @@ public class CatalogEntry {
    *
    * @param name The name of the entry type
    * @param args A String Vector of arguments
-   * @throws InvalidCatalogEntryTypeException if no such entry type
-   * exists.
-   * @throws InvalidCatalogEntryException if the wrong number of arguments
-   * is passed.
+   * @throws CatalogException for any error 
    */
   public CatalogEntry(String name, Vector args)
     throws CatalogException {
@@ -219,12 +215,9 @@ public class CatalogEntry {
   /**
    * Construct a catalog entry of the specified type.
    *
-   * @param name The name of the entry type
+   * @param type
    * @param args A String Vector of arguments
-   * @throws InvalidCatalogEntryTypeException if no such entry type
-   * exists.
-   * @throws InvalidCatalogEntryException if the wrong number of arguments
-   * is passed.
+   * @throws CatalogException for any error 
    */
   public CatalogEntry(int type, Vector args)
     throws CatalogException {
@@ -276,6 +269,7 @@ public class CatalogEntry {
    * Catalog entries should not mutate over time.</p>
    *
    * @param argNum The argument number (arguments are numbered from 0).
+ * @param newspec 
    * @throws ArrayIndexOutOfBoundsException if an invalid argument
    * number is provided.
    */

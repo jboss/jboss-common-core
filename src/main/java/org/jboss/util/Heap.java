@@ -32,6 +32,7 @@ import java.util.Comparator;
  * @author <a href="mailto:simone.bordet@compaq.com">Simone Bordet</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class Heap
 {
    private Comparator m_comparator;
@@ -50,6 +51,7 @@ public class Heap
    /**
     * Creates a new Heap whose elements are compared using the given
     * {@link Comparator}.
+    * @param comparator 
     */
    public Heap(Comparator comparator)
    {
@@ -59,6 +61,7 @@ public class Heap
 
    /**
     * Inserts the given element in this heap.
+    * @param obj 
     * 
     * @see #extract
     */
@@ -96,6 +99,7 @@ public class Heap
    
    /**
     * Removes and returns the least element of this heap.
+    * @return the extracted object
     * 
     * @see #insert
     * @see #peek
@@ -141,7 +145,7 @@ public class Heap
    }
    
    /**
-    * Returns, without removing it, the least element of this heap.
+    * @return without removing it, the least element of this heap.
     * 
     * @see #extract
     */
@@ -160,13 +164,6 @@ public class Heap
       m_nodes = new Object[10];
    }
 
-   /**
-    * Compares the given objects using the comparator, if available,
-    * or considering them Comparable objects.
-    * 
-    * @throws ClassCastException if nor the comparator is given
-    * and nor both objects implements the Comparable interface
-    */
    protected int compare(Object o1, Object o2)
    {
       if (m_comparator != null)
@@ -185,7 +182,8 @@ public class Heap
    }
    
    /**
-    * Returns the parent index of <code>index</code>.
+    * @return the parent index of <code>index</code>.
+    * @param index 
     */
    protected int parent(int index)
    {
@@ -193,7 +191,8 @@ public class Heap
    }
    
    /**
-    * Returns the left child index of <code>index</code>.
+    * @param index 
+    * @return the left child index of <code>index</code>.
     */
    protected int left(int index)
    {
@@ -201,7 +200,8 @@ public class Heap
    }
    
    /**
-    * Returns the right child index of <code>index</code>.
+    * @param index 
+    * @return the right child index of <code>index</code>.
     */
    protected int right(int index)
    {

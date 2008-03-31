@@ -2,9 +2,6 @@ package org.jboss.test.util.test.stream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectStreamClass;
-
 import java.util.Arrays;
 
 import junit.framework.TestCase;

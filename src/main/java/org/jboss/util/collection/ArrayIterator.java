@@ -34,9 +34,12 @@ import org.jboss.util.NullArgumentException;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class ArrayIterator
    implements Iterator, Serializable, Cloneable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** Array to iterate over. */
    protected final Object[] array;
 

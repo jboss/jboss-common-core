@@ -31,6 +31,8 @@ package org.jboss.util.collection;
 public class EmptyCollectionException
    extends CollectionException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <code>EmptyCollectionException</code> with the specified 
     * detail message.

@@ -31,6 +31,8 @@ package org.jboss.util.collection;
 public class FullCollectionException
    extends CollectionException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <code>FullCollectionException</code> with the specified 
     * detail message.

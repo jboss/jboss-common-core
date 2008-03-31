@@ -27,7 +27,6 @@ import org.w3c.dom.Element;
 /**
  *   <description> 
  *      
- *   @see <related>
  *   @author <a href="mailto:sebastien.alborini@m4x.org">Sebastien Alborini</a>
  *   @version $Revision$
  */

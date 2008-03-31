@@ -39,6 +39,8 @@ import java.io.Serializable;
  */
 public class LazyList<T> implements List<T>, Serializable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The delegate list */
    private List<T> delegate = Collections.emptyList(); 
 

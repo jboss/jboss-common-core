@@ -39,6 +39,7 @@ import java.security.Permission;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class DelegatingURLConnection
    extends URLConnection
 {

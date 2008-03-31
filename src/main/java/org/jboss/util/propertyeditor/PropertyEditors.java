@@ -47,6 +47,7 @@ import org.jboss.util.Classes;
  * @author  <a href="mailto:scott.stark@jboss.org">Scott Stark</a>
  * @version <tt>$Revision$</tt>
  */
+@SuppressWarnings("unchecked")
 public class PropertyEditors
 {
    /** The Logger object */
@@ -134,7 +135,7 @@ public class PropertyEditors
     * @param type   The class of the object to be edited.
     * @return       An editor for the given type or null if none was found.
     */
-   public static PropertyEditor findEditor(final Class type)
+   public static PropertyEditor findEditor(final Class<?> type)
    {
       return PropertyEditorManager.findEditor(type);
    }
@@ -144,12 +145,13 @@ public class PropertyEditors
     *
     * @param typeName    The class name of the object to be edited.
     * @return            An editor for the given type or null if none was found.
+    * @throws ClassNotFoundException when the class could not be found
     */
    public static PropertyEditor findEditor(final String typeName)
       throws ClassNotFoundException
    {
       // see if it is a primitive type first
-      Class type = Classes.getPrimitiveTypeForName(typeName);
+      Class<?> type = Classes.getPrimitiveTypeForName(typeName);
       if (type == null)
       {
          // nope try look up
@@ -168,7 +170,7 @@ public class PropertyEditors
     *
     * @throws RuntimeException   No editor was found.
     */
-   public static PropertyEditor getEditor(final Class type)
+   public static PropertyEditor getEditor(final Class<?> type)
    {
       PropertyEditor editor = findEditor(type);
       if (editor == null)
@@ -186,6 +188,7 @@ public class PropertyEditors
     * @return            An editor for the given type.
     *
     * @throws RuntimeException   No editor was found.
+    * @throws ClassNotFoundException when the class is not found
     */
    public static PropertyEditor getEditor(final String typeName)
       throws ClassNotFoundException
@@ -205,7 +208,7 @@ public class PropertyEditors
     * @param type         The class of the objetcs to be edited.
     * @param editorType   The class of the editor.
     */
-   public static void registerEditor(final Class type, final Class editorType)
+   public static void registerEditor(final Class<?> type, final Class<?> editorType)
    {
       PropertyEditorManager.registerEditor(type, editorType);
    }
@@ -215,14 +218,15 @@ public class PropertyEditors
     *
     * @param typeName         The classname of the objetcs to be edited.
     * @param editorTypeName   The class of the editor.
+    * @throws ClassNotFoundException when the class could not be found
     */
    public static void registerEditor(final String typeName,
                                      final String editorTypeName)
       throws ClassNotFoundException
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
-      Class type = loader.loadClass(typeName);
-      Class editorType = loader.loadClass(editorTypeName);
+      Class<?> type = loader.loadClass(typeName);
+      Class<?> editorType = loader.loadClass(editorTypeName);
 
       PropertyEditorManager.registerEditor(type, editorType);
    }
@@ -243,7 +247,7 @@ public class PropertyEditors
          throws ClassNotFoundException, IntrospectionException
    {
       // see if it is a primitive type first
-      Class typeClass = Classes.getPrimitiveTypeForName(typeName);
+      Class<?> typeClass = Classes.getPrimitiveTypeForName(typeName);
       if (typeClass == null)
       {
          ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -301,7 +305,7 @@ public class PropertyEditors
       throws IntrospectionException
    {
 
-      HashMap propertyMap = new HashMap();
+      HashMap<String, PropertyDescriptor> propertyMap = new HashMap<String, PropertyDescriptor>();
       BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
       PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
       for (int p = 0; p < props.length; p++)
@@ -318,7 +322,7 @@ public class PropertyEditors
       {
          String name = (String) keys.next();
          String text = beanProps.getProperty(name);
-         PropertyDescriptor pd = (PropertyDescriptor) propertyMap.get(name);
+         PropertyDescriptor pd = propertyMap.get(name);
          if (pd == null)
          {
             /* Try the property name with the first char uppercased to handle
@@ -332,13 +336,13 @@ public class PropertyEditors
             {
                char first = name.charAt(0);
                String exName = Character.toUpperCase(first) + name.substring(1);
-               pd = (PropertyDescriptor) propertyMap.get(exName);
+               pd = propertyMap.get(exName);
                
                // Be lenient and check the other way around, e.g. ServerName -> serverName
                if (pd == null)
                {
                   exName = Character.toLowerCase(first) + name.substring(1);
-                  pd = (PropertyDescriptor) propertyMap.get(exName);
+                  pd = propertyMap.get(exName);
                }
             }
 
@@ -361,7 +365,7 @@ public class PropertyEditors
             log.trace("Property editor found for: "+name+", editor: "+pd+", setter: "+setter);
          if (setter != null)
          {
-            Class ptype = pd.getPropertyType();
+            Class<?> ptype = pd.getPropertyType();
             PropertyEditor editor = PropertyEditorManager.findEditor(ptype);
             if (editor == null)
             {
@@ -403,7 +407,7 @@ public class PropertyEditors
       PropertyEditorManager.setEditorSearchPath(path);
    }
 
-   private static class Initialize implements PrivilegedAction
+   private static class Initialize implements PrivilegedAction<Object>
    {
       static Initialize instance = new Initialize(); 
 
@@ -423,13 +427,13 @@ public class PropertyEditors
          class name to editor name algorithm. For example, the type String[] has
          a name '[Ljava.lang.String;' which does not map to a XXXEditor name.
          */
-         Class strArrayType = String[].class;
+         Class<?> strArrayType = String[].class;
          PropertyEditorManager.registerEditor(strArrayType, StringArrayEditor.class);
-         Class clsArrayType = Class[].class;
+         Class<?> clsArrayType = Class[].class;
          PropertyEditorManager.registerEditor(clsArrayType, ClassArrayEditor.class);
-         Class intArrayType = int[].class;
+         Class<?> intArrayType = int[].class;
          PropertyEditorManager.registerEditor(intArrayType, IntArrayEditor.class);
-         Class byteArrayType = byte[].class;
+         Class<?> byteArrayType = byte[].class;
          PropertyEditorManager.registerEditor(byteArrayType, ByteArrayEditor.class);
    
          // There is no default char editor.

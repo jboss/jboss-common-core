@@ -29,6 +29,7 @@ import java.io.ByteArrayOutputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 
+@SuppressWarnings("unchecked")
 public class MethodHash
 {
 
@@ -39,7 +40,7 @@ public class MethodHash
    * Calculate method hashes. This algo is taken from RMI.
    *
    * @param   intf  
-   * @return     
+   * @return  the map 
    */
    public static Map getInterfaceHashes(Class intf)
    {

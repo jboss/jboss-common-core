@@ -28,6 +28,7 @@ import java.util.Map;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class RMIMultiSocketHandler implements RMIMultiSocket
 {
    Object target;

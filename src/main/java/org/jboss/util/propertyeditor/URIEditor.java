@@ -21,7 +21,6 @@
   */
 package org.jboss.util.propertyeditor;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.jboss.util.NestedRuntimeException;

@@ -26,6 +26,7 @@ package org.jboss.util.graph;
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$
+ * @param <T> 
  */
 public class Edge<T>
 {

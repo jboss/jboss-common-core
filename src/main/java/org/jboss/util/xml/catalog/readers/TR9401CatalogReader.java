@@ -53,7 +53,6 @@
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-
 package org.jboss.util.xml.catalog.readers;
 
 import java.io.InputStream;
@@ -86,6 +85,7 @@ import org.jboss.util.xml.catalog.CatalogException;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class TR9401CatalogReader extends TextCatalogReader {
 
   /**
@@ -96,8 +96,6 @@ public class TR9401CatalogReader extends TextCatalogReader {
    * <p>In a TR9401 Catalog the 'DELEGATE' entry delegates public
    * identifiers. There is no delegate entry for system identifiers
    * or URIs.</p>
-   *
-   * @param fileUrl  The URL or filename of the catalog file to process
    *
    * @throws MalformedURLException Improper fileUrl
    * @throws IOException Error reading catalog file

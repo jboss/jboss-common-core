@@ -31,14 +31,15 @@ import org.jboss.util.NullArgumentException;
  * A ListQueue implements a first-in, first-out container using a List as
  * a data structure.
  *
+ * @param <E> the element type
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class ListQueue
-   extends AbstractQueue
+public class ListQueue<E>
+   extends AbstractQueue<E>
 {
    /** List container */
-   protected final List list;
+   protected final List<E> list;
 
    /**
     * Construct a new <i>constrained</i> ListQueue.
@@ -48,7 +49,7 @@ public class ListQueue
     *
     * @exception IllegalArgumentException    List is <i>null</i>.
     */
-   public ListQueue(final List list, final int maxSize) {
+   public ListQueue(final List<E> list, final int maxSize) {
       super(maxSize);
 
       if (list == null)
@@ -65,7 +66,7 @@ public class ListQueue
     */
    public ListQueue(final int maxSize) {
       super(maxSize);
-      this.list = new LinkedList();
+      this.list = new LinkedList<E>();
    }
 
    /**
@@ -75,7 +76,7 @@ public class ListQueue
     *
     * @exception IllegalArgumentException    List is <i>null</i>
     */
-   public ListQueue(final List list) {
+   public ListQueue(final List<E> list) {
       this(list, UNLIMITED_MAXIMUM_SIZE);
    }
 
@@ -84,7 +85,7 @@ public class ListQueue
     * <code>LinkedList</code> for a data-structure.
     */
    public ListQueue() {
-      this(new LinkedList(), UNLIMITED_MAXIMUM_SIZE);
+      this(new LinkedList<E>(), UNLIMITED_MAXIMUM_SIZE);
    }
 
    /**
@@ -92,7 +93,7 @@ public class ListQueue
     *
     * @param obj  Object to append.
     */
-   protected boolean addLast(final Object obj) {
+   protected boolean addLast(final E obj) {
       return list.add(obj);
    }
 
@@ -101,7 +102,7 @@ public class ListQueue
     *
     * @return  First object in the queue.
     */
-   protected Object removeFirst() {
+   protected E removeFirst() {
       return list.remove(0);
    }
 
@@ -119,7 +120,7 @@ public class ListQueue
     * 
     * @return  An iterator over the elements in this list in proper sequence.
     */
-   public Iterator iterator() {
+   public Iterator<E> iterator() {
       return list.iterator();
    }
 
@@ -130,7 +131,7 @@ public class ListQueue
     *
     * @exception EmptyCollectionException    The queue is empty.
     */
-   public Object getFront() throws EmptyCollectionException {
+   public E getFront() throws EmptyCollectionException {
       if (isEmpty())
          throw new EmptyCollectionException();
 
@@ -144,7 +145,7 @@ public class ListQueue
     *
     * @exception EmptyCollectionException    The queue is empty.
     */
-   public Object getBack() throws EmptyCollectionException {
+   public E getBack() throws EmptyCollectionException {
       if (isEmpty())
          throw new EmptyCollectionException();
 
@@ -156,8 +157,8 @@ public class ListQueue
     *
     * @return  An iterator over the elements in this list in reverse sequence.
     */
-   public Iterator reverseIterator() {
-      return new ReverseListIterator(list);
+   public Iterator<E> reverseIterator() {
+      return new ReverseListIterator<E>(list);
    }
 
    /**

@@ -37,7 +37,7 @@ public interface TimeoutExt extends Timeout
    TimeoutTarget getTimeoutTarget();
    
    /**
-    * Get the time of this timeout
+    * @return the time of this timeout
     */
    long getTime();
    

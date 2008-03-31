@@ -38,6 +38,7 @@ import org.jboss.util.threadpool.ThreadPool;
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class TimeoutFactory
 {
    /** The priority queue property */
@@ -53,7 +54,7 @@ public class TimeoutFactory
    private static int timeoutFactoriesCount = 0;
    
    /** The priority queue class */
-   private static Class priorityQueueClass;
+   private static Class<?> priorityQueueClass;
    
    /** The default threadpool used to execute timeouts */
    private static BasicThreadPool DEFAULT_TP = new BasicThreadPool("Timeouts");
@@ -95,7 +96,6 @@ public class TimeoutFactory
    /** The priority queue */
    private TimeoutPriorityQueue queue;
 
-   /** Lazy constructions of the TimeoutFactory singleton */
    public synchronized static TimeoutFactory getSingleton()
    {
       if (singleton == null)
@@ -107,6 +107,9 @@ public class TimeoutFactory
    
    /**
     *  Schedules a new timeout using the singleton TimeoutFactory
+    * @param time 
+    * @param target 
+    * @return  the timeout
     */
    static public Timeout createTimeout(long time, TimeoutTarget target)
    {
@@ -115,6 +118,7 @@ public class TimeoutFactory
    
    /**
     * Constructs a new TimeoutFactory that uses the provided ThreadPool
+    * @param threadPool 
     */
    public TimeoutFactory(ThreadPool threadPool)
    {
@@ -153,6 +157,7 @@ public class TimeoutFactory
     * 
     * @param time absolute time
     * @param target target to fire
+    * @return the timeout
     */
    public Timeout schedule(long time, TimeoutTarget target)
    {
@@ -171,6 +176,7 @@ public class TimeoutFactory
     * 
     * @param time absolute time
     * @param run runnable to run
+    * @return the timeout
     */
    public Timeout schedule(long time, Runnable run)
    {
@@ -197,7 +203,7 @@ public class TimeoutFactory
    }
    
    /**
-    * Returns true if the TimeoutFactory has been cancelled,
+    * @return true if the TimeoutFactory has been cancelled,
     * false if it is operational (i.e. accepts timeout schedules).
     */
    public boolean isCancelled()

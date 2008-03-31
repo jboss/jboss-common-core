@@ -41,6 +41,7 @@ import org.jboss.util.stream.Streams;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public final class Objects
 {
    /////////////////////////////////////////////////////////////////////////
@@ -91,7 +92,7 @@ public final class Objects
     * @return     Copied object.
     *
     * @throws IOException
-    * @throws ClassCastException
+    * @throws ClassNotFoundException
     */
    public static Object copy(final Serializable obj)
       throws IOException, ClassNotFoundException
@@ -135,6 +136,7 @@ public final class Objects
     * @param obj  Object to dereference.
     * @return     Dereferenced object.
     */
+   @SuppressWarnings("unchecked")
    public static Object deref(final Object obj) {
       if (obj != null && obj instanceof Reference) {
          Reference ref = (Reference)obj;
@@ -143,7 +145,23 @@ public final class Objects
 
       return obj;
    }
-      
+
+   /**
+    * Dereference an object
+    * 
+    * @param <T> the expected type
+    * @param obj the object or reference
+    * @param expected the expected type
+    * @return the object or null
+    */
+   public static <T> T deref(final Object obj, Class<T> expected)
+   {
+      Object result = deref(obj);
+      if (result == null)
+         return null;
+      return expected.cast(result);
+   }
+   
    /**
     * Check if the given object is an array (primitve or native).
     *
@@ -157,7 +175,7 @@ public final class Objects
    }
 
    /**
-    * Return an Object array for the given object.
+    * @return an Object array for the given object.
     *
     * @param obj  Object to convert to an array.  Converts primitive
     *             arrays to Object arrays consisting of their wrapper

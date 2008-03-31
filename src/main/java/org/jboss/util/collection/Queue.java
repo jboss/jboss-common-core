@@ -25,12 +25,13 @@ import java.util.Collection;
 
 /**
  * An iterface used to implement a first-in, first-out container.
- *
+ * 
+ * @param <E> the element type
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public interface Queue
-   extends Collection
+public interface Queue<E>
+   extends Collection<E>
 {
    /** Unlimited maximum queue size identifier. */
    int UNLIMITED_MAXIMUM_SIZE = -1;
@@ -73,7 +74,7 @@ public interface Queue
     *
     * @exception FullCollectionException     The queue is full.
     */
-   boolean add(Object obj) throws FullCollectionException;
+   boolean add(E obj) throws FullCollectionException;
 
    /**
     * Dequeue an object from the queue.
@@ -82,7 +83,7 @@ public interface Queue
     *
     * @exception EmptyCollectionException    The queue is empty.
     */
-   Object remove() throws EmptyCollectionException;
+   E remove() throws EmptyCollectionException;
 
    /**
     * Get the object at the front of the queue.
@@ -91,7 +92,7 @@ public interface Queue
     *
     * @exception EmptyCollectionException    The queue is empty.
     */
-   Object getFront() throws EmptyCollectionException;
+   E getFront() throws EmptyCollectionException;
 
    /**
     * Get the object at the back of the queue.
@@ -100,5 +101,5 @@ public interface Queue
     *
     * @exception EmptyCollectionException    The queue is empty.
     */
-   Object getBack() throws EmptyCollectionException;
+   E getBack() throws EmptyCollectionException;
 }

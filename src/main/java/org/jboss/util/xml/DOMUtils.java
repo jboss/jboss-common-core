@@ -54,6 +54,7 @@ import org.xml.sax.SAXException;
  * @author Thomas.Diesler@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public final class DOMUtils
 {
     private static Logger log = Logger.getLogger(DOMUtils.class);
@@ -83,8 +84,6 @@ public final class DOMUtils
     {
     }
 
-    /** Initialise the the DocumentBuilder
-     */
     public static DocumentBuilder getDocumentBuilder()
     {
         DocumentBuilder builder = (DocumentBuilder)builderThreadLocal.get();
@@ -92,6 +91,9 @@ public final class DOMUtils
     }
 
     /** Parse the given XML string and return the root Element
+    * @param xmlString 
+    * @return the element
+    * @throws IOException 
      */
     public static Element parse(String xmlString) throws IOException
     {
@@ -107,6 +109,9 @@ public final class DOMUtils
     }
 
     /** Parse the given XML stream and return the root Element
+    * @param xmlStream 
+    * @return the element
+    * @throws IOException 
      */
     public static Element parse(InputStream xmlStream) throws IOException
     {
@@ -123,6 +128,9 @@ public final class DOMUtils
     }
 
     /** Parse the given input source and return the root Element
+    * @param source 
+    * @return the element
+    * @throws IOException 
      */
     public static Element parse(InputSource source) throws IOException
     {
@@ -139,6 +147,8 @@ public final class DOMUtils
     }
 
     /** Create an Element for a given name
+    * @param localPart 
+    * @return the element
      */
     public static Element createElement(String localPart)
     {
@@ -148,6 +158,9 @@ public final class DOMUtils
     }
 
     /** Create an Element for a given name and prefix
+    * @param localPart 
+    * @param prefix 
+    * @return the element
      */
     public static Element createElement(String localPart, String prefix)
     {
@@ -157,6 +170,10 @@ public final class DOMUtils
     }
 
     /** Create an Element for a given name, prefix and uri
+    * @param localPart 
+    * @param prefix 
+    * @param uri 
+    * @return the element
      */
     public static Element createElement(String localPart, String prefix, String uri)
     {
@@ -174,6 +191,8 @@ public final class DOMUtils
     }
 
     /** Create an Element for a given QName
+    * @param qname 
+    * @return the element
      */
     public static Element createElement(QName qname)
     {
@@ -181,6 +200,8 @@ public final class DOMUtils
     }
 
     /** Create a org.w3c.dom.Text node
+    * @param value 
+    * @return the text node
      */
     public static Text createTextNode(String value)
     {
@@ -188,7 +209,8 @@ public final class DOMUtils
         return doc.createTextNode(value);
     }
 
-    /** Get the qname of the given node.
+    /** @return the qname of the given node.
+    * @param el 
      */
     public static QName getElementQName(Element el)
     {
@@ -197,6 +219,9 @@ public final class DOMUtils
     }
 
     /** Transform the giveen qualified name into a QName
+    * @param el 
+    * @param qualifiedName 
+    * @return the resolved name
      */
     public static QName resolveQName(Element el, String qualifiedName)
     {
@@ -235,6 +260,8 @@ public final class DOMUtils
     }
 
     /** Get the value from the given attribute
+    * @param el 
+    * @param attrName 
      *
      * @return null if the attribute value is empty or the attribute is not present
      */
@@ -244,6 +271,8 @@ public final class DOMUtils
     }
 
     /** Get the value from the given attribute
+    * @param el 
+    * @param attrName 
      *
      * @return null if the attribute value is empty or the attribute is not present
      */
@@ -260,7 +289,9 @@ public final class DOMUtils
         return attr;
     }
 
-    /** Get the qname value from the given attribute
+    /** @return the qname value from the given attribute
+    * @param el 
+    * @param attrName 
      */
     public static QName getAttributeValueAsQName(Element el, String attrName)
     {
@@ -268,7 +299,9 @@ public final class DOMUtils
 
     }
 
-    /** Get the qname value from the given attribute
+    /** @return the qname value from the given attribute
+    * @param el 
+    * @param attrName 
      */
     public static QName getAttributeValueAsQName(Element el, QName attrName)
     {
@@ -283,14 +316,18 @@ public final class DOMUtils
         return qname;
     }
 
-    /** Get the boolean value from the given attribute
+    /** @return the boolean value from the given attribute
+    * @param el 
+    * @param attrName 
      */
     public static boolean getAttributeValueAsBoolean(Element el, String attrName)
     {
         return getAttributeValueAsBoolean(el, new QName(attrName));
     }
 
-    /** Get the boolean value from the given attribute
+    /** @return the boolean value from the given attribute
+    * @param el 
+    * @param attrName 
      */
     public static boolean getAttributeValueAsBoolean(Element el, QName attrName)
     {
@@ -299,14 +336,18 @@ public final class DOMUtils
         return ret;
     }
 
-    /** Get the integer value from the given attribute
+    /** @return the integer value from the given attribute
+    * @param el 
+    * @param attrName 
      */
     public static Integer getAttributeValueAsInteger(Element el, String attrName)
     {
         return getAttributeValueAsInteger(el, new QName(attrName));
     }
 
-    /** Get the integer value from the given attribute
+    /** @param el 
+    * @param attrName 
+    * @return the integer value from the given attribute
      */
     public static Integer getAttributeValueAsInteger(Element el, QName attrName)
     {
@@ -314,7 +355,8 @@ public final class DOMUtils
         return (attrVal != null ? new Integer(attrVal) : null);
     }
 
-    /** Get the attributes as Map<QName, String>
+    /** @param el 
+    * @return the attributes as Map<QName, String>
      */
     public static Map getAttributes(Element el)
     {
@@ -332,6 +374,8 @@ public final class DOMUtils
     }
 
     /** Copy attributes between elements
+    * @param destElement 
+    * @param srcElement 
      */
     public static void copyAttributes(Element destElement, Element srcElement)
     {
@@ -357,6 +401,8 @@ public final class DOMUtils
     }
 
     /** True if the node has child elements
+    * @param node 
+    * @return true when has child elements
      */
     public static boolean hasChildElements(Node node)
     {
@@ -371,6 +417,8 @@ public final class DOMUtils
     }
 
     /** Gets child elements
+    * @param node 
+    * @return the iterator
      */
     public static Iterator getChildElements(Node node)
     {
@@ -386,6 +434,7 @@ public final class DOMUtils
     }
 
     /** Get the concatenated text content, or null.
+    * @param node 
      * @return getTextContent(node, false).
      */
     public static String getTextContent(Node node)
@@ -393,8 +442,9 @@ public final class DOMUtils
        return getTextContent(node, false);
     }
     /** Get the concatenated text content, or null.
-     * @param the node to search for TEXT_NODE conent
+    * @param node node to search for TEXT_NODE conent
      * @param replaceProps flag indicating if ${x} property refs should be replace
+    * @return the text content
      */
     public static String getTextContent(Node node, boolean replaceProps)
     {
@@ -417,21 +467,26 @@ public final class DOMUtils
         return text;
     }
 
-    /** Gets the first child element
+    /** @return the first child element
+    * @param node 
      */
     public static Element getFirstChildElement(Node node)
     {
         return getFirstChildElementIntern(node, null);
     }
 
-    /** Gets the first child element for a given local name without namespace
+    /** @param node 
+    * @param nodeName 
+    * @return the first child element for a given local name without namespace
      */
     public static Element getFirstChildElement(Node node, String nodeName)
     {
         return getFirstChildElementIntern(node, new QName(nodeName));
     }
 
-    /** Gets the first child element for a given qname
+    /** @param node 
+    * @param nodeName 
+    * @return the first child element for a given qname
      */
     public static Element getFirstChildElement(Node node, QName nodeName)
     {
@@ -450,6 +505,9 @@ public final class DOMUtils
     }
 
     /** Gets the child elements for a given local name without namespace
+    * @param node 
+    * @param nodeName 
+    * @return the iterator 
      */
     public static Iterator getChildElements(Node node, String nodeName)
     {
@@ -457,6 +515,9 @@ public final class DOMUtils
     }
 
     /** Gets the child element for a given qname
+    * @param node 
+    * @param nodeName 
+    * @return the iterator
      */
     public static Iterator getChildElements(Node node, QName nodeName)
     {
@@ -498,6 +559,8 @@ public final class DOMUtils
     }
 
     /** Gets parent element or null if there is none
+    * @param node 
+    * @return the element
      */
     public static Element getParentElement(Node node)
     {
@@ -505,7 +568,7 @@ public final class DOMUtils
         return (parent instanceof Element ? (Element)parent : null);
     }
 
-    /** Get the owner document that is associated with the current thread */
+    /** @return the owner document that is associated with the current thread */
     public static Document getOwnerDocument()
     {
         Document doc = (Document)documentThreadLocal.get();

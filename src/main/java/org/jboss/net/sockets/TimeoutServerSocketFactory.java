@@ -54,6 +54,7 @@ public class TimeoutServerSocketFactory
 
    /**
     * Create a socket factory with the given bind address
+    * @param bindAddress 
     */
    public TimeoutServerSocketFactory(InetAddress bindAddress)
    {
@@ -62,6 +63,7 @@ public class TimeoutServerSocketFactory
 
    /**
     * Create a socket factory with the given backlog
+    * @param backlog 
     */
    public TimeoutServerSocketFactory(int backlog)
    {
@@ -70,6 +72,8 @@ public class TimeoutServerSocketFactory
 
    /**
     * Create a socket factory with the given bind address and backlog
+    * @param bindAddress 
+    * @param backlog 
     */
    public TimeoutServerSocketFactory(InetAddress bindAddress, int backlog)
    {

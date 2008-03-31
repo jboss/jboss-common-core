@@ -25,6 +25,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 
+@SuppressWarnings("unchecked")
 public class URLListerFactory {
    private static HashMap defaultClasses = new HashMap();
    static {
@@ -66,7 +67,7 @@ public class URLListerFactory {
             throw new MalformedURLException("No lister class defined for protocol "+protocol);
          }
 
-         Class clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+         Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
          return (URLLister) clazz.newInstance();
       } catch (ClassNotFoundException e) {
          throw new MalformedURLException(e.getMessage());

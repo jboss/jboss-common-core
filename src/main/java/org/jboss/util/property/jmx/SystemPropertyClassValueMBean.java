@@ -27,22 +27,24 @@ package org.jboss.util.property.jmx;
 public interface SystemPropertyClassValueMBean {
 
    /**
-    * The system property value
+    * @return the system property value
     */
   java.lang.String getProperty() ;
 
    /**
     * The system property value
+    * @param property 
     */
   void setProperty(java.lang.String property) ;
 
    /**
-    * The class name to use a value for the system property when it is available
+    * @return The class name to use a value for the system property when it is available
     */
   java.lang.String getClassName() ;
 
    /**
     * The class name to use a value for the system property when it is available
+    * @param className 
     */
   void setClassName(java.lang.String className) ;
 

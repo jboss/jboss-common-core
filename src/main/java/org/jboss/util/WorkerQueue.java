@@ -48,6 +48,7 @@ public class WorkerQueue
 
    /**
     * Creates a new worker queue with the specified thread name
+    * @param threadName 
     */
    public WorkerQueue(String threadName) 
    {
@@ -57,6 +58,8 @@ public class WorkerQueue
    /**
     * Creates a new worker queue with the specified thread name
     * and daemon mode flag
+    * @param threadName 
+    * @param isDaemon 
     */
    public WorkerQueue(String threadName, boolean isDaemon) 
    {
@@ -92,6 +95,7 @@ public class WorkerQueue
     * Called by a thread that is not the WorkerQueue thread, this method 
     * queues the job and, if necessary, wakes up this worker queue that is 
     * waiting in {@link #getJob}.
+    * @param job 
     */
    public synchronized void putJob(Executable job)
    {
@@ -108,7 +112,7 @@ public class WorkerQueue
    }
    
    /**
-    * Returns whether the worker thread has been interrupted. <br>
+    * @return whether the worker thread has been interrupted. <br>
     * When this method returns true, it is not possible to put new jobs in the
     * queue and the already present jobs are executed and removed from the 
     * queue, then the thread exits.
@@ -125,6 +129,8 @@ public class WorkerQueue
     * if it is, then waits, else returns the current job.
     * 
     * @see #putJob
+    * @return the executable
+    * @throws InterruptedException 
     */
    protected synchronized Executable getJob() throws InterruptedException
    {
@@ -140,6 +146,8 @@ public class WorkerQueue
     * Never call this method, only override in subclasses to perform
     * job getting in a specific way, normally tied to the data structure 
     * holding the jobs.
+    * @return the exectuable
+    * @throws InterruptedException 
     */
    protected Executable getJobImpl() throws InterruptedException
    {
@@ -157,6 +165,7 @@ public class WorkerQueue
     * Never call this method, only override in subclasses to perform
     * job adding in a specific way, normally tied to the data structure
     * holding the jobs.
+    * @param job 
     */
    protected void putJobImpl(Executable job) 
    {
@@ -191,6 +200,7 @@ public class WorkerQueue
    /**
     * Creates the loop that will get the next job and process it. <br>
     * Override in subclasses to create a custom loop.
+    * @return the runnable
     */
    protected Runnable createQueueLoop() {
       return new QueueLoop();

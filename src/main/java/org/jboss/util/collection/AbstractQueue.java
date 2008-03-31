@@ -27,12 +27,13 @@ import java.util.AbstractCollection;
  * An abstract implementation of a Queue.  Sub-classes must provide methods
  * for <code>addLast(Object)</code> and <code>removeFirst()</code>.
  *
+ * @param <E> the element type
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public abstract class AbstractQueue
-   extends AbstractCollection
-   implements Queue
+public abstract class AbstractQueue<E>
+   extends AbstractCollection<E>
+   implements Queue<E>
 {
    /** Default maximum queue size */
    public static int DEFAULT_MAXIMUM_SIZE = UNLIMITED_MAXIMUM_SIZE;
@@ -111,7 +112,7 @@ public abstract class AbstractQueue
     *
     * @exception FullCollectionException     The queue is full.
     */
-   public boolean add(Object obj) throws FullCollectionException {
+   public boolean add(E obj) throws FullCollectionException {
       if (isFull())
          throw new FullCollectionException();
 
@@ -125,7 +126,7 @@ public abstract class AbstractQueue
     *
     * @exception EmptyCollectionException    The queue is empty.
     */
-   public Object remove() throws EmptyCollectionException {
+   public E remove() throws EmptyCollectionException {
       if (isEmpty())
          throw new EmptyCollectionException();
 
@@ -148,12 +149,12 @@ public abstract class AbstractQueue
     * @return     Per Collection.add(), we return a boolean to indicate if
     *             the object modified the collection.
     */
-   protected abstract boolean addLast(Object obj);
+   protected abstract boolean addLast(E obj);
 
    /**
     * Remove the first object in the queue
     *
     * @return  First object in the queue
     */
-   protected abstract Object removeFirst();
+   protected abstract E removeFirst();
 }

@@ -77,6 +77,7 @@ import javax.xml.parsers.*;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class XCatalogReader extends SAXCatalogReader implements SAXCatalogParser {
   /** The catalog object needs to be stored by the object so that
    * SAX callbacks can use it.
@@ -88,12 +89,13 @@ public class XCatalogReader extends SAXCatalogReader implements SAXCatalogParser
     this.catalog = catalog;
   }
 
-  /** Get the current catalog. */
+  /** @return the current catalog. */
   public Catalog getCatalog () {
     return catalog;
   }
 
-  /** The constructor */
+  /** The constructor 
+ * @param parserFactory */
   public XCatalogReader(SAXParserFactory parserFactory) {
     super(parserFactory);
   }

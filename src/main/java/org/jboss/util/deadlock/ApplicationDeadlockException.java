@@ -39,6 +39,8 @@ package org.jboss.util.deadlock;
  */
 public class ApplicationDeadlockException extends RuntimeException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    protected boolean retry = false;
 
 
@@ -61,6 +63,8 @@ public class ApplicationDeadlockException extends RuntimeException
    
    /**
     * Detects exception contains is or a ApplicationDeadlockException.
+    * @param t 
+    * @return  true when it is a deadlock
     */
    public static ApplicationDeadlockException isADE(Throwable t)
    {

@@ -38,6 +38,7 @@ import org.jboss.util.ThrowableHandler;
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author  <a href="mailto:adrian@jboss.com">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public final class PropertyManager
 {
    /** Property reader list property name */
@@ -158,6 +159,7 @@ public final class PropertyManager
     *
     * @param prefix  Prefix to append to all map keys (or <tt>null</tt>).
     * @param map     Map containing properties to load.
+    * @throws PropertyException
     */
    public static void load(final String prefix, final Map map) throws PropertyException
    {
@@ -171,6 +173,8 @@ public final class PropertyManager
     * Load properties from a map.
     *
     * @param map  Map containing properties to load.
+    * @throws PropertyException 
+    * @throws IOException 
     */
    public static void load(final Map map) throws PropertyException, IOException
    {
@@ -184,6 +188,8 @@ public final class PropertyManager
     * Load properties from a <tt>PropertyReader</tt>.
     *
     * @param reader  <tt>PropertyReader</tt> to read properties from.
+    * @throws PropertyException 
+    * @throws IOException 
     */
    public static void load(final PropertyReader reader) throws PropertyException, IOException
    {
@@ -199,6 +205,8 @@ public final class PropertyManager
     *
     * @param classname     Class name of a <tt>PropertyReader</tt> to 
     *                      read from.
+    * @throws PropertyException 
+    * @throws IOException 
     */
    public static void load(final String classname) throws PropertyException, IOException
    {

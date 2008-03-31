@@ -32,6 +32,8 @@ import java.io.Serializable;
 public class StopWatch
    implements Serializable, Cloneable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** Total time */
    protected long total = 0;
 
@@ -258,6 +260,8 @@ public class StopWatch
    private static class Wrapper
       extends StopWatch
    {
+      /** The serialVersionUID */
+      private static final long serialVersionUID = 1L;
       protected StopWatch watch;
 
       public Wrapper(final StopWatch watch) {
@@ -315,6 +319,8 @@ public class StopWatch
    {
       return new Wrapper(watch)
          {
+         /** The serialVersionUID */
+         private static final long serialVersionUID = 1L;
             public synchronized void start(final boolean reset) {
                this.watch.start(reset);
             }

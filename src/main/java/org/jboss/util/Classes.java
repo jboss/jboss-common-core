@@ -41,6 +41,7 @@ import java.util.*;
  * @author  <a href="mailto:scott.stark@jboss.org">Scott Stark</a>
  * @author  <a href="mailto:dimitris@jboss.org">Dimitris Andreadis<a/>
  */
+@SuppressWarnings("unchecked")
 public final class Classes
 {
    /** The string used to separator packages */
@@ -120,6 +121,8 @@ public final class Classes
    /** Use reflection to access a URL[] getURLs or URL[] getClasspath method so
     that non-URLClassLoader class loaders, or class loaders that override
     getURLs to return null or empty, can provide the true classpath info.
+    * @param cl 
+    * @return the urls
     */
    public static URL[] getClassLoaderURLs(ClassLoader cl)
    {
@@ -313,7 +316,7 @@ public final class Classes
 
          if (method != null)
          {
-            method.invoke(null, null);
+            method.invoke(null, (Object[]) null);
          }
          else
          {
@@ -427,6 +430,7 @@ public final class Classes
     * appear multiple times through inheritence are only accounted for once.
     * 
     * @param c - the class to start scanning for interfaces
+    * @return the interfaces
     */   
    public static Class[] getAllUniqueInterfaces(Class c)
    {
@@ -686,16 +690,16 @@ public final class Classes
     * @throws ClassNotFoundException When a class could not be loaded from
     *         the specified ClassLoader
     */
-   public final static Class[] convertToJavaClasses(Iterator it,
+   public final static Class<?>[] convertToJavaClasses(Iterator<String> it,
                                                     ClassLoader cl)
       throws ClassNotFoundException
    {
-      ArrayList classes = new ArrayList();
+      ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
       while (it.hasNext())
       {
-         classes.add(convertToJavaClass((String) it.next(), cl));
+         classes.add(convertToJavaClass(it.next(), cl));
       }
-      return (Class[]) classes.toArray(new Class[classes.size()]);
+      return classes.toArray(new Class[classes.size()]);
    }
 
    /**
@@ -721,12 +725,12 @@ public final class Classes
 
       try
       {
-         return cls.getMethod(buf.toString(), null);
+         return cls.getMethod(buf.toString(), (Class[]) null);
       }
       catch (NoSuchMethodException e)
       {
          buf.replace(0, 3, "is");
-         return cls.getMethod(buf.toString(), null);
+         return cls.getMethod(buf.toString(), (Class[]) null);
       }
    }
 

@@ -32,6 +32,8 @@ package org.jboss.util;
 public class NotImplementedException
    extends RuntimeException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <tt>NotImplementedException</tt> with a detail message.
     *

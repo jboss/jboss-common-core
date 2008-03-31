@@ -42,6 +42,7 @@ import java.util.Locale;
  * @author <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
  * @version <tt>$Revision$</tt>
  */
+@SuppressWarnings("unchecked")
 public final class Strings
 {
    /** An empty string constant */
@@ -681,6 +682,8 @@ public final class Strings
     * <p>Compare two strings.
     *
     * <p>Both or one of them may be null.
+    * @param me 
+    * @param you 
     *
     * @return true if object equals or intern ==, else false. 
     */
@@ -888,8 +891,8 @@ public final class Strings
    /**
     * 
     * @param urispec
-    * @return
-    * @throws MalformedURLException
+    * @return the uri
+    * @throws URISyntaxException for any error
     */
    public static URI toURI(final String urispec)
       throws URISyntaxException
@@ -1034,7 +1037,6 @@ public final class Strings
     * 
     * @param object the object
     * @param buffer the string builder
-    * @return a string in the form className@hexHashCode
     */
    public static final void defaultToString(JBossStringBuilder buffer, Object object)
    {
@@ -1053,7 +1055,6 @@ public final class Strings
     * 
     * @param object the object
     * @param buffer the string buffer
-    * @return a string in the form className@hexHashCode
     */
    public static final void defaultToString(StringBuffer buffer, Object object)
    {
@@ -1167,7 +1168,7 @@ public final class Strings
          return null;
       }
       StringTokenizer st = new StringTokenizer(str, delimiters);
-      List tokens = new ArrayList();
+      List<String> tokens = new ArrayList<String>();
       while (st.hasMoreTokens())
       {
          String token = st.nextToken();
@@ -1180,7 +1181,7 @@ public final class Strings
             tokens.add(token);
          }
       }
-      return (String[])tokens.toArray(new String[tokens.size()]);
+      return tokens.toArray(new String[tokens.size()]);
    }
 
    /**
@@ -1188,7 +1189,7 @@ public final class Strings
     *
     * @param str the string to check
     * @return the trimmed String
-    * @see java.lang.Character#isWhitespace
+    * @see java.lang.Character#isWhitespace(char)
     */
    public static String trimLeadingWhitespace(String str)
    {

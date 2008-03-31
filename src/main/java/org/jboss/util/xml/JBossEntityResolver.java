@@ -50,6 +50,7 @@ import org.xml.sax.SAXException;
  * @author Dimitris.Andreadis@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class JBossEntityResolver implements EntityResolver
 {
    private static final Logger log = Logger.getLogger(JBossEntityResolver.class);

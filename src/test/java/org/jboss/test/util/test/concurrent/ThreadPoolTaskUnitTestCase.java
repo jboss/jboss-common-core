@@ -38,6 +38,7 @@ import junit.framework.TestCase;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class ThreadPoolTaskUnitTestCase extends TestCase
 {
    private static Logger log = Logger.getLogger(ThreadPoolTaskUnitTestCase.class);
@@ -86,9 +87,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       log.debug("=====> Stopping test: " + getName());
    }
 
-   /**
-    * Basic test
-    */
    public void testBasic() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -107,9 +105,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Multiple Basic test
-    */
    public void testMultipleBasic() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -130,9 +125,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test pooling
-    */
    public void testSimplePooling() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -151,9 +143,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test multiple pooling
-    */
    public void testMultiplePooling() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -173,9 +162,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test maximum pool
-    */
    public void testMaximumPool() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -197,9 +183,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test maximum cache
-    */
    public void testMaximumQueue() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -224,9 +207,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test maximum cache
-    */
    public void testCompleteTimeout() throws Exception
    {
       BasicThreadPool pool = new BasicThreadPool();
@@ -484,9 +464,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
          this.name = name;
       }
 
-      /**
-       * Wait for expected
-       */
       public void wait(int target)
          throws InterruptedException
       {
@@ -515,9 +492,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
          }
       }
 
-      /**
-       * Wait for release
-       */
       public void waitForRelease(String data)
       {
          log.debug(Thread.currentThread().getName() + ": Waiting for release " + name + " data=" + data);
@@ -535,9 +509,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
          }
       }
 
-      /**
-       * Notify
-       */
       public void notify(String data)
       {
          log.debug(Thread.currentThread().getName() + ": Notifying " + name + " data=" + data);
@@ -549,9 +520,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
          }
       }
 
-      /**
-       * Notify
-       */
       public void notify(String data, long time)
       {
          log.debug(Thread.currentThread().getName() + ": Notifying " + name + " data=" + data + " time=" + time);
@@ -564,9 +532,6 @@ public class ThreadPoolTaskUnitTestCase extends TestCase
          log.debug(Thread.currentThread().getName() + ": Notified " + name + " data=" + data + " time=" + time);
       }
 
-      /**
-       * Notify
-       */
       public void notify(String data, long time, Throwable throwable)
       {
          if (throwable != null)

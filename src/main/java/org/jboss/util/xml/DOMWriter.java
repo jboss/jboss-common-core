@@ -80,6 +80,7 @@ import org.w3c.dom.NodeList;
  * @author Thomas.Diesler@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class DOMWriter
 {
    // Print writer
@@ -142,6 +143,9 @@ public class DOMWriter
    /** 
     * Print a node with explicit prettyprinting.
     * The defaults for all other DOMWriter properties apply. 
+    * @param node 
+    * @param prettyprint 
+    * @return the node as a string
     *  
     */
    public static String printNode(Node node, boolean prettyprint)
@@ -159,6 +163,8 @@ public class DOMWriter
    /** 
     * Set wheter entities should appear in their canonical form.
     * The default is false.
+    * @param canonical 
+    * @return  the dom writer
     */
    public DOMWriter setCanonical(boolean canonical)
    {
@@ -170,6 +176,8 @@ public class DOMWriter
     * Set wheter subelements should have their namespaces completed.
     * Setting this to false may lead to invalid XML fragments.
     * The default is true.
+    * @param complete 
+    * @return the dom writer
     */
    public DOMWriter setCompleteNamespaces(boolean complete)
    {
@@ -185,6 +193,8 @@ public class DOMWriter
    /** 
     * Set wheter element should be indented.
     * The default is false.
+    * @param prettyprint 
+    * @return the dom writer
     */
    public DOMWriter setPrettyprint(boolean prettyprint)
    {
@@ -200,6 +210,8 @@ public class DOMWriter
    /** 
     * Set wheter the XML declaration should be written.
     * The default is false.
+    * @param flag 
+    * @return the dom writer
     */
    public DOMWriter setWriteXMLDeclaration(boolean flag)
    {
@@ -517,7 +529,11 @@ public class DOMWriter
       return (array);
    }
 
-   /** Normalizes the given string. */
+   /** Normalizes the given string. 
+    * @param s 
+    * @param canonical 
+    * @return the normalized string 
+    */
    public static String normalize(String s, boolean canonical)
    {
       StringBuffer str = new StringBuffer();

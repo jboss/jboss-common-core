@@ -41,6 +41,8 @@ public interface Timeout
     * used. The reason for this is that an implementation may reuse
     * cancelled timeouts, and at return the instance may already be
     * in use for another timeout.
+    * 
+    * @return true when cancelled
     */
    public boolean cancel();
 }

@@ -42,6 +42,7 @@ import org.jboss.util.NullArgumentException;
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author  <a href="mailto:adrian@jboss.com">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public class PropertyGroup extends PropertyMap
 {    
    /** Serial version uid */
@@ -161,6 +162,7 @@ public class PropertyGroup extends PropertyMap
     * This is currently ver inefficient, but should get the
     * job done for now.
     */
+   @SuppressWarnings("unchecked")
    public Set entrySet()
    {
       final Set superSet = super.entrySet(true);

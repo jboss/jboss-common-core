@@ -32,6 +32,8 @@ import org.jboss.util.NestedError;
 public class PropertyError
    extends NestedError
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <tt>PropertyError</tt> with the specified detail 
     * message.

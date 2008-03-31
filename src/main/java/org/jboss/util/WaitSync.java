@@ -36,6 +36,7 @@ public interface WaitSync
     * Pone in wait status this sync, until {@link #doNotify} is called to wake it up.
     * 
     * @see #doNotify
+    * @throws InterruptedException 
     */
    void doWait() throws InterruptedException;
    
@@ -43,6 +44,7 @@ public interface WaitSync
     * Wakes up this sync that has been posed in wait status by a {@link #doWait} call.
     * If this sync is not waiting, invoking this method should have no effect.
     * @see #doWait
+    * @throws InterruptedException 
     */
    void doNotify() throws InterruptedException;
 }

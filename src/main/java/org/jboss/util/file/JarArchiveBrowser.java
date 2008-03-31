@@ -21,16 +21,14 @@
   */
 package org.jboss.util.file;
 
-import java.util.Iterator;
-import java.util.Enumeration;
-import java.util.jar.JarFile;
-import java.util.jar.JarEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.net.JarURLConnection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 /**
  * Comment
@@ -39,6 +37,7 @@ import java.net.JarURLConnection;
  * @version $Revision$
  *
  **/
+@SuppressWarnings("unchecked")
 public class JarArchiveBrowser implements Iterator
 {
    JarFile zip;
@@ -46,6 +45,7 @@ public class JarArchiveBrowser implements Iterator
    JarEntry next;
    ArchiveBrowser.Filter filter;
 
+   @SuppressWarnings("deprecation")
    public JarArchiveBrowser(JarURLConnection url,  ArchiveBrowser.Filter filter)
    {
       this.filter = filter;

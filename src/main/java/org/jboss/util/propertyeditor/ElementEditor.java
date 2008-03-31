@@ -33,8 +33,6 @@ public class ElementEditor extends DocumentEditor
 {
    /**
     * Sets as an Element created by a String.
-    *
-    * @throws NestedRuntimeException  A parse exception occured
     */
    public void setAsText(String text)
    {

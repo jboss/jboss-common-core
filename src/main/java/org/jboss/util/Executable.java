@@ -31,8 +31,5 @@ package org.jboss.util;
  */
 public interface Executable
 {
-   /**
-    * Executes the implemented task.
-    */
    void execute() throws Exception;
 }

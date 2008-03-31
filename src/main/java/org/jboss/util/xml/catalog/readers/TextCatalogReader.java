@@ -81,6 +81,7 @@ import org.jboss.util.xml.catalog.readers.CatalogReader;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class TextCatalogReader implements CatalogReader {
   /** The input stream used to read the catalog */
   protected InputStream catfile = null;

@@ -34,10 +34,12 @@ import java.util.List;
  * @author <a href="mailto:bill@jboss.org">Bill Burke</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class DirectoryArchiveBrowser implements Iterator
 {
    private Iterator files;
 
+   @SuppressWarnings("deprecation")
    public DirectoryArchiveBrowser(File file, ArchiveBrowser.Filter filter)
    {
       ArrayList list = new ArrayList();
@@ -52,6 +54,7 @@ public class DirectoryArchiveBrowser implements Iterator
       files = list.iterator();
    }
 
+   @SuppressWarnings("deprecation")
    public static void create(List list, File dir, ArchiveBrowser.Filter filter) throws Exception
    {
       File[] files = dir.listFiles();

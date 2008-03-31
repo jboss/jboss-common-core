@@ -32,6 +32,8 @@ import java.io.Serializable;
 public class Counter
    implements Serializable, Cloneable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The current count */
    private int count;
 
@@ -133,6 +135,8 @@ public class Counter
    private static class Wrapper
       extends Counter
    {
+      /** The serialVersionUID */
+      private static final long serialVersionUID = 1L;
       /** The wrapped counter */
       protected final Counter counter;
 
@@ -177,6 +181,9 @@ public class Counter
     */
    public static Counter makeSynchronized(final Counter counter) {
       return new Wrapper(counter) {
+            /** The serialVersionUID */
+         private static final long serialVersionUID = 1L;
+
             public synchronized int increment() {
                return this.counter.increment();
             }
@@ -225,6 +232,9 @@ public class Counter
       Counter temp;
       if (increasing) {
          temp = new Wrapper(counter) {
+               /** The serialVersionUID */
+            private static final long serialVersionUID = 1L;
+
                public int decrement() {
                   throw new UnsupportedOperationException();
                }
@@ -236,6 +246,8 @@ public class Counter
       }
       else {
          temp = new Wrapper(counter) {
+            /** The serialVersionUID */
+            private static final long serialVersionUID = 1L;
                public int increment() {
                   throw new UnsupportedOperationException();
                }

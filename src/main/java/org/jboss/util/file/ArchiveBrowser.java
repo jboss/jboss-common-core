@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author <a href="mailto:bill@jboss.org">Bill Burke</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public abstract class ArchiveBrowser
 {
    public interface Filter

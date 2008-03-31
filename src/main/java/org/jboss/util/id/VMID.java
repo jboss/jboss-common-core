@@ -54,9 +54,12 @@ import org.jboss.util.platform.PID;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class VMID
    implements ID
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The address of the current virtual machine */
    protected final byte[] address;
 
@@ -138,7 +141,7 @@ public class VMID
       StringBuffer buff = new StringBuffer();
       
       for (int i=0; i<address.length; i++) {
-         int n = (int) (address[i] & 0xFF);
+         int n = (address[i] & 0xFF);
          buff.append(Integer.toString(n, Character.MAX_RADIX));
       }
 

@@ -29,6 +29,8 @@ package org.jboss.util.threadpool;
  */
 public class ThreadPoolFullException extends RuntimeException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    // Constants -----------------------------------------------------
 
    // Attributes ----------------------------------------------------

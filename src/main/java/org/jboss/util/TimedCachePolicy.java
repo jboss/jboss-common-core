@@ -43,6 +43,7 @@ import java.util.TimerTask;
     @author <a href="mailto:Scott.Stark@jboss.org">Scott Stark</a>.
     @version $Revision$
 */
+@SuppressWarnings("unchecked")
 public class TimedCachePolicy
    extends TimerTask /* A legacy base class that is no longer used as this level */
    implements CachePolicy
@@ -54,10 +55,12 @@ public class TimedCachePolicy
       /** Initializes an entry with the current cache time. This is called when
           the entry is first inserted into the cache so that entries do not
           have to know the absolute system time.
+       * @param now 
       */
       public void init(long now);
       
       /** Is the entry still valid basis the current time
+       * @param now 
           @return true if the entry is within its lifetime, false if it is expired.
       */
       public boolean isCurrent(long now);
@@ -71,7 +74,7 @@ public class TimedCachePolicy
       */
       public void destroy();
 
-      /** Get the value component of the TimedEntry. This may or may not
+      /** @return the value component of the TimedEntry. This may or may not
           be the TimedEntry implementation.
       */
       public Object getValue();
@@ -104,6 +107,7 @@ public class TimedCachePolicy
    /** Creates a new TimedCachePolicy with the given default entry lifetime
        that does not synchronized access to its policy store and uses a 60
        second resolution.
+    * @param defaultLifetime 
    */
    public TimedCachePolicy(int defaultLifetime)
    {
@@ -345,6 +349,7 @@ public class TimedCachePolicy
    }
 
    /** Get the raw TimedEntry for key without performing any expiration check.
+    * @param key 
        @return the TimedEntry value associated with key if one exists, null otherwise.
    */
    public TimedEntry peekEntry(Object key) 

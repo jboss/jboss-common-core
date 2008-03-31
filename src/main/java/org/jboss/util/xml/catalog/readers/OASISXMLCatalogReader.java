@@ -56,16 +56,17 @@
 
 package org.jboss.util.xml.catalog.readers;
 
+import java.util.Enumeration;
 import java.util.Stack;
 import java.util.Vector;
-import java.util.Enumeration;
+
 import org.jboss.util.xml.catalog.Catalog;
 import org.jboss.util.xml.catalog.CatalogEntry;
 import org.jboss.util.xml.catalog.CatalogException;
 import org.jboss.util.xml.catalog.helpers.PublicId;
-
-import org.xml.sax.*;
-import org.w3c.dom.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
 
 /**
  * Parse OASIS Entity Resolution Technical Committee 
@@ -78,6 +79,7 @@ import org.w3c.dom.*;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class OASISXMLCatalogReader extends SAXCatalogReader implements SAXCatalogParser {
   /** The catalog object needs to be stored by the object so that
    * SAX callbacks can use it.
@@ -100,7 +102,7 @@ public class OASISXMLCatalogReader extends SAXCatalogReader implements SAXCatalo
     debug = catalog.getCatalogManager().debug;
   }
 
-  /** Get the current catalog. */
+  /** @return the current catalog. */
   public Catalog getCatalog () {
     return catalog;
   }

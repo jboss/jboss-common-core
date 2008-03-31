@@ -73,6 +73,7 @@ public class FileURLConnection extends URLConnection
 
    /**
     * Returns the underlying file for this connection.
+    * @return the file
     */
    public File getFile()
    {

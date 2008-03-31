@@ -32,13 +32,14 @@ import java.util.Properties;
 public class PropertyContainer
    extends PropertyMap
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The group name for this container. */
    protected String groupname = "<unknown>";
 
    /**
     * Initialize the container with a property group.
-    *
-    * @param group  Properties.
+    * @param props 
     */
    public PropertyContainer(final Properties props) {
       super(props);
@@ -59,7 +60,7 @@ public class PropertyContainer
     *
     * @param type    The class whos name will be the property group name.
     */
-   public PropertyContainer(final Class type) {
+   public PropertyContainer(final Class<?> type) {
       this(type.getName());
    }
    

@@ -32,6 +32,7 @@ package org.jboss.util;
  * @author <a href="mailto:simone.bordet@compaq.com">Simone Bordet</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public abstract class TimerTask 
    implements Executable, Comparable
 {
@@ -75,7 +76,7 @@ public abstract class TimerTask
    /**
     * Cancels the next execution of this TimerTask (if any). <br>
     * If the TimerTask is executing it will prevent the next execution (if any).
-    * @returns true if one or more scheduled execution will not take place,
+    * @return true if one or more scheduled execution will not take place,
     * false otherwise.
     */
    public boolean cancel() 
@@ -157,7 +158,7 @@ public abstract class TimerTask
       }
    }
 
-   /** Returns the period of this TimerTask */
+   /** @return the period of this TimerTask */
    protected long getPeriod() 
    {
       return m_period;

@@ -30,6 +30,7 @@ import java.util.Iterator;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class State
 {
    /** The name of the state */

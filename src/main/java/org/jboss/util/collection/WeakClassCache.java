@@ -37,6 +37,7 @@ import java.util.WeakHashMap;
  *
  * @author <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public abstract class WeakClassCache
 {
    /** The cache */

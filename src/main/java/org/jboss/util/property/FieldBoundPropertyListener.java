@@ -112,6 +112,7 @@ public class FieldBoundPropertyListener
     *    field binding.
     *
     * @param value   Property value.
+    * @return the filtered value
     */
    public String filterValue(String value) {
       return value;
@@ -130,7 +131,7 @@ public class FieldBoundPropertyListener
          value = filterValue(value);
 
          // coerce value to field type
-         Class type = fieldInstance.getField().getType();
+         Class<?> type = fieldInstance.getField().getType();
          PropertyEditor editor = PropertyEditors.findEditor(type);
          editor.setAsText(value);
          Object coerced = editor.getValue();

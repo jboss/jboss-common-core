@@ -99,7 +99,6 @@ public final class StringPropertyReplacer
     * @param props - the source for ${x} property ref values, null means use System.getProperty()
     * @return the input string with all property references replaced if any.
     *    If there are no valid references the input string will be returned.
-    * @throws java.lang.AccessControlException when not authorised to retrieved system properties
     */
    public static String replaceProperties(final String string, final Properties props)
    {

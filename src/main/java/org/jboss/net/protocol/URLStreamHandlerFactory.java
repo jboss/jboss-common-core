@@ -45,13 +45,11 @@ import org.jboss.logging.Logger;
  * Class.forName method.
  * </p>
  *
- * <p>Use {@link preload} to force the URL handler map to load the
- *    handlers for each protocol listed in {@link #PROTOCOLS}.
- *
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author Scott.Stark@jboss.org
  */
+@SuppressWarnings("unchecked")
 public class URLStreamHandlerFactory
    implements java.net.URLStreamHandlerFactory
 {
@@ -117,6 +115,7 @@ public class URLStreamHandlerFactory
     * Preload the JBoss specific protocol handlers, so that URL knows about
     * them even if the handler factory is changed.
     */
+   @SuppressWarnings("unused")
    public static void preload()
    {
       for (int i = 0; i < PROTOCOLS.length; i ++)
@@ -144,7 +143,6 @@ public class URLStreamHandlerFactory
    /** Search the handlerPkgs for URLStreamHandler classes matching the
     * pkg + protocol + ".Handler" naming convention.
     *
-    * @see #checkHandlerPkgs()
     * @param protocol The protocol to create a stream handler for
     * @return The protocol handler or null if not found
     */
@@ -172,7 +170,7 @@ public class URLStreamHandlerFactory
          {
             // Form the standard protocol handler class name
             String classname = handlerPkgs[p] + "." + protocol + ".Handler";
-            Class type = null;
+            Class<?> type = null;
 
             try
             {
@@ -210,7 +208,7 @@ public class URLStreamHandlerFactory
       {
          // Update the handlerPkgs[] from the handlerPkgsProp
          StringTokenizer tokeninzer = new StringTokenizer(handlerPkgsProp, "|");
-         ArrayList tmp = new ArrayList();
+         ArrayList<String> tmp = new ArrayList<String>();
          while( tokeninzer.hasMoreTokens() )
          {
             String pkg = tokeninzer.nextToken().intern();

@@ -37,6 +37,7 @@ import org.jboss.logging.Logger;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class ENCThreadLocalKey
       implements ObjectFactory
 {

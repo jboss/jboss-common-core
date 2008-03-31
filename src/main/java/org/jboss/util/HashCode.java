@@ -30,9 +30,12 @@ import java.io.Serializable;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public final class HashCode
    implements Serializable, Cloneable, Comparable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** Hashcode for a 'null' value. */
    private static final int NULL_HASHCODE = 0;
 
@@ -167,7 +170,7 @@ public final class HashCode
     * @return   Hash-code.
     */
    public int hashCode() {
-      return (int)value;
+      return value;
    }
 
    /**
@@ -185,7 +188,7 @@ public final class HashCode
    /**
     * Compares this object with the specified object for order.
     *
-    * @param other   Value to compare with.
+    * @param obj   Value to compare with.
     * @return        A negative integer, zero, or a positive integer as
     *                this object is less than, equal to, or greater than
     *                the specified object.

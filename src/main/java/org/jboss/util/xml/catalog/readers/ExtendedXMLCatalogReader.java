@@ -62,9 +62,8 @@ import org.jboss.util.xml.catalog.Catalog;
 import org.jboss.util.xml.catalog.CatalogEntry;
 import org.jboss.util.xml.catalog.CatalogException;
 import org.jboss.util.xml.catalog.Resolver;
-
-import org.xml.sax.*;
-import org.w3c.dom.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * Parse Extended OASIS Entity Resolution Technical Committee 
@@ -77,6 +76,7 @@ import org.w3c.dom.*;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class ExtendedXMLCatalogReader extends OASISXMLCatalogReader {
   /** The namespace name of extended catalog elements */
   public static final String extendedNamespaceName = "http://nwalsh.com/xcatalog/1.0";

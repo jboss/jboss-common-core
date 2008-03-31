@@ -31,6 +31,8 @@ package org.jboss.util;
 public class EmptyStringException
    extends IllegalArgumentException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <tt>EmptyStringException</tt>.
     *

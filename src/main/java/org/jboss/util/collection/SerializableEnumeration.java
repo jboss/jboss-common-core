@@ -32,10 +32,13 @@ import java.util.NoSuchElementException;
  * @author ???
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class SerializableEnumeration
    extends ArrayList
    implements Enumeration
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    private int index;
 
    public SerializableEnumeration () {

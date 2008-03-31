@@ -29,6 +29,7 @@ import java.util.Collection;
  * Interface defining methods that can be used to list the contents of a URL
  * collection irrespective of the protocol.
  */
+@SuppressWarnings("unchecked")
 public interface URLLister {
    /**
     * List the members of the given collection URL that match the patterns
@@ -81,7 +82,7 @@ public interface URLLister {
        * Determine whether the supplied memberName should be accepted
        * @param baseURL the URL of the collection
        * @param memberName the member of the collection
-       * @return
+       * @return true to accept
        */
       boolean accept(URL baseURL, String memberName);
    }

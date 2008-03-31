@@ -66,6 +66,7 @@ import org.jboss.util.ThrowableHandler;
  * @version <tt>$Revision$</tt>
  * @author <a href="mailto:cojonudo14@hotmail.com">Hiram Chirino</a>
  */
+@SuppressWarnings("unchecked")
 public class Handler
    extends URLStreamHandler
 {

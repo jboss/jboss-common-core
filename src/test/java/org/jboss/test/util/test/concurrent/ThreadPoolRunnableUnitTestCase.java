@@ -40,6 +40,7 @@ import junit.framework.TestCase;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class ThreadPoolRunnableUnitTestCase extends TestCase
 {
    private static Logger log = Logger.getLogger(ThreadPoolRunnableUnitTestCase.class);
@@ -72,9 +73,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       super(name);
    }
 
-   /**
-    * Basic test
-    */
    public void testBasic() throws Exception
    {
       log.debug("testBasic");
@@ -92,9 +90,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Multiple Basic test
-    */
    public void testMultipleBasic() throws Exception
    {
       log.debug("testMultipleBasic");
@@ -114,9 +109,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test pooling
-    */
    public void testSimplePooling() throws Exception
    {
       log.debug("testSimplePooling");
@@ -136,9 +128,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test multiple pooling
-    */
    public void testMultiplePooling() throws Exception
    {
       log.debug("testMultiplePooling");
@@ -159,9 +148,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test maximum pool
-    */
    public void testMaximumPool() throws Exception
    {
       log.debug("testMaximumPool");
@@ -184,9 +170,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test maximum cache
-    */
    public void testMaximumQueue() throws Exception
    {
       log.debug("testMaximumQueue");
@@ -220,9 +203,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test runnable timeouts
-    */
    public void testRunnableTimeout() throws Exception
    {
       log.debug("testRunnableTimeout");
@@ -244,9 +224,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test runnable timeouts
-    */
    public void testRunnableTimeoutWithSpinLoop() throws Exception
    {
       log.debug("testRunnableTimeoutWithSpinLoop");
@@ -273,9 +250,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Test runnable timeouts
-    */
    public void testRunnableTimeoutWithSpinLoop2() throws Exception
    {
       log.debug("testRunnableTimeoutWithSpinLoop2");
@@ -315,9 +289,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       threadNames.put(data, name);
    }
 
-   /**
-    * Wait for expected starts
-    */
    public synchronized void waitStarted(int target)
       throws InterruptedException
    {
@@ -338,9 +309,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       notifyAll();
    }
 
-   /**
-    * Wait for release started
-    */
    public synchronized void waitForReleaseStarted(String data)
    {
       try
@@ -354,9 +322,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       }
    }
 
-   /**
-    * Notify started
-    */
    public synchronized void notifyStarted(String data)
    {
       log.info("notifyStarted, data="+data);
@@ -373,9 +338,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
       startedRunnables.clear();
    }
 
-   /**
-    * Wait for expected finishes
-    */
    public synchronized void waitFinished(int target)
       throws InterruptedException
    {
@@ -384,9 +346,6 @@ public class ThreadPoolRunnableUnitTestCase extends TestCase
          wait();
    }
 
-   /**
-    * Notify finished
-    */
    public synchronized void notifyFinished(String data)
    {
       log.info("notifyFinished, data="+data);

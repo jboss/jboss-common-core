@@ -33,6 +33,8 @@ import org.jboss.util.NestedRuntimeException;
 public class PropertyException
    extends NestedRuntimeException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <tt>PropertyException</tt> with the specified detail 
     * message.

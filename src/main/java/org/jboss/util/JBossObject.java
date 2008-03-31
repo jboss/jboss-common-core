@@ -56,6 +56,7 @@ import org.jboss.logging.Logger;
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class JBossObject implements JBossInterface
 {
    /** The log */
@@ -72,6 +73,7 @@ public class JBossObject implements JBossInterface
     * 
     * @param one an object
     * @param two another object
+    * @return true when they are equal
     */
    public static boolean equals(Object one, Object two)
    {
@@ -87,6 +89,7 @@ public class JBossObject implements JBossInterface
     * 
     * @param one an object
     * @param two another object
+    * @return true when they are not equal
     */
    public static boolean notEqual(Object one, Object two)
    {

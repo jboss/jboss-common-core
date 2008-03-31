@@ -31,6 +31,7 @@ import java.util.NoSuchElementException;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class CompoundIterator
    implements Iterator
 {

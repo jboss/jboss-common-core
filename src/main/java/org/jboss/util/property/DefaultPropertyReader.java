@@ -65,6 +65,7 @@ public final class DefaultPropertyReader
     *
     * @param propertyName  Property to read filenames from.
     * @return              Array of filenames.
+    * @throws PropertyException
     */
    public static String[] getFilenames(final String propertyName)
       throws PropertyException

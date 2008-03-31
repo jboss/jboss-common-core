@@ -86,6 +86,7 @@ import org.xml.sax.InputSource;
  *
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class BootstrapResolver implements EntityResolver, URIResolver {
   /** URI of the W3C XML Schema for OASIS XML Catalog files. */
   public static final String xmlCatalogXSD = "http://www.oasis-open.org/committees/entity/release/1.0/catalog.xsd";
@@ -172,11 +173,9 @@ public class BootstrapResolver implements EntityResolver, URIResolver {
     throws TransformerException {
 
     String uri = href;
-    String fragment = null;
     int hashPos = href.indexOf("#");
     if (hashPos >= 0) {
       uri = href.substring(0, hashPos);
-      fragment = href.substring(hashPos+1);
     }
 
     String result = null;

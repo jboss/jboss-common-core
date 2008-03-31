@@ -71,13 +71,11 @@ import org.w3c.dom.NodeList;
  @author Dimitris.Andreadis@jboss.org
  @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class StateMachineParser
 {
    private static Logger log = Logger.getLogger(StateMachineParser.class);
 
-   /**
-    * Parse an xml description of the state machine
-    */
    public StateMachine parse(URL source) throws Exception
    {
       // parse the XML document into a DOM structure

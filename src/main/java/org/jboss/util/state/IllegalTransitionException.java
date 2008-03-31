@@ -28,6 +28,8 @@ package org.jboss.util.state;
  */
 public class IllegalTransitionException extends Exception
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    public IllegalTransitionException(String msg)
    {
       super(msg);

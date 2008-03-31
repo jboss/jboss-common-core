@@ -36,6 +36,7 @@ import org.jboss.util.Null;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public final class Iterators
 {
    /////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ public final class Iterators
    /**
     * Return an Iterator wrapper for the given Enumeration
     *
-    * @param enum    Enumeration to wrap
+    * @param enumeration    Enumeration to wrap
     * @return        Enumeration wrapped as an Iterator
     */
    public static Iterator forEnumeration(final Enumeration enumeration) {
@@ -208,7 +209,7 @@ public final class Iterators
    /**
     * Returns a synchronized version of the given Enumeration.
     *
-    * @param enum    Enumeration to synchronize.
+    * @param enumeration    Enumeration to synchronize.
     * @return        Synchronized Enumeration.
     */
    public static Enumeration makeSynchronized(final Enumeration enumeration) {

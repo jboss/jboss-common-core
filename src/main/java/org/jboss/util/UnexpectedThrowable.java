@@ -32,6 +32,8 @@ package org.jboss.util;
 public class UnexpectedThrowable
    extends NestedError
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <tt>UnexpectedThrowable</tt> with the specified 
     * detail message.

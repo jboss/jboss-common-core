@@ -29,6 +29,7 @@ import java.security.AccessController;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 class SysPropertyActions
 {
    interface SysProps

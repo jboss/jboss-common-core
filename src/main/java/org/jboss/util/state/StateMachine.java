@@ -31,6 +31,7 @@ import org.jboss.logging.Logger;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class StateMachine implements Cloneable
 {
    private static Logger log = Logger.getLogger(StateMachine.class);
@@ -112,7 +113,7 @@ public class StateMachine implements Cloneable
    /** Transition to the next state given the name of a valid transition.
     * @param actionName - the name of transition that is valid for the
     * current state. 
-    * @return
+    * @return the next state
     * @throws IllegalTransitionException
     */ 
    public State nextState(String actionName)

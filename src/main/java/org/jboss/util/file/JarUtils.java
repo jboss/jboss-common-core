@@ -65,6 +65,7 @@ public final class JarUtils
     *        written.
     * @param src The file or directory to jar up.  Directories will be
     *        processed recursively.
+    * @throws IOException 
     */
    public static void jar(OutputStream out, File src) throws IOException
    {
@@ -83,6 +84,7 @@ public final class JarUtils
     *        written.
     * @param src The file or directory to jar up.  Directories will be
     *        processed recursively.
+    * @throws IOException 
     */
    public static void jar(OutputStream out, File[] src) throws IOException
    {
@@ -105,6 +107,7 @@ public final class JarUtils
     * @param filter The filter to use while processing directories.  Only
     *        those files matching will be included in the jar archive.  If
     *        null, then all files are included.
+    * @throws IOException 
     */
    public static void jar(OutputStream out, File[] src, FileFilter filter)
       throws IOException
@@ -130,6 +133,7 @@ public final class JarUtils
     *        used.
     * @param man The manifest to use for the Jar archive.  If null, then no
     *        manifest will be included.
+    * @throws IOException 
     */
    public static void jar(OutputStream out, File[] src, FileFilter filter,
       String prefix, Manifest man) throws IOException
@@ -246,9 +250,6 @@ public final class JarUtils
       }
    }
    
-   /**
-    * Dump the contents of a JarArchive to the dpecified destination.
-    */
    public static void unjar(InputStream in, File dest) throws IOException
    {
       if (!dest.exists())
@@ -337,6 +338,7 @@ public final class JarUtils
       a jar protocol URL
     @param dest the directory into which the nested jar will be extracted.
     @return the file: URL for the jar referenced by the jarURL parameter.
+    * @throws IOException 
     */
    public static URL extractNestedJar(URL jarURL, File dest)
       throws IOException
@@ -389,10 +391,6 @@ public final class JarUtils
    }
 
 
-   /**
-    * A simple jar-like tool used for testing.  It's actually faster than 
-    * jar, though doesn't sipport as many options.
-    */
    public static void main(String[] args) throws Exception
    {
       if (args.length == 0)

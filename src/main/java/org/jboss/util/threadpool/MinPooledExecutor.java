@@ -48,6 +48,7 @@ size must be > 0.
 @author adrian@jboss.org
 @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class MinPooledExecutor extends ThreadPoolExecutor
 {
    // Constants -----------------------------------------------------
@@ -75,7 +76,7 @@ public class MinPooledExecutor extends ThreadPoolExecutor
    /**
     * Construct a new executor
     * 
-    * @param channel the queue for any requests
+    * @param queue the queue for any requests
     * @param poolSize the maximum pool size
     */
    public MinPooledExecutor(BlockingQueue queue, int poolSize)

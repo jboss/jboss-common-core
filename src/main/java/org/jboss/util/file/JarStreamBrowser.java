@@ -36,19 +36,23 @@ import java.io.ByteArrayInputStream;
  * @author <a href="mailto:bill@jboss.org">Bill Burke</a>
  * @version $Revision: 1958 $
  */
+@SuppressWarnings("unchecked")
 public class JarStreamBrowser implements Iterator
 {
 //   ZipFile zip;
 //   Enumeration entries;
    JarInputStream jar;
    JarEntry next;
+   @SuppressWarnings("deprecation")
    ArchiveBrowser.Filter filter;
 
+   @SuppressWarnings("deprecation")
    public JarStreamBrowser(File file, ArchiveBrowser.Filter filter) throws IOException
    {
       this(new FileInputStream(file), filter);
    }
 
+   @SuppressWarnings("deprecation")
    public JarStreamBrowser(InputStream is, ArchiveBrowser.Filter filter) throws IOException
    {
       this.filter = filter;

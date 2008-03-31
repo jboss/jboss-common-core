@@ -38,6 +38,8 @@ import java.io.Serializable;
  */
 public class LazySet<T> implements Set<T>, Serializable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The delegate set */
    private Set<T> delegate = Collections.emptySet();
 

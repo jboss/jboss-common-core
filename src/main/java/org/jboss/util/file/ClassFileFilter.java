@@ -27,6 +27,7 @@ package org.jboss.util.file;
  * @author <a href="mailto:bill@jboss.org">Bill Burke</a>
  * @version $Revision$
  */
+@SuppressWarnings("deprecation")
 public class ClassFileFilter implements ArchiveBrowser.Filter
 {
    public boolean accept(String filename)

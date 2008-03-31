@@ -41,6 +41,7 @@ import org.jboss.util.WeakObject;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class WeakSet
    extends AbstractSet
    implements Set

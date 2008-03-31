@@ -56,6 +56,7 @@ import junit.framework.TestCase;
  * @author Dimitris.Andreadis@jboss.org
  * @version $Revision: 43534 $
  */
+@SuppressWarnings("unchecked")
 public class PropertyEditorsUnitTestCase extends TestCase
 {
    private static Logger log = Logger.getLogger(PropertyEditorsUnitTestCase.class);
@@ -88,8 +89,8 @@ public class PropertyEditorsUnitTestCase extends TestCase
    {
       public int compare(Object o1, Object o2)
       {
-         Class[] a1 = (Class[]) o1;
-         Class[] a2 = (Class[]) o2;
+         Class<?>[] a1 = (Class[]) o1;
+         Class<?>[] a2 = (Class[]) o2;
          int compare = a1.length - a2.length;
          for(int n = 0; n < a1.length; n ++)
          {
@@ -136,6 +137,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
    /** The mechanism for mapping java.lang.* variants of the primative types
     misses editors for java.lang.Boolean and java.lang.Integer. Here we test
     the java.lang.* variants we expect editors for.
+    * @throws Exception 
     **/
    public void testJavaLangEditors()
       throws Exception
@@ -195,7 +197,8 @@ public class PropertyEditorsUnitTestCase extends TestCase
    }
 
    /** Test custom JBoss property editors.
-    **/
+    * @throws Exception 
+    */
    public void testJBossEditors()
       throws Exception
    {

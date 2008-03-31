@@ -31,6 +31,7 @@ import java.security.PrivilegedAction;
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author  <a href="mailto:adrian@jboss.com">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public final class Property
 {
    /** Platform dependent line separator. */

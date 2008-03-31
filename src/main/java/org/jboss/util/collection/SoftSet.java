@@ -38,6 +38,7 @@ import java.util.Set;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class SoftSet implements Set
 {
    private HashMap map = new HashMap();

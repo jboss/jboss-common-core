@@ -40,6 +40,7 @@ import java.security.PrivilegedAction;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public class ContextClassLoaderSwitcher
    extends ContextClassLoader
 {
@@ -51,6 +52,7 @@ public class ContextClassLoaderSwitcher
    /**
     * Instantiate a new context class loader switcher
     */
+   @SuppressWarnings("hiding")
    public static final NewInstance INSTANTIATOR = new NewInstance();
 
    /**
@@ -67,8 +69,7 @@ public class ContextClassLoaderSwitcher
 
    /**
     * Set the context classloader
-    *
-    * @param the new context classloader
+    * @param cl 
     */
    public void setContextClassLoader(final ClassLoader cl)
    {
@@ -79,7 +80,7 @@ public class ContextClassLoaderSwitcher
     * Set the context classloader for the given thread
     *
     * @param thread the thread
-    * @param the new context classloader
+    * @param cl the new context classloader
     */
    public void setContextClassLoader(final Thread thread, final ClassLoader cl)
    {
@@ -163,7 +164,7 @@ public class ContextClassLoaderSwitcher
       }
 
       /**
-       * Retrieve the current thread
+       * @return the current thread
        */
       public Thread getThread()
       {
@@ -171,7 +172,7 @@ public class ContextClassLoaderSwitcher
       }
 
       /**
-       * Retrieve the original classloader
+       * @return the original classloader
        */
       public ClassLoader getOriginalClassLoader()
       {
@@ -179,7 +180,7 @@ public class ContextClassLoaderSwitcher
       }
 
       /**
-       * Retrieve the current classloader
+       * @return the current classloader
        * (as set through this class).
        */
       public ClassLoader getCurrentClassLoader()

@@ -21,6 +21,8 @@
   */
 package org.jboss.util;
 
+import java.io.IOException;
+
 import org.jboss.logging.Logger;
 
 /**
@@ -386,6 +388,7 @@ public class Base64
     * Does not GZip-compress data.
     *
     * @param source The data to convert
+    * @return the encode bytes
     * @since 1.4
     */
    public static String encodeBytes(byte[] source)
@@ -409,6 +412,7 @@ public class Base64
     *
     * @param source The data to convert
     * @param options Specified options
+    * @return the encoded bytes
     * @see Base64#GZIP
     * @see Base64#DONT_BREAK_LINES
     * @since 2.0
@@ -425,6 +429,7 @@ public class Base64
     * @param source The data to convert
     * @param off Offset in array where conversion should begin
     * @param len Length of data to convert
+    * @return the text node
     * @since 1.4
     */
    public static String encodeBytes(byte[] source, int off, int len)
@@ -452,6 +457,7 @@ public class Base64
     * @param options Specified options
     * @see Base64#GZIP
     * @see Base64#DONT_BREAK_LINES
+    * @return the text node
     * @since 2.0
     */
    public static String encodeBytes(byte[] source, int off, int len, int options)
@@ -733,7 +739,7 @@ public class Base64
       if (bytes != null && bytes.length >= 4)
       {
 
-         int head = ((int)bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
+         int head = (bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
          if (java.util.zip.GZIPInputStream.GZIP_MAGIC == head)
          {
             java.io.ByteArrayInputStream bais = null;
@@ -1408,6 +1414,7 @@ public class Base64
       /**
        * Method added by PHIL. [Thanks, PHIL. -Rob]
        * This pads the buffer without closing the stream.
+       * @throws IOException 
        */
       public void flushBase64() throws java.io.IOException
       {
@@ -1450,6 +1457,7 @@ public class Base64
        * base640-encoded data in a stream.
        *
        * @since 1.5.1
+       * @throws IOException 
        */
       public void suspendEncoding() throws java.io.IOException
       {

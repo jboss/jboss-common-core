@@ -36,6 +36,7 @@ import java.io.PrintWriter;
  * @author <a href="mailto:simone.bordet@compaq.com">Simone Bordet</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class Semaphore 
    implements Sync
 {

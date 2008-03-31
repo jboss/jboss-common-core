@@ -29,7 +29,9 @@ import java.util.List;
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$
+ * @param <T> 
  */
+@SuppressWarnings("unchecked")
 public class Vertex<T>
 {
    private List<Edge<T>> incomingEdges;
@@ -141,7 +143,7 @@ public class Vertex<T>
     * mathcing e.
     * 
     * @param e the edge to check
-    * @return
+    * @return true it has an edge
     */ 
    public boolean hasEdge(Edge<T> e)
    {
@@ -321,7 +323,7 @@ public class Vertex<T>
 
    /**
     * Get the mark state value.
-    * @return
+    * @return the mark state
     */
    public int getMarkState()
    {

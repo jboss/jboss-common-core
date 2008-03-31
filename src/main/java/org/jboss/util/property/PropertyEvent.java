@@ -34,6 +34,8 @@ import org.jboss.util.NullArgumentException;
 public class PropertyEvent
    extends EventObject
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** Property name. */
    protected final String name;
 

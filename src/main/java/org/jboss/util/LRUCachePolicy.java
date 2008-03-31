@@ -29,6 +29,7 @@ import java.util.HashMap;
  * @author <a href="mailto:simone.bordet@compaq.com">Simone Bordet</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class LRUCachePolicy
    implements CachePolicy
 {
@@ -66,6 +67,8 @@ public class LRUCachePolicy
    /**
     * Creates a LRU cache policy object with the specified minimum
     * and maximum capacity.
+    * @param min 
+    * @param max 
     *
     * @see #create
     */
@@ -209,12 +212,14 @@ public class LRUCachePolicy
    // Protected -----------------------------------------------------
    /**
     * Factory method for the linked list used by this cache implementation.
+    * @return the lru list
     */
    protected LRUList createList() {return new LRUList();}
    /**
     * Callback method called when the cache algorithm ages out of the cache
     * the given entry. <br>
     * The implementation here is removing the given entry from the cache.
+    * @param entry 
     */
    protected void ageOut(LRUCacheEntry entry)
    {
@@ -228,6 +233,9 @@ public class LRUCachePolicy
    }
    /**
     * Factory method for cache entries
+    * @param key 
+    * @param value 
+    * @return the entry 
     */
    protected LRUCacheEntry createCacheEntry(Object key, Object value)
    {
@@ -243,8 +251,10 @@ public class LRUCachePolicy
    public class LRUList
    {
       /** The maximum capacity of the cache list */
+      @SuppressWarnings("hiding")
       public int m_maxCapacity;
       /** The minimum capacity of the cache list */
+      @SuppressWarnings("hiding")
       public int m_minCapacity;
       /** The current capacity of the cache list */
       public int m_capacity;
@@ -363,6 +373,7 @@ public class LRUCachePolicy
       }
       /**
        * Removes from the cache list the specified entry.
+       * @param entry 
        */
       protected void remove(LRUCacheEntry entry)
       {
@@ -401,14 +412,17 @@ public class LRUCachePolicy
       }
       /**
        * Callback that signals that the given entry is just about to be added.
+       * @param entry 
        */
       protected void entryPromotion(LRUCacheEntry entry) {}
       /**
        * Callback that signals that the given entry has been added to the cache.
+       * @param entry 
        */
       protected void entryAdded(LRUCacheEntry entry) {}
       /**
        * Callback that signals that the given entry has been removed from the cache.
+       * @param entry 
        */
       protected void entryRemoved(LRUCacheEntry entry) {}
       /**
@@ -457,6 +471,8 @@ public class LRUCachePolicy
       /**
        * Creates a new double linked cell, storing the object we
        * want to cache and the key that is used to retrieve it.
+       * @param key 
+       * @param object 
        */
       protected LRUCacheEntry(Object key, Object object)
       {

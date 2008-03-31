@@ -21,13 +21,10 @@
 */
 package org.jboss.util.file;
 
-import java.util.Iterator;
-import java.net.URL;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.JarURLConnection;
-import java.io.File;
 import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.util.Iterator;
 
 /**
  * comment
@@ -35,9 +32,11 @@ import java.io.IOException;
  * @author <a href="bill@jboss.com">Bill Burke</a>
  * @version $Revision: 1.1 $
  */
+@SuppressWarnings("unchecked")
 public class JarProtocolArchiveBrowserFactory implements ArchiveBrowserFactory
 {
 
+   @SuppressWarnings("deprecation")
    public Iterator create(URL url, ArchiveBrowser.Filter filter)
    {
       if (url.toString().endsWith("!/"))

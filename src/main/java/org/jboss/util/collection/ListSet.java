@@ -38,10 +38,13 @@ import org.jboss.util.NullArgumentException;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@SuppressWarnings("unchecked")
 public class ListSet
    extends AbstractSet
    implements Set, Cloneable, Serializable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The <tt>List</tt> which will be used for element storage. */
    protected final List list;
 

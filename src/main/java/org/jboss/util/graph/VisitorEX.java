@@ -27,6 +27,8 @@ package org.jboss.util.graph;
  * 
  * @author Scott.Stark@jboss.org
  * @version $Revision$
+ * @param <T> 
+ * @param <E> 
  */
 public interface VisitorEX<T, E extends Exception>
 {   

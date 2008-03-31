@@ -140,7 +140,7 @@ public abstract class PublicId {
    * <p>This method is declared static so that other classes
    * can use it directly.</p>
    *
-   * @param publicId The unnormalized public identifier.
+   * @param urn The unnormalized public identifier.
    *
    * @return The normalized identifier.
    */

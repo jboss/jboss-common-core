@@ -31,6 +31,7 @@ import java.util.HashSet;
  * Time: 2:10:46 PM
  * To change this template use Options | File Templates.
  */
+@SuppressWarnings("unchecked")
 public class DeadlockDetector
 {
    // TODO Maybe this should be an MBean in the future
@@ -77,6 +78,8 @@ public class DeadlockDetector
 
    /**
     * Add a transaction waiting for a lock
+    * @param holder 
+    * @param resource 
     */
    public void addWaiting(Object holder, Resource resource)
    {
@@ -88,6 +91,7 @@ public class DeadlockDetector
 
    /**
     * Remove a transaction waiting for a lock
+    * @param holder 
     */
    public void removeWaiting(Object holder)
    {

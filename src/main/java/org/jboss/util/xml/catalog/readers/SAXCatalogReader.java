@@ -113,6 +113,7 @@ import org.jboss.util.xml.catalog.readers.CatalogReader;
  *
  * @version 1.0
  */
+@SuppressWarnings({"unchecked", "deprecation"})
 public class SAXCatalogReader implements CatalogReader, ContentHandler, DocumentHandler {
   /** The SAX Parser Factory */
   protected SAXParserFactory parserFactory = null;
@@ -141,23 +142,25 @@ public class SAXCatalogReader implements CatalogReader, ContentHandler, Document
   private Catalog catalog;
 
   /** Set the XML SAX Parser Factory.
+ * @param parserFactory 
    */
   public void setParserFactory(SAXParserFactory parserFactory) {
     this.parserFactory = parserFactory;
   }
 
   /** Set the XML SAX Parser Class
+ * @param parserClass 
    */
   public void setParserClass(String parserClass) {
     this.parserClass = parserClass;
   }
 
-  /** Get the parser factory currently in use. */
+  /** @return the parser factory currently in use. */
   public SAXParserFactory getParserFactory() {
     return parserFactory;
   }
 
-  /** Get the parser class currently in use. */
+  /** @return the parser class currently in use. */
   public String getParserClass() {
     return parserClass;
   }
@@ -179,18 +182,23 @@ public class SAXCatalogReader implements CatalogReader, ContentHandler, Document
     parserClass = null;
   }
 
-  /** The constructor */
+  /** The constructor 
+ * @param parserFactory */
   public SAXCatalogReader(SAXParserFactory parserFactory) {
     this.parserFactory = parserFactory;
   }
 
-  /** The constructor */
+  /** The constructor 
+ * @param parserClass */
   public SAXCatalogReader(String parserClass) {
     this.parserClass = parserClass;
   }
 
   /** Set the SAXCatalogParser class for the given namespace/root
      * element type.
+ * @param namespaceURI 
+ * @param rootElement 
+ * @param parserClass 
      */
   public void setCatalogParser(String namespaceURI,
 			       String rootElement,
@@ -204,6 +212,9 @@ public class SAXCatalogReader implements CatalogReader, ContentHandler, Document
 
   /** Get the SAXCatalogParser class for the given namespace/root
      * element type.
+ * @param namespaceURI 
+ * @param rootElement 
+ * @return the catalog parser 
      */
   public String getCatalogParser(String namespaceURI,
 				 String rootElement) {

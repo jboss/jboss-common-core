@@ -102,7 +102,7 @@ public class MethodBoundPropertyListener
    private PropertyDescriptor getPropertyDescriptor(final String beanPropertyName)
       throws IntrospectionException
    {
-      Class instanceType = instance.getClass();
+      Class<?> instanceType = instance.getClass();
       BeanInfo beanInfo = Introspector.getBeanInfo(instanceType);
       PropertyDescriptor descriptors[] = beanInfo.getPropertyDescriptors();
       PropertyDescriptor descriptor = null;
@@ -148,7 +148,7 @@ public class MethodBoundPropertyListener
    protected void invokeSetter(String value) {
       try {
          // coerce value to field type
-         Class type = descriptor.getPropertyType();
+         Class<?> type = descriptor.getPropertyType();
          PropertyEditor editor = PropertyEditors.findEditor(type);
          editor.setAsText(value);
          Object coerced = editor.getValue();

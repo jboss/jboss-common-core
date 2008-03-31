@@ -44,7 +44,7 @@ public class ClassEditor extends TextPropertyEditorSupport
       {
          ClassLoader loader = Thread.currentThread().getContextClassLoader();
          String classname = getAsText();
-         Class type = loader.loadClass(classname);
+         Class<?> type = loader.loadClass(classname);
 
          return type;
       }

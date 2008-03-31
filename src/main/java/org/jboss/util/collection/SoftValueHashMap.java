@@ -36,6 +36,7 @@ import java.util.Set;
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:bill@jboss.org">Bill Burke</a>
  */
+@SuppressWarnings("unchecked")
 public class SoftValueHashMap
    extends AbstractMap
    implements Map 

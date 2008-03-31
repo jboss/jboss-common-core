@@ -34,6 +34,7 @@ import java.io.IOException;
  * @author Scott.Stark@jboss.org
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public abstract class URLListerBase implements URLLister
 {
    public Collection listMembers (URL baseUrl, String patterns,

@@ -85,6 +85,7 @@ import javax.naming.spi.ObjectFactory;
  * @author <a href="mailto:Scott.Stark@jboss.org">Scott Stark</a>.
  * @version $Revision$
 */
+@SuppressWarnings("unchecked")
 public class NonSerializableFactory implements ObjectFactory
 {
     private static Map wrapperMap = Collections.synchronizedMap(new HashMap());
@@ -92,10 +93,10 @@ public class NonSerializableFactory implements ObjectFactory
     /** Place an object into the NonSerializableFactory namespace for subsequent
     access by getObject. There cannot be an already existing binding for key.
 
-    @param key, the name to bind target under. This should typically be the
+    @param key the name to bind target under. This should typically be the
     name that will be used to bind target in the JNDI namespace, but it does
     not have to be.
-    @param target, the non-Serializable object to bind.
+    @param target the non-Serializable object to bind.
     @throws NameAlreadyBoundException thrown if key already exists in the
      NonSerializableFactory map
     */
@@ -109,10 +110,10 @@ public class NonSerializableFactory implements ObjectFactory
      for subsequent access by getObject. Any existing binding for key will be
      replaced by target.
 
-    @param key, the name to bind target under. This should typically be the
+    @param key the name to bind target under. This should typically be the
     name that will be used to bind target in the JNDI namespace, but it does
     not have to be.
-    @param target, the non-Serializable object to bind.
+    @param target the non-Serializable object to bind.
     */
     public static void rebind(String key, Object target)
     {
@@ -121,7 +122,7 @@ public class NonSerializableFactory implements ObjectFactory
 
     /** Remove a binding from the NonSerializableFactory map.
 
-    @param key, the key into the NonSerializableFactory map to remove.
+    @param key the key into the NonSerializableFactory map to remove.
     @throws NameNotFoundException thrown if key does not exist in the
      NonSerializableFactory map
     */
@@ -132,7 +133,7 @@ public class NonSerializableFactory implements ObjectFactory
     }
     /** Remove a binding from the NonSerializableFactory map.
 
-    @param name, the name for the key into NonSerializableFactory map to remove.
+    @param name the name for the key into NonSerializableFactory map to remove.
      The key is obtained as name.toString().
     @throws NameNotFoundException thrown if key does not exist in the
      NonSerializableFactory map
@@ -145,6 +146,7 @@ public class NonSerializableFactory implements ObjectFactory
     }
 
     /** Lookup a value from the NonSerializableFactory map.
+    * @param key 
     @return the object bound to key is one exists, null otherwise.
     */
     public static Object lookup(String key)
@@ -153,6 +155,7 @@ public class NonSerializableFactory implements ObjectFactory
         return value;
     }
     /** Lookup a value from the NonSerializableFactory map.
+    * @param name 
     @return the object bound to key is one exists, null otherwise.
     */
     public static Object lookup(Name name)
@@ -165,10 +168,10 @@ public class NonSerializableFactory implements ObjectFactory
     /** A convience method that simplifies the process of rebinding a
         non-zerializable object into a JNDI context.
 
-    @param ctx, the JNDI context to rebind to.
-    @param key, the key to use in both the NonSerializableFactory map and JNDI. It
+    @param ctx the JNDI context to rebind to.
+    @param key the key to use in both the NonSerializableFactory map and JNDI. It
         must be a valid name for use in ctx.bind().
-    @param target, the non-Serializable object to bind.
+    @param target the non-Serializable object to bind.
     @throws NamingException thrown on failure to rebind key into ctx.
     */
     public static synchronized void rebind(Context ctx, String key, Object target) throws NamingException
@@ -186,11 +189,11 @@ public class NonSerializableFactory implements ObjectFactory
     non-zerializable object into a JNDI context. This version binds the
     target object into the default IntitialContext using name path.
 
-   @param name, the name to use as JNDI path name. The key into the
+   @param name the name to use as JNDI path name. The key into the
     NonSerializableFactory map is obtained from the toString() value of name.
     The name parameter cannot be a 0 length name.
     Any subcontexts between the root and the name must exist.
-   @param target, the non-Serializable object to bind.
+   @param target the non-Serializable object to bind.
    @throws NamingException thrown on failure to rebind key into ctx.
    */
    public static synchronized void rebind(Name name, Object target) throws NamingException
@@ -202,11 +205,11 @@ public class NonSerializableFactory implements ObjectFactory
     non-zerializable object into a JNDI context. This version binds the
     target object into the default IntitialContext using name path.
 
-   @param name, the name to use as JNDI path name. The key into the
+   @param name the name to use as JNDI path name. The key into the
     NonSerializableFactory map is obtained from the toString() value of name.
     The name parameter cannot be a 0 length name.
-   @param target, the non-Serializable object to bind.
-   @param createSubcontexts, a flag indicating if subcontexts of name should
+   @param target the non-Serializable object to bind.
+   @param createSubcontexts a flag indicating if subcontexts of name should
     be created if they do not already exist.
    @throws NamingException thrown on failure to rebind key into ctx.
    */
@@ -227,13 +230,13 @@ public class NonSerializableFactory implements ObjectFactory
     /** Transform the obj Reference bound into the JNDI namespace into the
     actual non-Serializable object.
 
-    @param obj, the object bound in the JNDI namespace. This must be an implementation
+    @param obj the object bound in the JNDI namespace. This must be an implementation
     of javax.naming.Reference with a javax.naming.RefAddr of type "nns" whose
     content is the String key used to location the non-Serializable object in the 
     NonSerializableFactory map.
-    @param name, ignored.
-    @param nameCtx, ignored.
-    @param env, ignored.
+    @param name ignored.
+    @param nameCtx ignored.
+    @param env ignored.
 
     @return the non-Serializable object associated with the obj Reference if one
     exists, null if one does not.

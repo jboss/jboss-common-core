@@ -52,6 +52,7 @@ import org.jboss.util.NullArgumentException;
  * @author Scott.Stark@jboss.org
  * @author  <a href="mailto:adrian@jboss.com">Adrian Brock</a>
  */
+@SuppressWarnings("unchecked")
 public class PropertyMap extends Properties
 {
    /** Serial version uid */
@@ -236,6 +237,8 @@ public class PropertyMap extends Properties
    /**
     * Returns a set of keys for all entries in this group and optionally
     * all of the keys in the defaults map.
+    * @param includeDefaults 
+    * @return the key set
     */
    public Set keySet(final boolean includeDefaults)
    {
@@ -253,6 +256,8 @@ public class PropertyMap extends Properties
    /**
     * Returns a set of entrys for all entries in this group and optionally
     * all of the entrys in the defaults map.
+    * @param includeDefaults 
+    * @return  the entry set
     */
    public Set entrySet(final boolean includeDefaults)
    {
@@ -529,6 +534,7 @@ public class PropertyMap extends Properties
     *
     * @param prefix  Prefix to append to all map keys (or null).
     * @param map     Map containing properties to load.
+    * @throws PropertyException
     */
    public void load(String prefix, Map map) throws PropertyException
    {
@@ -554,6 +560,7 @@ public class PropertyMap extends Properties
     * Load properties from a map.
     *
     * @param map  Map containing properties to load.
+    * @throws PropertyException
     */
    public void load(Map map) throws PropertyException
    {
@@ -564,6 +571,8 @@ public class PropertyMap extends Properties
     * Load properties from a PropertyReader.
     *
     * @param reader  PropertyReader to read properties from.
+    * @throws PropertyException 
+    * @throws IOException 
     */
    public void load(PropertyReader reader) throws PropertyException, IOException
    {
@@ -577,6 +586,8 @@ public class PropertyMap extends Properties
     * Load properties from a PropertyReader specifed by the given class name.
     *
     * @param className     Class name of a PropertyReader to read from.
+    * @throws PropertyException 
+    * @throws IOException 
     */
    public void load(String className) throws PropertyException, IOException
    {

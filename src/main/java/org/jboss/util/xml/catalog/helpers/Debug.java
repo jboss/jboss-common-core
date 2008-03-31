@@ -77,12 +77,13 @@ public class Debug {
     // nop
   }
 
-  /** Set the debug level for future messages. */
+  /** Set the debug level for future messages. 
+ * @param newDebug */
   public void setDebug(int newDebug) {
     debug = newDebug;
   }
 
-  /** Get the current debug level. */
+  /** @return the current debug level. */
   public int getDebug() {
     return debug;
   }
@@ -111,7 +112,7 @@ public class Debug {
    *
    * @param level The debug level of this message. This message
    * will only be
-   * displayed if the current debug level is at least equal to this
+   * displayd if the current debug level is at least equal to this
    * value.
    * @param message The text of the message.
    * @param spec An argument to the message.

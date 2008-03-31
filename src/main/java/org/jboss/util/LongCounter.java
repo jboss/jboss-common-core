@@ -32,6 +32,8 @@ import java.io.Serializable;
 public class LongCounter
    implements Serializable, Cloneable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The current count */
    private long count;
 
@@ -133,6 +135,8 @@ public class LongCounter
    private static class Wrapper
       extends LongCounter
    {
+      /** The serialVersionUID */
+      private static final long serialVersionUID = 1L;
       /** The wrapped counter */
       protected final LongCounter counter;
 
@@ -178,6 +182,8 @@ public class LongCounter
    public static LongCounter makeSynchronized(final LongCounter counter)
    {
       return new Wrapper(counter) {
+         /** The serialVersionUID */
+         private static final long serialVersionUID = 1L;
             public synchronized long increment() {
                return this.counter.increment();
             }
@@ -226,7 +232,9 @@ public class LongCounter
       LongCounter temp;
       if (increasing) {
          temp = new Wrapper(counter) {
-               public long decrement() {
+            /** The serialVersionUID */
+            private static final long serialVersionUID = 1L;
+            public long decrement() {
                   throw new UnsupportedOperationException();
                }
 
@@ -237,6 +245,8 @@ public class LongCounter
       }
       else {
          temp = new Wrapper(counter) {
+            /** The serialVersionUID */
+            private static final long serialVersionUID = 1L;
                public long increment() {
                   throw new UnsupportedOperationException();
                }

@@ -39,6 +39,8 @@ public class MarshalledValueInputStream
 {
    /**
     * Creates a new instance of MarshalledValueOutputStream
+    * @param is 
+    * @throws IOException 
     */
    public MarshalledValueInputStream(InputStream is) throws IOException
    {
@@ -50,7 +52,7 @@ public class MarshalledValueInputStream
     * 
     * @throws java.io.IOException   Any exception thrown by the underlying OutputStream.
     */
-   protected Class resolveClass(ObjectStreamClass v)
+   protected Class<?> resolveClass(ObjectStreamClass v)
       throws IOException, ClassNotFoundException
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -60,12 +62,12 @@ public class MarshalledValueInputStream
       return Class.forName(className, false, loader);
    }
 
-   protected Class resolveProxyClass(String[] interfaces)
+   protected Class<?> resolveProxyClass(String[] interfaces)
       throws IOException, ClassNotFoundException
    {
       // Load the interfaces from the thread context class loader
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
-      Class[] ifaceClasses = new Class[interfaces.length];
+      Class<?>[] ifaceClasses = new Class[interfaces.length];
       for (int i = 0; i < interfaces.length; i++)
       {
          ifaceClasses[i] = loader.loadClass(interfaces[i]);

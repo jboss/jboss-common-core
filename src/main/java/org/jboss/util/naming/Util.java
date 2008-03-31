@@ -36,13 +36,14 @@ import org.jboss.logging.Logger;
  * @author adrian@jboss.com
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class Util
 {
    private static final Logger log = Logger.getLogger(Util.class);
 
    /** Create a subcontext including any intermediate contexts.
-    @param ctx, the parent JNDI Context under which value will be bound
-    @param name, the name relative to ctx of the subcontext.
+    @param ctx the parent JNDI Context under which value will be bound
+    @param name the name relative to ctx of the subcontext.
     @return The new or existing JNDI subcontext
     @throws javax.naming.NamingException on any JNDI failure
     */
@@ -53,8 +54,8 @@ public class Util
    }
 
    /** Create a subcontext including any intermediate contexts.
-    @param ctx, the parent JNDI Context under which value will be bound
-    @param name, the name relative to ctx of the subcontext.
+    @param ctx the parent JNDI Context under which value will be bound
+    @param name the name relative to ctx of the subcontext.
     @return The new or existing JNDI subcontext
     @throws NamingException on any JNDI failure
     */
@@ -79,9 +80,10 @@ public class Util
    }
 
    /** Bind val to name in ctx, and make sure that all intermediate contexts exist
-    @param ctx, the parent JNDI Context under which value will be bound
-    @param name, the name relative to ctx where value will be bound
-    @param value, the value to bind.
+    @param ctx the parent JNDI Context under which value will be bound
+    @param name the name relative to ctx where value will be bound
+    @param value the value to bind.
+    @throws NamingException for any error
     */
    public static void bind(Context ctx, String name, Object value) throws NamingException
    {
@@ -90,9 +92,10 @@ public class Util
    }
 
    /** Bind val to name in ctx, and make sure that all intermediate contexts exist
-    @param ctx, the parent JNDI Context under which value will be bound
-    @param name, the name relative to ctx where value will be bound
-    @param value, the value to bind.
+    @param ctx the parent JNDI Context under which value will be bound
+    @param name the name relative to ctx where value will be bound
+    @param value the value to bind.
+    @throws NamingException for any error
     */
    public static void bind(Context ctx, Name name, Object value) throws NamingException
    {
@@ -103,9 +106,10 @@ public class Util
    }
 
    /** Rebind val to name in ctx, and make sure that all intermediate contexts exist
-    @param ctx, the parent JNDI Context under which value will be bound
-    @param name, the name relative to ctx where value will be bound
-    @param value, the value to bind.
+    @param ctx the parent JNDI Context under which value will be bound
+    @param name the name relative to ctx where value will be bound
+    @param value the value to bind.
+    @throws NamingException for any error
     */
    public static void rebind(Context ctx, String name, Object value) throws NamingException
    {
@@ -114,9 +118,10 @@ public class Util
    }
 
    /** Rebind val to name in ctx, and make sure that all intermediate contexts exist
-    @param ctx, the parent JNDI Context under which value will be bound
-    @param name, the name relative to ctx where value will be bound
-    @param value, the value to bind.
+    @param ctx the parent JNDI Context under which value will be bound
+    @param name the name relative to ctx where value will be bound
+    @param value the value to bind.
+    @throws NamingException for any error
     */
    public static void rebind(Context ctx, Name name, Object value) throws NamingException
    {
@@ -127,8 +132,9 @@ public class Util
    }
 
    /** Unbinds a name from ctx, and removes parents if they are empty
-    @param ctx, the parent JNDI Context under which the name will be unbound
-    @param name, The name to unbind
+    @param ctx the parent JNDI Context under which the name will be unbound
+    @param name The name to unbind
+    @throws NamingException for any error
     */
    public static void unbind(Context ctx, String name) throws NamingException
    {
@@ -136,8 +142,9 @@ public class Util
    }
 
    /** Unbinds a name from ctx, and removes parents if they are empty
-    @param ctx, the parent JNDI Context under which the name will be unbound
-    @param name, The name to unbind
+    @param ctx the parent JNDI Context under which the name will be unbound
+    @param name The name to unbind
+    @throws NamingException for any error
     */
    public static void unbind(Context ctx, Name name) throws NamingException
    {
@@ -167,7 +174,7 @@ public class Util
     * @return the object
     * @throws Exception for any error
     */
-   public static Object lookup(String name, Class clazz) throws Exception
+   public static Object lookup(String name, Class<?> clazz) throws Exception
    {
       InitialContext ctx = new InitialContext();
       try
@@ -188,7 +195,7 @@ public class Util
     * @return the object
     * @throws Exception for any error
     */
-   public static Object lookup(Name name, Class clazz) throws Exception
+   public static Object lookup(Name name, Class<?> clazz) throws Exception
    {
       InitialContext ctx = new InitialContext();
       try
@@ -314,6 +321,7 @@ public class Util
     * @param name the name to lookup
     * @param object the object
     * @param clazz the expected type
+    * @throws Exception for any error
     */
    protected static void checkObject(Context context, String name, Object object, Class clazz) throws Exception
    {

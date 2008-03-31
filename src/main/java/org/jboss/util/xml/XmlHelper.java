@@ -36,6 +36,7 @@ import org.w3c.dom.NodeList;
  * @author <a href="mailto:chris@kimptoc.net">Chris Kimpton</a>
  * @version $Revision$
  */
+@SuppressWarnings("unchecked")
 public class XmlHelper
 {
    public static void write(Writer out, Document dom)
@@ -65,7 +66,7 @@ public class XmlHelper
          Node currentChild = children.item(i);
          if (currentChild.getNodeType() == Node.ELEMENT_NODE && 
              ((Element)currentChild).getTagName().equals(tagName)) {
-            goodChildren.add((Element)currentChild);
+            goodChildren.add(currentChild);
          }
       }
       return goodChildren.iterator();
@@ -108,6 +109,7 @@ public class XmlHelper
     * @param element the parent element
     * @param tagName the name of the desired child
     * @return either the named child or null
+    * @throws Exception
     */
    public static Element getOptionalChild(Element element, String tagName)
       throws Exception
@@ -125,6 +127,7 @@ public class XmlHelper
     * @param defaultElement the element to return if the child
     *                       doesn't exist
     * @return either the named child or the supplied default
+    * @throws Exception 
     */
    public static Element getOptionalChild(Element element,
                                           String tagName,
@@ -150,6 +153,7 @@ public class XmlHelper
     *
     * @param element    The element to get the content for.
     * @return           The content of the element or null.
+    * @throws Exception 
     */
    public static String getElementContent(final Element element)
       throws Exception
@@ -163,6 +167,7 @@ public class XmlHelper
     * @param element       The element to get the content for.
     * @param defaultStr    The default to return when there is no content.
     * @return              The content of the element or the default.
+    * @throws Exception 
     */
    public static String getElementContent(Element element, String defaultStr)
       throws Exception
@@ -193,6 +198,7 @@ public class XmlHelper
     * @param element    The parent element.
     * @param tagName    The name of the desired child.
     * @return           The element content or null.
+    * @throws Exception 
     */
    public static String getUniqueChildContent(Element element,
                                               String tagName)
@@ -207,6 +213,7 @@ public class XmlHelper
     * @param element    The parent element.
     * @param tagName    The name of the desired child.
     * @return           The element content or null.
+    * @throws Exception 
     */
    public static String getOptionalChildContent(Element element,
                                                 String tagName)

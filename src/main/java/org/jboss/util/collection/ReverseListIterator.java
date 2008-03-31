@@ -30,12 +30,13 @@ import java.util.NoSuchElementException;
  *
  * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ * @param <E> 
  */
-public class ReverseListIterator
-   implements Iterator
+public class ReverseListIterator<E>
+   implements Iterator<E>
 {
    /** The list to get elements from */
-   protected final List list;
+   protected final List<E> list;
    
    /** The current index of the list */
    protected int current;
@@ -45,7 +46,7 @@ public class ReverseListIterator
     *
     * @param list    List to iterate over.
     */
-   public ReverseListIterator(final List list) {
+   public ReverseListIterator(final List<E> list) {
       this.list = list;
       current = list.size() - 1;
    }
@@ -66,7 +67,7 @@ public class ReverseListIterator
     *
     * @throws NoSuchElementException
     */
-   public Object next() {
+   public E next() {
       if (current <= 0) {
          throw new NoSuchElementException();
       }

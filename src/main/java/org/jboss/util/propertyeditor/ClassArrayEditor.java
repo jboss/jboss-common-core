@@ -39,13 +39,13 @@ public class ClassArrayEditor extends PropertyEditorSupport
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
       StringTokenizer tokenizer = new StringTokenizer(text, ", \t\r\n");
-      ArrayList classes = new ArrayList();
+      ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
       while( tokenizer.hasMoreTokens() == true )
       {
          String name = tokenizer.nextToken();
          try
          {
-            Class c = loader.loadClass(name);
+            Class<?> c = loader.loadClass(name);
             classes.add(c);
          }
          catch(ClassNotFoundException e)
@@ -54,7 +54,7 @@ public class ClassArrayEditor extends PropertyEditorSupport
          }
       }
 
-      Class[] theValue = new Class[classes.size()];
+      Class<?>[] theValue = new Class[classes.size()];
       classes.toArray(theValue);
       setValue(theValue);
    }
@@ -64,7 +64,7 @@ public class ClassArrayEditor extends PropertyEditorSupport
     */
    public String getAsText()
    {
-      Class[] theValue = (Class[]) getValue();
+      Class<?>[] theValue = (Class[]) getValue();
       StringBuffer text = new StringBuffer();
       int length = theValue == null ? 0 : theValue.length;
       for(int n = 0; n < length; n ++)

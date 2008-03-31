@@ -33,6 +33,7 @@ import org.apache.commons.httpclient.HttpURL;
 import org.apache.webdav.lib.WebdavResource;
 import org.jboss.net.protocol.URLListerBase;
 
+@SuppressWarnings("unchecked")
 public class DavURLLister extends URLListerBase
 {
    public Collection listMembers (URL baseUrl, URLFilter filter) throws IOException
@@ -40,14 +41,14 @@ public class DavURLLister extends URLListerBase
       return listMembers (baseUrl, filter, false);
    }
 
-   public Collection listMembers (URL baseUrl, URLFilter filter, boolean scanNonDottedSubDirs) throws IOException
+   public Collection<URL> listMembers (URL baseUrl, URLFilter filter, boolean scanNonDottedSubDirs) throws IOException
    {
       WebdavResource resource = null;
       try
       {
          resource = new WebdavResource (baseUrl.toString ());
          WebdavResource[] resources = resource.listWebdavResources ();
-         List urls = new ArrayList (resources.length);
+         List<URL> urls = new ArrayList<URL>(resources.length);
          for (int i = 0; i < resources.length; i++)
          {
             WebdavResource member = resources[i];

@@ -33,6 +33,8 @@ import java.lang.reflect.Method;
 public class NoSuchMethodException
    extends java.lang.NoSuchMethodException
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /**
     * Construct a <tt>NoSuchMethodException</tt> with the specified detail 
     * message.
@@ -71,14 +73,11 @@ public class NoSuchMethodException
       super();
    }
 
-   /**
-    * Return a string representation of the given method object.
-    */
    public static String format(Method method)
    {
       StringBuffer buffer = new StringBuffer();
       buffer.append(method.getName()).append("(");
-      Class[] paramTypes = method.getParameterTypes();
+      Class<?>[] paramTypes = method.getParameterTypes();
       for (int count = 0; count < paramTypes.length; count++) {
          if (count > 0) {
             buffer.append(",");
