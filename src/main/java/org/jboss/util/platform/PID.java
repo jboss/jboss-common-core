@@ -38,7 +38,7 @@ public class PID
    implements Serializable, Cloneable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -6837013326314943907L;
    /** The <tt>int</tt> process identifier. */
    protected final int id;
 

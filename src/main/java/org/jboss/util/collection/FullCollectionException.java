@@ -32,7 +32,7 @@ public class FullCollectionException
    extends CollectionException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -1795773071357559465L;
    /**
     * Construct a <code>FullCollectionException</code> with the specified 
     * detail message.

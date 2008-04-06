@@ -32,7 +32,7 @@ public class EmptyCollectionException
    extends CollectionException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -4562591066479152759L;
    /**
     * Construct a <code>EmptyCollectionException</code> with the specified 
     * detail message.

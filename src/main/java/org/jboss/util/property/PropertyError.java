@@ -33,7 +33,7 @@ public class PropertyError
    extends NestedError
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -4956548740655706282L;
    /**
     * Construct a <tt>PropertyError</tt> with the specified detail 
     * message.

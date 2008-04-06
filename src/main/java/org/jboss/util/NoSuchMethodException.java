@@ -34,7 +34,7 @@ public class NoSuchMethodException
    extends java.lang.NoSuchMethodException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -3044955578250977290L;
    /**
     * Construct a <tt>NoSuchMethodException</tt> with the specified detail 
     * message.

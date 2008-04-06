@@ -44,7 +44,7 @@ public class ListSet
    implements Set, Cloneable, Serializable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 7333619218072079496L;
    /** The <tt>List</tt> which will be used for element storage. */
    protected final List list;
 

@@ -33,7 +33,7 @@ public class PropertyContainer
    extends PropertyMap
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -3347198703863412326L;
    /** The group name for this container. */
    protected String groupname = "<unknown>";
 

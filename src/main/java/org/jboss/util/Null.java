@@ -38,7 +38,7 @@ public final class Null
    implements Serializable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -403173436435490144L;
    /** The primary instance of Null. */
    public static final Null VALUE = new Null();
 

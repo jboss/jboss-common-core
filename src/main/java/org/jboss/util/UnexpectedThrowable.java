@@ -33,7 +33,7 @@ public class UnexpectedThrowable
    extends NestedError
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 4318032849691437298L;
    /**
     * Construct a <tt>UnexpectedThrowable</tt> with the specified 
     * detail message.

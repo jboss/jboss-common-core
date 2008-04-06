@@ -38,7 +38,7 @@ public class NestedSQLException
    implements NestedThrowable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -8348882503434035185L;
    /** The nested throwable */
    protected final Throwable nested;
 

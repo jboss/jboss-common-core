@@ -32,7 +32,7 @@ public class EmptyStringException
    extends IllegalArgumentException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -7958716001355854762L;
    /**
     * Construct a <tt>EmptyStringException</tt>.
     *

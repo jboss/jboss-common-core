@@ -35,7 +35,7 @@ public class PropertyEvent
    extends EventObject
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -5007209897739884086L;
    /** Property name. */
    protected final String name;
 

@@ -31,7 +31,7 @@ public class CollectionException
    extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1470947618739421094L;
    /**
     * Construct a <code>CollectionException</code> with the specified 
     * detail message.

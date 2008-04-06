@@ -33,7 +33,7 @@ public class LongCounter
    implements Serializable, Cloneable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1615297462859270139L;
    /** The current count */
    private long count;
 
@@ -136,7 +136,7 @@ public class LongCounter
       extends LongCounter
    {
       /** The serialVersionUID */
-      private static final long serialVersionUID = 1L;
+      private static final long serialVersionUID = 6720507617603163762L;
       /** The wrapped counter */
       protected final LongCounter counter;
 
@@ -183,7 +183,7 @@ public class LongCounter
    {
       return new Wrapper(counter) {
          /** The serialVersionUID */
-         private static final long serialVersionUID = 1L;
+         private static final long serialVersionUID = 8903330696503363758L;
             public synchronized long increment() {
                return this.counter.increment();
             }
@@ -233,7 +233,7 @@ public class LongCounter
       if (increasing) {
          temp = new Wrapper(counter) {
             /** The serialVersionUID */
-            private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = -8902748795144754375L;
             public long decrement() {
                   throw new UnsupportedOperationException();
                }
@@ -246,7 +246,7 @@ public class LongCounter
       else {
          temp = new Wrapper(counter) {
             /** The serialVersionUID */
-            private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 2584758778978644599L;
                public long increment() {
                   throw new UnsupportedOperationException();
                }

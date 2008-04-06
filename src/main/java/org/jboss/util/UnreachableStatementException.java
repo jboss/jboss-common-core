@@ -32,7 +32,7 @@ public class UnreachableStatementException
    extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -6741968131968754812L;
    /**
     * Construct a <tt>UnreachableStatementException</tt> with a detail message.
     *

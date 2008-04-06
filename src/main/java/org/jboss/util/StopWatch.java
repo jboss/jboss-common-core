@@ -33,7 +33,7 @@ public class StopWatch
    implements Serializable, Cloneable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 4628094303187435707L;
    /** Total time */
    protected long total = 0;
 
@@ -261,7 +261,7 @@ public class StopWatch
       extends StopWatch
    {
       /** The serialVersionUID */
-      private static final long serialVersionUID = 1L;
+      private static final long serialVersionUID = 6859401939735540773L;
       protected StopWatch watch;
 
       public Wrapper(final StopWatch watch) {
@@ -320,7 +320,7 @@ public class StopWatch
       return new Wrapper(watch)
          {
          /** The serialVersionUID */
-         private static final long serialVersionUID = 1L;
+         private static final long serialVersionUID = -6284244000894114817L;
             public synchronized void start(final boolean reset) {
                this.watch.start(reset);
             }

@@ -30,7 +30,7 @@ package org.jboss.util.threadpool;
 public class TaskStoppedException extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -5166095239829218680L;
    // Constants -----------------------------------------------------
 
    // Attributes ----------------------------------------------------

@@ -39,7 +39,7 @@ public class ArrayIterator
    implements Iterator, Serializable, Cloneable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -6604583440222021075L;
    /** Array to iterate over. */
    protected final Object[] array;
 

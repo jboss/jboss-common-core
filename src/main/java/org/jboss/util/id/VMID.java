@@ -59,7 +59,7 @@ public class VMID
    implements ID
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -4339675822939194520L;
    /** The address of the current virtual machine */
    protected final byte[] address;
 

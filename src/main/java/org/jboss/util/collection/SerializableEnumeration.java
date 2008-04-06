@@ -38,7 +38,7 @@ public class SerializableEnumeration
    implements Enumeration
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 8678951571196067510L;
    private int index;
 
    public SerializableEnumeration () {

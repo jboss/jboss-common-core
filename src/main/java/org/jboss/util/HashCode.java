@@ -35,7 +35,7 @@ public final class HashCode
    implements Serializable, Cloneable, Comparable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 2391396931740264021L;
    /** Hashcode for a 'null' value. */
    private static final int NULL_HASHCODE = 0;
 

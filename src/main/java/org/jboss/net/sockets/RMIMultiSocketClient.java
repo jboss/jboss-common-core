@@ -36,7 +36,7 @@ import java.rmi.Remote;
 public class RMIMultiSocketClient implements InvocationHandler, Serializable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -945837789475428529L;
    protected Remote[] stubs;
    protected Random random;
    public RMIMultiSocketClient(Remote[] stubs)

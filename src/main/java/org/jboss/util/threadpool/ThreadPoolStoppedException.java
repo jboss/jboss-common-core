@@ -30,7 +30,7 @@ package org.jboss.util.threadpool;
 public class ThreadPoolStoppedException extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 8732248855455909385L;
    // Constants -----------------------------------------------------
 
    // Attributes ----------------------------------------------------

@@ -40,7 +40,7 @@ package org.jboss.util.deadlock;
 public class ApplicationDeadlockException extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -908428091244600395L;
    protected boolean retry = false;
 
 

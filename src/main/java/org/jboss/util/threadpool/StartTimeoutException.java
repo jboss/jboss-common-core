@@ -30,7 +30,7 @@ package org.jboss.util.threadpool;
 public class StartTimeoutException extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 2287779538710535096L;
    // Constants -----------------------------------------------------
 
    // Attributes ----------------------------------------------------

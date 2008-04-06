@@ -30,7 +30,7 @@ package org.jboss.util.threadpool;
 public class ThreadPoolFullException extends RuntimeException
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = -1044683480627340299L;
 
    /**
     * Create a new ThreadPoolFullException

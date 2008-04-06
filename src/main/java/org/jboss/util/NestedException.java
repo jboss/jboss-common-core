@@ -36,7 +36,7 @@ public class NestedException
    implements NestedThrowable
 {
    /** The serialVersionUID */
-   private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 7003381223684751953L;
    /** The nested throwable */
    protected final Throwable nested;
 
