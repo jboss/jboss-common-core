@@ -23,6 +23,7 @@ package org.jboss.test.util.test.xml.resolver;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import org.jboss.util.xml.JBossEntityResolver;
 import org.xml.sax.InputSource;
@@ -78,6 +79,22 @@ public class JBossEntityResolverUnitTestCase
       assertNotNull(resolvedStream);
       int resolvedSize = bytesTotal(resolvedStream);
       assertEquals("Schema sizes: redefined=" + redefinedSize + ", redefining=" + redefiningSize, redefinedSize, resolvedSize);
+   }
+
+   public void testSystemPropertyInSystemID()
+      throws Exception
+   {
+      JBossEntityResolver resolver = new JBossEntityResolver();
+      ClassLoader loader = Thread.currentThread().getContextClassLoader();
+      URL tstConfig = loader.getResource("tst-config_5.xsd");
+      assertNotNull(tstConfig);
+      System.setProperty("tst.config_5.xsd", tstConfig.toExternalForm());
+      InputSource resolvedSource = resolver.resolveEntity("urn:jboss:xml:test", "${tst.config_5.xsd}");
+      assertNotNull(resolvedSource);
+      InputStream resolvedStream = resolvedSource.getByteStream();
+      assertNotNull(resolvedStream);
+      int resolvedSize = bytesTotal(resolvedStream);
+      assertEquals(280, resolvedSize);
    }
 
    private int bytesTotal(InputStream redefinedStream) throws IOException

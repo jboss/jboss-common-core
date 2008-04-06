@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.logging.Logger;
+import org.jboss.util.StringPropertyReplacer;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -63,6 +64,9 @@ public class JBossEntityResolver implements EntityResolver
    private static boolean warnOnNonFileURLs;
 
    private boolean entityResolved = false;
+   /** Should system property refs in system ids be replaced */
+   private boolean replaceSystemProperties = true;
+
    /** A local entities map that overrides the class level entities */
    private Map localEntities;
 
@@ -204,6 +208,16 @@ public class JBossEntityResolver implements EntityResolver
    public static void registerEntity(String id, String dtdFileName)
    {
       entities.put(id, dtdFileName);
+   }
+
+   
+   public boolean isReplaceSystemProperties()
+   {
+      return replaceSystemProperties;
+   }
+   public void setReplaceSystemProperties(boolean replaceSystemProperties)
+   {
+      this.replaceSystemProperties = replaceSystemProperties;
    }
 
    /**
@@ -443,7 +457,9 @@ public class JBossEntityResolver implements EntityResolver
       {
          if (trace)
             log.trace("Trying to resolve systemId as a URL");
-         
+         // Replace any system property refs if isReplaceSystemProperties is true
+         if(isReplaceSystemProperties())
+            systemId = StringPropertyReplacer.replaceProperties(systemId);
          URL url = new URL(systemId);
          if (warnOnNonFileURLs && url.getProtocol().equalsIgnoreCase("file") == false)
          {
