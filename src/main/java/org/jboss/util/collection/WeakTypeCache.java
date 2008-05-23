@@ -198,7 +198,8 @@ public abstract class WeakTypeCache<T>
    protected T peek(ParameterizedType type)
    {
       Class<?> rawType = (Class<?>) type.getRawType();
-      Map<String, T> classLoaderCache = getClassLoaderCache(rawType.getClassLoader());
+      ClassLoader cl = SecurityActions.getClassLoader(rawType);
+      Map<String, T> classLoaderCache = getClassLoaderCache(cl);
       
       synchronized (classLoaderCache)
       {
@@ -215,7 +216,8 @@ public abstract class WeakTypeCache<T>
    protected void put(ParameterizedType type, T result)
    {
       Class<?> rawType = (Class<?>) type.getRawType();
-      Map<String, T> classLoaderCache = getClassLoaderCache(rawType.getClassLoader());
+      ClassLoader cl = SecurityActions.getClassLoader(rawType);
+      Map<String, T> classLoaderCache = getClassLoaderCache(cl);
 
       synchronized (classLoaderCache)
       {
@@ -257,7 +259,8 @@ public abstract class WeakTypeCache<T>
     */
    protected T peek(Class<?> clazz)
    {
-      Map<String, T> classLoaderCache = getClassLoaderCache(clazz.getClassLoader());
+      ClassLoader cl = SecurityActions.getClassLoader(clazz);
+      Map<String, T> classLoaderCache = getClassLoaderCache(cl);
 
       synchronized (classLoaderCache)
       {
@@ -273,7 +276,8 @@ public abstract class WeakTypeCache<T>
     */
    protected void put(Class<?> clazz, T result)
    {
-      Map<String, T> classLoaderCache = getClassLoaderCache(clazz.getClassLoader());
+      ClassLoader cl = SecurityActions.getClassLoader(clazz);
+      Map<String, T> classLoaderCache = getClassLoaderCache(cl);
 
       synchronized (classLoaderCache)
       {
