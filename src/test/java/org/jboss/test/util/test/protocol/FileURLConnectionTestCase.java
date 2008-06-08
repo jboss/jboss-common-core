@@ -32,6 +32,7 @@ import junit.framework.TestCase;
  * Tests of the expected jdk file: url connection protocol handler behaviors.
  * 
  * @author Scott.Stark@jboss.org
+ * @author Dimitris.Andreadis@jboss.org
  * @version $Revision:$
  */
 public class FileURLConnectionTestCase extends TestCase
@@ -42,19 +43,24 @@ public class FileURLConnectionTestCase extends TestCase
       File tmp = File.createTempFile("testLastModified", "test");
       tmp.deleteOnExit();
       long lastModified = tmp.lastModified();
-      System.out.println(tmp.getAbsolutePath()+", lastModified:"+lastModified);
+      System.out.print(tmp.getAbsolutePath()+", lastModified:"+lastModified);
       URL tmpURL = tmp.toURL();
       URLConnection tmpConn = tmpURL.openConnection();
       assertEquals(lastModified, tmpConn.getLastModified());
       long lastModifiedHdr = tmpConn.getHeaderFieldDate("Last-Modified", 0);
-      System.out.println("Last-Modified: "+lastModifiedHdr);
-      assertEquals(lastModified, lastModifiedHdr);
+      System.out.println(", Last-Modified: "+lastModifiedHdr);
+      System.out.println("Got URLConnection of type: " + tmpConn.getClass().getName());
+      // the last-modified header is expected to strip the milliseconds to
+      // comply with the (dd MMM yyyy HH:mm:ss) format, so the following assertions
+      // is invalid on windows that provide millisecond accuracy to File.lastModified()
+      // see, http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4504473
+      // assertEquals(lastModified, lastModifiedHdr);
    }
 
    public void testLength()
       throws Exception
    {
-      File tmp = File.createTempFile("testLastModified", "test");
+      File tmp = File.createTempFile("testLength", "test");
       tmp.deleteOnExit();
       FileOutputStream fos = new FileOutputStream(tmp);
       fos.write("testLength".getBytes());
