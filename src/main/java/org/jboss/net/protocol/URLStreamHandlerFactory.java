@@ -108,6 +108,7 @@ public class URLStreamHandlerFactory implements java.net.URLStreamHandlerFactory
 
    /** A list of JBoss specific protocols for preloading. */
    public static final String PROTOCOLS[] = {
+      "file",
       "resource"
    };
 
