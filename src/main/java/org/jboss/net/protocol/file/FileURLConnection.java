@@ -58,7 +58,9 @@ public class FileURLConnection extends URLConnection
    {
       String flag = System.getProperty("org.jboss.net.protocol.file.decodeFilePaths");
       if (flag != null)
+      {
          decodeFilePaths = Boolean.valueOf(flag).booleanValue();
+      }
    }
    
    /** The underlying file */
@@ -67,14 +69,16 @@ public class FileURLConnection extends URLConnection
    public FileURLConnection(final URL url) throws MalformedURLException, IOException
    {
       super(url);
+      
       String path = url.getPath();
       if (decodeFilePaths)
+      {
          path = URLDecoder.decode(path, "UTF-8");
-      
+      }
       // Convert the url '/' to the os file separator
       file = new File(path.replace('/', File.separatorChar).replace('|', ':'));
 
-      doOutput = false;
+      super.doOutput = false;
    }
 
    /**
@@ -105,11 +109,11 @@ public class FileURLConnection extends URLConnection
 
    public InputStream getInputStream() throws IOException
    {
-      if (!connected)
-         connect();
+      connect();
 
       if (file.isDirectory())
       {
+         // return a sorted list of the directory contents
          String[] files = file.list();
          Arrays.sort(files);
          StringBuilder sb = new StringBuilder();
@@ -125,10 +129,10 @@ public class FileURLConnection extends URLConnection
       }
    }
 
+   // We should probably disallow this?
    public OutputStream getOutputStream() throws IOException
    {
-      if (!connected)
-         connect();
+      connect();
       
       SecurityManager sm = System.getSecurityManager();
       if (sm != null)
@@ -141,8 +145,12 @@ public class FileURLConnection extends URLConnection
    }
 
    /**
-    * Provides support for returning the value for the
-    * <tt>last-modified</tt> header.
+    * Provides support for the following headers:
+    * 
+    * <tt>last-modified</tt>
+    * <tt>content-length</tt>
+    * <tt>content-type</tt>
+    * <tt>date</tt>
     */
    public String getHeaderField(final String name)
    {
@@ -165,19 +173,26 @@ public class FileURLConnection extends URLConnection
       }
       else if (name.equalsIgnoreCase("content-type"))
       {
-         headerField = getFileNameMap().getContentTypeFor(file.getName());
-         if (headerField == null)
+         if (file.isDirectory())
          {
-            try
+            headerField = "text/plain";
+         }
+         else
+         {
+            headerField = getFileNameMap().getContentTypeFor(file.getName());
+            if (headerField == null)
             {
-               InputStream is = getInputStream();
-               BufferedInputStream bis = new BufferedInputStream(is);
-               headerField = URLConnection.guessContentTypeFromStream(bis);
-               bis.close();
-            }
-            catch(IOException e)
-            {
-               // ignore
+               try
+               {
+                  InputStream is = getInputStream();
+                  BufferedInputStream bis = new BufferedInputStream(is);
+                  headerField = URLConnection.guessContentTypeFromStream(bis);
+                  bis.close();
+               }
+               catch(IOException e)
+               {
+                  // ignore
+               }
             }
          }
       }
