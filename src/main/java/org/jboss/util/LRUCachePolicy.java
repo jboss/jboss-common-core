@@ -22,6 +22,7 @@
 package org.jboss.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Implementation of a Least Recently Used cache policy.
@@ -39,7 +40,7 @@ public class LRUCachePolicy
    /**
     * The map holding the cached objects
     */
-   protected HashMap m_map;
+   protected Map m_map;
    /**
     * The linked list used to implement the LRU algorithm
     */
@@ -79,6 +80,16 @@ public class LRUCachePolicy
       m_maxCapacity = max;
    }
 
+   /**
+    * Create map holding entries.
+    *
+    * @return the map
+    */
+   protected Map createMap()
+   {
+      return new HashMap();
+   }
+
    // Public --------------------------------------------------------
 
    // Service implementation ----------------------------------------------
@@ -90,7 +101,7 @@ public class LRUCachePolicy
     */
    public void create()
    {
-      m_map = new HashMap();
+      m_map = createMap();
       m_list = createList();
       m_list.m_maxCapacity = m_maxCapacity;
       m_list.m_minCapacity = m_minCapacity;
