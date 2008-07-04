@@ -36,7 +36,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
+import junit.framework.TestCase;
 import org.jboss.logging.Logger;
 import org.jboss.util.propertyeditor.DateEditor;
 import org.jboss.util.propertyeditor.DocumentEditor;
@@ -44,8 +48,6 @@ import org.jboss.util.propertyeditor.ElementEditor;
 import org.jboss.util.propertyeditor.PropertyEditors;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import junit.framework.TestCase;
 
 /**
  * Unit tests for the custom JBoss property editors
@@ -111,6 +113,22 @@ public class PropertyEditorsUnitTestCase extends TestCase
          for(int n = 0; n < a1.length; n ++)
             compare += a1[n] - a2[n];
          return compare;
+      }
+   }
+   static class NumberComparator implements Comparator<Number>
+   {
+      public int compare(Number o1, Number o2)
+      {
+         return o1.intValue() - o2.intValue();
+      }
+   }
+   static class ToStringComparator implements Comparator
+   {
+      public int compare(Object o1, Object o2)
+      {
+         String s1 = o1.toString();
+         String s2 = o2.toString();
+         return s1.compareTo(s2);
       }
    }
 
@@ -216,6 +234,9 @@ public class PropertyEditorsUnitTestCase extends TestCase
          Date.class,
          java.util.Properties.class,
          Locale.class,
+         AtomicInteger.class,
+         AtomicLong.class,
+         AtomicBoolean.class,
       };
       // The input string data for each type
       String[][] inputData = {
@@ -242,6 +263,9 @@ public class PropertyEditorsUnitTestCase extends TestCase
          // java.util.Properties.class
          {"prop1=value1\nprop2=value2\nprop3=value3\nprop32=${prop3}\nprop4=${user.home}\nprop5=${some.win32.path}"},
          {Locale.getDefault().toString(), "ja_JP"},
+         {"-1", "0", "1"},
+         {"-1", "0", "1"},
+         {"true", "false"},
       };
       // The expected instance for each inputData value
       calendar.set(2005, 0, 4, 0, 0, 0);
@@ -275,6 +299,9 @@ public class PropertyEditorsUnitTestCase extends TestCase
          {date1, date2, date3},
          {props},
          {Locale.getDefault(), Locale.JAPAN},
+         {new AtomicInteger(-1), new AtomicInteger(0), new AtomicInteger(1)},
+         {new AtomicLong(-1), new AtomicLong(0), new AtomicLong(1)},
+         {new AtomicBoolean(true), new AtomicBoolean(false)},
       };
       // The expected string output from getAsText()
       String[][] expectedStringData = {
@@ -297,10 +324,13 @@ public class PropertyEditorsUnitTestCase extends TestCase
          // int[].class
          {"0,291,-123"},
          // Date.class
-         {"Jan 4, 2005", "Tue Jan  4 23:38:21 PST 2005", "Tue, 04 Jan 2005 23:38:48 -0800"},            
+         {"Jan 4, 2005", "Tue Jan  4 23:38:21 PST 2005", "Tue, 04 Jan 2005 23:38:48 -0800"},
          // java.util.Properties.class
          {props.toString()},
          {Locale.getDefault().toString(), Locale.JAPAN.toString()},
+         {"-1", "0", "1"},
+         {"-1", "0", "1"},
+         {"true", "false"},
       };
       // The Comparator for non-trival types
       Comparator[] comparators = {
@@ -316,6 +346,9 @@ public class PropertyEditorsUnitTestCase extends TestCase
          null, // Date
          null, // Properties
          null, // Locale
+         new NumberComparator(),
+         new NumberComparator(),
+         new ToStringComparator(),
       };
 
       doTests(types, inputData, expectedData, expectedStringData, comparators);
@@ -334,7 +367,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
       
          // An important date
          String text = "Fri, 25 Jun 1971 00:30:00 +0200";
-         DateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");      
+         DateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
          Date date = format.parse(text);      
          
          PropertyEditor editor = new DateEditor();
@@ -346,8 +379,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
          editor.setValue(date);
          log.debug("setValue('" + date + "') --> getAsText() - '" + editor.getAsText() + "'");
          Date date2 = format.parse(editor.getAsText());
-         assertTrue("Compare date1: " + date + ", date2: " + date2,
-               date.compareTo(date2) == 0);
+         assertTrue("Compare date1: " + date + ", date2: " + date2, date.compareTo(date2) == 0);
          
          // Try in French
          Locale.setDefault(Locale.FRENCH);
@@ -362,14 +394,12 @@ public class PropertyEditorsUnitTestCase extends TestCase
          editor = new DateEditor();
          editor.setAsText(text);
          log.debug("setAsText('" + text + "') --> getValue() = '" + editor.getValue() + "'");
-         assertTrue("Compare date1: " + date + ", date2: " + editor.getValue(),
-               date.compareTo((Date)editor.getValue()) == 0);
+         assertTrue("Compare date1: " + date + ", date2: " + editor.getValue(), date.compareTo((Date)editor.getValue()) == 0);
          
          editor.setValue(date);
          log.debug("setValue('" + date + "') --> getAsText() = '" + editor.getAsText() + "'");
          date2 = format.parse(editor.getAsText());
-         assertTrue("Compare date1: " + date + ", date2: " + date2,
-               date.compareTo(date2) == 0);        
+         assertTrue("Compare date1: " + date + ", date2: " + date2, date.compareTo(date2) == 0);
       }
       finally
       {
