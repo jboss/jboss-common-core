@@ -23,10 +23,12 @@ package org.jboss.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.List;
@@ -845,7 +847,7 @@ public final class Strings
       throws IOException
    {
       // make sure the file is absolute & canonical file url
-      File file = new File(filespec);
+      File file = new File(decode(filespec));
       
       // if we have a prefix and the file is not abs then prepend
       if (relativePrefix != null && !file.isAbsolute())
@@ -856,13 +858,25 @@ public final class Strings
       // make sure it is canonical (no ../ and such)
       file = file.getCanonicalFile();
 
-      return file.toURL();
+      return file.toURI().toURL();
+   }
+   
+   private static String decode(String filespec)
+   {
+      try
+      {
+         return URLDecoder.decode(filespec, "UTF-8");
+      }
+      catch (UnsupportedEncodingException e)
+      {
+         throw new RuntimeException("Error decoding filespec: " + filespec, e);
+      }
    }
    
    private static URI makeURIFromFilespec(final String filespec, final String relativePrefix)
    {
       // make sure the file is absolute & canonical file url
-      File file = new File(filespec);
+      File file = new File(decode(filespec));
       
       // if we have a prefix and the file is not abs then prepend
       if (relativePrefix != null && !file.isAbsolute())
