@@ -28,10 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.jboss.util.collection.LazyList;
-import org.jboss.util.collection.LazyMap;
-import org.jboss.util.collection.LazySet;
-
 /**
  * Collections factory.
  * 
@@ -106,5 +102,16 @@ public class CollectionsFactory
    public static final <T> Set<T> createCopyOnWriteSet()
    {
       return new CopyOnWriteArraySet<T>();
+   }
+
+   /**
+    * Defines the concurrent set implementation
+    *
+    * @param <T> the type
+    * @return the set
+    */
+   public static final <T> Set<T> createConcurrentSet()
+   {
+      return new ConcurrentSet<T>();
    }
 }
