@@ -78,7 +78,6 @@ import org.w3c.dom.NodeList;
  *
  * @author Andy Clark, IBM
  * @author Thomas.Diesler@jboss.org
- * @version $Revision$
  */
 @SuppressWarnings("unchecked")
 public class DOMWriter
@@ -101,6 +100,8 @@ public class DOMWriter
    private Node rootNode;
    // True if we want namespace completion
    private boolean completeNamespaces = true;
+   // The current default namespace
+   private String currentDefaultNamespace;
 
    public DOMWriter(Writer w)
    {
@@ -143,9 +144,6 @@ public class DOMWriter
    /** 
     * Print a node with explicit prettyprinting.
     * The defaults for all other DOMWriter properties apply. 
-    * @param node 
-    * @param prettyprint 
-    * @return the node as a string
     *  
     */
    public static String printNode(Node node, boolean prettyprint)
@@ -163,8 +161,6 @@ public class DOMWriter
    /** 
     * Set wheter entities should appear in their canonical form.
     * The default is false.
-    * @param canonical 
-    * @return  the dom writer
     */
    public DOMWriter setCanonical(boolean canonical)
    {
@@ -176,8 +172,6 @@ public class DOMWriter
     * Set wheter subelements should have their namespaces completed.
     * Setting this to false may lead to invalid XML fragments.
     * The default is true.
-    * @param complete 
-    * @return the dom writer
     */
    public DOMWriter setCompleteNamespaces(boolean complete)
    {
@@ -193,8 +187,6 @@ public class DOMWriter
    /** 
     * Set wheter element should be indented.
     * The default is false.
-    * @param prettyprint 
-    * @return the dom writer
     */
    public DOMWriter setPrettyprint(boolean prettyprint)
    {
@@ -210,8 +202,6 @@ public class DOMWriter
    /** 
     * Set wheter the XML declaration should be written.
     * The default is false.
-    * @param flag 
-    * @return the dom writer
     */
    public DOMWriter setWriteXMLDeclaration(boolean flag)
    {
@@ -245,7 +235,7 @@ public class DOMWriter
          out.print("?>");
          if (prettyprint)
             out.println();
-         
+
          wroteXMLDeclaration = true;
       }
 
@@ -285,6 +275,7 @@ public class DOMWriter
 
             Map nsMap = new HashMap();
             String elPrefix = node.getPrefix();
+            String elNamespaceURI = node.getNamespaceURI();
             if (elPrefix != null)
             {
                String nsURI = getNamespaceURI(elPrefix, element, rootNode);
@@ -299,16 +290,34 @@ public class DOMWriter
                String atName = attr.getNodeName();
                String atValue = normalize(attr.getNodeValue(), canonical);
 
-               if (atPrefix != null && (atPrefix.equals("xmlns") || atPrefix.equals("xml")) == false)
+               if (atName.equals("xmlns"))
+                  currentDefaultNamespace = atValue;
+
+               if (atPrefix != null && !atPrefix.equals("xmlns") && !atPrefix.equals("xml"))
                {
                   String nsURI = getNamespaceURI(atPrefix, element, rootNode);
                   nsMap.put(atPrefix, nsURI);
+                  // xsi:type='ns1:SubType', xsi:type='xsd:string'
+                  if (atName.equals(atPrefix + ":type") && atValue.indexOf(":") > 0)
+                  {
+                     // xsi defined on the envelope
+                     if (nsURI == null)
+                        nsURI = getNamespaceURI(atPrefix, element, null);
+
+                     if ("http://www.w3.org/2001/XMLSchema-instance".equals(nsURI))
+                     {
+                        String typePrefix = atValue.substring(0, atValue.indexOf(":"));
+                        String typeURI = getNamespaceURI(typePrefix, element, rootNode);
+                        nsMap.put(typePrefix, typeURI);
+                     }
+                  }
                }
 
                out.print(" " + atName + "='" + atValue + "'");
             }
 
-            // Add missing namespace declaration
+            // Add namespace declaration for prefixes 
+            // that are defined further up the tree
             if (completeNamespaces)
             {
                Iterator itPrefix = nsMap.keySet().iterator();
@@ -321,6 +330,18 @@ public class DOMWriter
                      nsURI = getNamespaceURI(prefix, element, null);
                      out.print(" xmlns:" + prefix + "='" + nsURI + "'");
                   }
+               }
+            }
+
+            // The SAX ContentHandler will by default not add the namespace declaration 
+            // <Hello xmlns='http://somens'>World</Hello>
+            if (elPrefix == null && elNamespaceURI != null)
+            {
+               String defaultNamespace = element.getAttribute("xmlns");
+               if (defaultNamespace.length() == 0 && !elNamespaceURI.equals(currentDefaultNamespace))
+               {
+                  out.print(" xmlns='" + elNamespaceURI + "'");
+                  currentDefaultNamespace = elNamespaceURI;
                }
             }
 
@@ -529,11 +550,7 @@ public class DOMWriter
       return (array);
    }
 
-   /** Normalizes the given string. 
-    * @param s 
-    * @param canonical 
-    * @return the normalized string 
-    */
+   /** Normalizes the given string. */
    public static String normalize(String s, boolean canonical)
    {
       StringBuffer str = new StringBuffer();
@@ -564,7 +581,16 @@ public class DOMWriter
                str.append("&quot;");
                break;
             }
+            case '\'':
+            {
+               str.append("&apos;");
+               break;
+            }
             case '\r':
+            {
+               str.append("&#xD;");
+               break;
+            }
             case '\n':
             {
                if (canonical)
