@@ -29,10 +29,6 @@ package org.jboss.util.threadpool;
  */
 public interface ThreadPool
 {
-   // Constants -----------------------------------------------------
-
-   // Public --------------------------------------------------------
-
    /**
     * Stop the pool
     *
@@ -40,18 +36,20 @@ public interface ThreadPool
     */
    public void stop(boolean immediate);
 
-   /** Wait on the queued tasks to complete. This can only be called after
-    * after stop.
+   /**
+    * Wait on the queued tasks to complete.
+    * This can only be called after stop.
     * 
-    * @throws InterruptedException
+    * @throws InterruptedException for any iterruption error
     */ 
    public void waitForTasks() throws InterruptedException;
 
-   /** Wait on the queued tasks to complete upto maxWaitTime milliseconds. This
-    * can only be called after after stop.
+   /**
+    * Wait on the queued tasks to complete upto maxWaitTime milliseconds.
+    * This can only be called after stop.
     * 
-    * @param maxWaitTime
-    * @throws InterruptedException
+    * @param maxWaitTime the max wait time
+    * @throws InterruptedException for any interruption error
     */ 
    public void waitForTasks(long maxWaitTime) throws InterruptedException;
 
@@ -79,10 +77,12 @@ public interface ThreadPool
    public void run(Runnable runnable);
 
    /**
+    * Run runnable with start and complete time out set explicitely.
     * 
-    * @param runnable
-    * @param startTimeout
-    * @param completeTimeout
-    */ 
+    * @param runnable the runnable
+    * @param startTimeout the start timeout
+    * @param completeTimeout the complete timeout
+    * @throws IllegalArgumentException for a null runnable
+    */
    public void run(Runnable runnable, long startTimeout, long completeTimeout);
 }

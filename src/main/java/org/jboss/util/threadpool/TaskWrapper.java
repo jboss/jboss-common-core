@@ -29,10 +29,6 @@ package org.jboss.util.threadpool;
  */
 public interface TaskWrapper extends Runnable
 {
-   // Constants -----------------------------------------------------
-
-   // Public --------------------------------------------------------
-
    /**
     * Get the type of wait
     *
@@ -84,6 +80,10 @@ public interface TaskWrapper extends Runnable
     */
    void rejectTask(RuntimeException e);
 
-   // Inner classes -------------------------------------------------
+   /**
+    * Is the task complete.
+    *
+    * @return true if compelet, false otherwise
+    */
    boolean isComplete();
 }

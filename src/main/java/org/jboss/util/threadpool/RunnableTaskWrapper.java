@@ -134,7 +134,6 @@ public class RunnableTaskWrapper implements TaskWrapper
    {
       return started == true && runThread == null;
    }
-   // Runnable implementation ---------------------------------------
 
    public void run()
    {
@@ -155,12 +154,4 @@ public class RunnableTaskWrapper implements TaskWrapper
          log.warn("Unhandled throwable for runnable: " + runnable, t);
       }
    }
-
-   // Package protected ---------------------------------------------
-
-   // Protected -----------------------------------------------------
-
-   // Private -------------------------------------------------------
-
-   // Inner classes -------------------------------------------------
 }

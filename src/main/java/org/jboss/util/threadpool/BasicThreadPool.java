@@ -185,8 +185,8 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
       wrapper.acceptTask();
 
       long completionTimeout = wrapper.getTaskCompletionTimeout();
-      TimeoutInfo info = null;
-      if( completionTimeout > 0 )
+      TimeoutInfo info;
+      if(completionTimeout > 0)
       {
          checkTimeoutMonitor();
          // Install the task in the
@@ -275,8 +275,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
 
    public int getMaximumQueueSize()
    {
-      int maxSize = queue.remainingCapacity() + queue.size();
-      return maxSize;
+      return queue.remainingCapacity() + queue.size();
    }
 
    /**
@@ -605,8 +604,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
          TimeoutInfo ti = (TimeoutInfo) o;
          long to0 = timeoutMS;
          long to1 = ti.timeoutMS;
-         int diff = (int) (to0 - to1);
-         return diff;
+         return (int) (to0 - to1);
       }
       TaskWrapper getTaskWrapper()
       {
