@@ -190,9 +190,16 @@ public final class StringPropertyReplacer
 
                if (value != null)
                {
-                  properties = true;
+                  properties = true; 
                   buffer.append(value);
                }
+               else
+               {
+                  buffer.append("${");
+                  buffer.append(key);
+                  buffer.append('}');
+               }
+               
             }
             start = i + 1;
             state = NORMAL;
