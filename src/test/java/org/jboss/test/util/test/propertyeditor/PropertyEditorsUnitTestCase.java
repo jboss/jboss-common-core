@@ -289,8 +289,8 @@ public class PropertyEditorsUnitTestCase extends TestCase
       
       Object[][] expectedData = {
          {new File("/tmp/test1").getCanonicalFile(), new File("/tmp/test2").getCanonicalFile()},
-         {new URL("http://www.jboss.org"), Strings.toURL("file:/path with space/tst.xml")},
-         {new URI("http://www.jboss.org"), Strings.toURI("file:/path with space/tst.xml")},
+         {new URL("http://www.jboss.org"), new File("/path with space/tst.xml").getCanonicalFile().toURI().toURL()},
+         {new URI("http://www.jboss.org"), new File("/path with space/tst.xml").getCanonicalFile().toURI()},
          {new String("JBoss, Home of Professional Open Source")},
          {java.util.Arrays.class},
          {InetAddress.getByName("127.0.0.1"), InetAddress.getByName("localhost")},
