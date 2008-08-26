@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An ObjectInputStream subclass used by the MarshalledValue class to
@@ -35,12 +37,28 @@ import java.io.ObjectStreamClass;
  * @version $Revision: 37406 $
  */
 public class MarshalledValueInputStream
-   extends ObjectInputStream
+      extends ObjectInputStream
 {
+   private static final Map<String, Class> primClasses = new HashMap<String, Class>(8, 1.0F);
+
+   static
+   {
+      primClasses.put("boolean", boolean.class);
+      primClasses.put("byte", byte.class);
+      primClasses.put("char", char.class);
+      primClasses.put("short", short.class);
+      primClasses.put("int", int.class);
+      primClasses.put("long", long.class);
+      primClasses.put("float", float.class);
+      primClasses.put("double", double.class);
+      primClasses.put("void", void.class);
+   }
+
    /**
     * Creates a new instance of MarshalledValueOutputStream
-    * @param is 
-    * @throws IOException 
+    *
+    * @param is
+    * @throws IOException
     */
    public MarshalledValueInputStream(InputStream is) throws IOException
    {
@@ -49,21 +67,31 @@ public class MarshalledValueInputStream
 
    /**
     * Use the thread context class loader to resolve the class
-    * 
-    * @throws java.io.IOException   Any exception thrown by the underlying OutputStream.
+    *
+    * @throws java.io.IOException Any exception thrown by the underlying OutputStream.
     */
    protected Class<?> resolveClass(ObjectStreamClass v)
-      throws IOException, ClassNotFoundException
+         throws IOException, ClassNotFoundException
    {
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
       String className = v.getName();
-      
-      // JDK 6, by default, only supports array types (ex. [[B)  using Class.forName() 
-      return Class.forName(className, false, loader);
+      try
+      {
+         // JDK 6, by default, only supports array types (ex. [[B)  using Class.forName()
+         return Class.forName(className, false, loader);
+      }
+      catch (ClassNotFoundException cnfe)
+      {
+         Class cl = primClasses.get(className);
+         if (cl == null)
+            throw cnfe;
+         else
+            return cl;
+      }
    }
 
    protected Class<?> resolveProxyClass(String[] interfaces)
-      throws IOException, ClassNotFoundException
+         throws IOException, ClassNotFoundException
    {
       // Load the interfaces from the thread context class loader
       ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -72,7 +100,7 @@ public class MarshalledValueInputStream
       {
          ifaceClasses[i] = loader.loadClass(interfaces[i]);
       }
-      
+
       return java.lang.reflect.Proxy.getProxyClass(loader, ifaceClasses);
    }
 }
