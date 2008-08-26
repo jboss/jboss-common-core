@@ -41,7 +41,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import junit.framework.TestCase;
+
 import org.jboss.logging.Logger;
+import org.jboss.util.Strings;
 import org.jboss.util.propertyeditor.DateEditor;
 import org.jboss.util.propertyeditor.DocumentEditor;
 import org.jboss.util.propertyeditor.ElementEditor;
@@ -287,8 +289,8 @@ public class PropertyEditorsUnitTestCase extends TestCase
       
       Object[][] expectedData = {
          {new File("/tmp/test1").getCanonicalFile(), new File("/tmp/test2").getCanonicalFile()},
-         {new URL("http://www.jboss.org"), new File("/path with space/tst.xml").getCanonicalFile().toURL()},
-         {new URI("http://www.jboss.org"), new File("/path with space/tst.xml").getCanonicalFile().toURI()}, 
+         {new URL("http://www.jboss.org"), Strings.toURL("file:/path with space/tst.xml")},
+         {new URI("http://www.jboss.org"), Strings.toURI("file:/path with space/tst.xml")},
          {new String("JBoss, Home of Professional Open Source")},
          {java.util.Arrays.class},
          {InetAddress.getByName("127.0.0.1"), InetAddress.getByName("localhost")},
