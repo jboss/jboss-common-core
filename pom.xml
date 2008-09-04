@@ -18,6 +18,7 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <!-- The tagBase property is needed during the release process so that the maven release plugin
@@ -31,6 +32,7 @@
       </plugin>
     </plugins>
   </build>
+  
   <repositories>
     <repository>
       <id>repository.jboss.org</id>
