@@ -22,15 +22,10 @@
 
 package org.jboss.test.util.test;
 
-import static org.jboss.util.StringPropertyReplacer.*;
-import static org.junit.Assert.*;
-
 import java.util.Properties;
 
 import junit.framework.TestCase;
-
-import org.jboss.util.StringPropertyReplacer;
-import org.junit.Test;
+import static org.jboss.util.StringPropertyReplacer.replaceProperties;
 
 /**
  * A StringPropertyReplacerUnitTestCase.

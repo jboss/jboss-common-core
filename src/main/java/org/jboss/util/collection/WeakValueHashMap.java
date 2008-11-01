@@ -23,12 +23,7 @@ package org.jboss.util.collection;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -39,24 +34,18 @@ import java.util.Set;
  * @param <V> the value type
  * @author  <a href="mailto:bill@jboss.org">Bill Burke</a>
  * @author  <a href="mailto:adrian@jboss.org">Adrian Brock</a>
- * @version <tt>$Revision$</tt>
+ * @author  <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public class WeakValueHashMap<K, V> extends AbstractMap<K, V> 
+public class WeakValueHashMap<K, V> extends ReferenceValueHashMap<K, V>
 {
-   /** Hash table mapping keys to weak values */
-   private Map<K, WeakValueRef<K, V>> hash;
-
-   /** Reference queue for cleared WeakKeys */
-   private ReferenceQueue<V> queue = new ReferenceQueue<V>();
-
    /**
-    * Constructs a new, empty <code>WeakHashMap</code> with the given
+    * Constructs a new, empty <code>WeakValueHashMap</code> with the given
     * initial capacity and the given load factor.
     *
     * @param  initialCapacity  The initial capacity of the
-    *                          <code>WeakHashMap</code>
+    *                          <code>WeakValueHashMap</code>
     *
-    * @param  loadFactor       The load factor of the <code>WeakHashMap</code>
+    * @param  loadFactor       The load factor of the <code>WeakValueHashMap</code>
     *
     * @throws IllegalArgumentException  If the initial capacity is less than
     *                                   zero, or if the load factor is
@@ -64,38 +53,37 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V>
     */
    public WeakValueHashMap(int initialCapacity, float loadFactor)
    {
-      hash = new HashMap<K, WeakValueRef<K, V>>(initialCapacity, loadFactor);
+      super(initialCapacity, loadFactor);
    }
 
    /**
-    * Constructs a new, empty <code>WeakHashMap</code> with the given
+    * Constructs a new, empty <code>WeakValueHashMap</code> with the given
     * initial capacity and the default load factor, which is
     * <code>0.75</code>.
     *
     * @param  initialCapacity  The initial capacity of the
-    *                          <code>WeakHashMap</code>
+    *                          <code>WeakValueHashMap</code>
     *
     * @throws IllegalArgumentException  If the initial capacity is less than
     *                                   zero
     */
    public WeakValueHashMap(int initialCapacity)
    {
-      hash = new HashMap<K, WeakValueRef<K, V>>(initialCapacity);
+      super(initialCapacity);
    }
 
    /**
-    * Constructs a new, empty <code>WeakHashMap</code> with the default
+    * Constructs a new, empty <code>WeakValueHashMap</code> with the default
     * initial capacity and the default load factor, which is
     * <code>0.75</code>.
     */
    public WeakValueHashMap()
    {
-      hash = new HashMap<K, WeakValueRef<K, V>>();
    }
 
    /**
-    * Constructs a new <code>WeakHashMap</code> with the same mappings as the
-    * specified <tt>Map</tt>.  The <code>WeakHashMap</code> is created with an
+    * Constructs a new <code>WeakValueHashMap</code> with the same mappings as the
+    * specified <tt>Map</tt>.  The <code>WeakValueHashMap</code> is created with an
     * initial capacity of twice the number of mappings in the specified map
     * or 11 (whichever is greater), and a default load factor, which is
     * <tt>0.75</tt>.
@@ -105,153 +93,25 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V>
     */
    public WeakValueHashMap(Map<K, V> t)
    {
-      this(Math.max(2*t.size(), 11), 0.75f);
-      putAll(t);
+      super(t);
    }
 
-   @Override
-   public int size()
+   protected ValueRef<K, V> create(K key, V value, ReferenceQueue<V> q)
    {
-      processQueue();
-      return hash.size();
-   }
-
-   @Override
-   public boolean containsKey(Object key)
-   {
-      processQueue();
-      return hash.containsKey(key);
-   }
-
-   @Override
-   public V get(Object key)
-   {
-      processQueue();
-      WeakValueRef<K, V> ref = hash.get(key);
-      if (ref != null)
-         return ref.get();
-      return null;
-   }
-
-   @Override
-   public V put(K key, V value) 
-   {
-      processQueue();
-      WeakValueRef<K, V> ref = WeakValueRef.create(key, value, queue);
-      WeakValueRef<K, V> result = hash.put(key, ref);
-      if (result != null)
-         return result.get();
-      return null;
-   }
-
-   @Override
-   public V remove(Object key) 
-   {
-      processQueue();
-      WeakValueRef<K, V> result = hash.remove(key);
-      if (result != null)
-         return result.get();
-      return null;
-   }
-   
-   @Override
-   public Set<Entry<K,V>> entrySet() 
-   { 
-      processQueue();
-      return new EntrySet();
-   }
-
-   @Override
-   public void clear()
-   {
-      processQueue();
-      hash.clear();
+      return WeakValueRef.create(key, value, q);
    }
    
    /**
-    * Remove all entries whose values have been discarded.  
+    * Weak value ref impl
     */
-   @SuppressWarnings("unchecked")
-   private void processQueue()
-   {
-      WeakValueRef<K, V> ref = (WeakValueRef<K, V>) queue.poll();
-      while (ref != null)
-      {
-         // only remove if it is the *exact* same WeakValueRef
-         if (ref == hash.get(ref.key))
-            hash.remove(ref.key);
-         
-         ref = (WeakValueRef<K, V>) queue.poll();
-      }
-   }
-   
-   /**
-    * EntrySet.
-    */
-   private class EntrySet extends AbstractSet<Entry<K, V>>
-   {
-      @Override
-      public Iterator<Entry<K, V>> iterator()
-      {
-         return new EntrySetIterator(hash.entrySet().iterator());
-      }
-
-      @Override
-      public int size()
-      {
-         return WeakValueHashMap.this.size();
-      }
-   }
-   
-   /**
-    * EntrySet iterator
-    */
-   private class EntrySetIterator implements Iterator<Entry<K, V>>
-   {
-      /** The delegate */
-      private Iterator<Entry<K, WeakValueRef<K, V>>> delegate;
-      
-      /**
-       * Create a new EntrySetIterator.
-       * 
-       * @param delegate the delegate
-       */
-      public EntrySetIterator(Iterator<Entry<K, WeakValueRef<K, V>>> delegate)
-      {
-         this.delegate = delegate;
-      }
-
-      public boolean hasNext()
-      {
-         return delegate.hasNext();
-      }
-
-      public Entry<K, V> next()
-      {
-         Entry<K, WeakValueRef<K, V>> next = delegate.next();
-         return next.getValue();
-      }
-
-      public void remove()
-      {
-         throw new UnsupportedOperationException("remove");
-      }
-   }
-   
-   /**
-    * WeakValueRef.
-    * 
-    * @param <K> the key type
-    * @param <V> the value type
-    */
-   private static class WeakValueRef<K, V> extends WeakReference<V> implements Map.Entry<K, V>
+   private static class WeakValueRef<K, V> extends WeakReference<V> implements ValueRef<K, V>
    {
       /** The key */
       public K key;
 
       /**
        * Safely create a new WeakValueRef
-       * 
+       *
        * @param <K> the key type
        * @param <V> the value type
        * @param key the key
@@ -263,13 +123,13 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V>
       {
          if (val == null)
             return null;
-         else 
+         else
             return new WeakValueRef<K, V>(key, val, q);
       }
 
       /**
        * Create a new WeakValueRef.
-       * 
+       *
        * @param key the key
        * @param val the value
        * @param q the reference queue
