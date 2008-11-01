@@ -28,14 +28,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.io.Serializable;
 
 
 /**
  * This Map will remove entries when the value in the map has been
  * cleaned from garbage collection
- *
- * ReferenceMap is serializable if K and V are serializable.
  *
  * @param <K> the key type
  * @param <V> the value type
@@ -48,7 +45,7 @@ public abstract class ReferenceValueHashMap<K, V> extends AbstractMap<K, V>
    /** Hash table mapping keys to ref values */
    private Map<K, ValueRef<K, V>> hash;
 
-   /** Reference queue for cleared WeakKeys */
+   /** Reference queue for cleared RefKeys */
    private ReferenceQueue<V> queue = new ReferenceQueue<V>();
 
    protected ReferenceValueHashMap(int initialCapacity, float loadFactor)

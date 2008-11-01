@@ -106,7 +106,7 @@ public class SoftValueHashMap<K, V> extends ReferenceValueHashMap<K, V>
       public K key;
 
       /**
-       * Safely create a new WeakValueRef
+       * Safely create a new SoftValueRef
        *
        * @param <K> the key type
        * @param <V> the value type
@@ -124,7 +124,7 @@ public class SoftValueHashMap<K, V> extends ReferenceValueHashMap<K, V>
       }
 
       /**
-       * Create a new WeakValueRef.
+       * Create a new SoftValueRef.
        *
        * @param key the key
        * @param val the value

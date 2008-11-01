@@ -27,12 +27,10 @@ import java.util.Map;
 /**
  * ValueRef.
  *
- * ValueRef instance is serializable if K and V are serializable.
- *
  * @param <K> the key type
  * @param <V> the value type
  */
-public interface ValueRef<K, V> extends Map.Entry<K, V>, Serializable
+public interface ValueRef<K, V> extends Map.Entry<K, V>
 {
    /**
     * Get underlying value.
