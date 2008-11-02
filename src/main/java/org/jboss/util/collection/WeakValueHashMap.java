@@ -22,7 +22,6 @@
 package org.jboss.util.collection;
 
 import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
 import java.util.Map;
 
 
@@ -99,60 +98,5 @@ public class WeakValueHashMap<K, V> extends ReferenceValueHashMap<K, V>
    protected ValueRef<K, V> create(K key, V value, ReferenceQueue<V> q)
    {
       return WeakValueRef.create(key, value, q);
-   }
-   
-   /**
-    * Weak value ref impl
-    */
-   private static class WeakValueRef<K, V> extends WeakReference<V> implements ValueRef<K, V>
-   {
-      /** The key */
-      public K key;
-
-      /**
-       * Safely create a new WeakValueRef
-       *
-       * @param <K> the key type
-       * @param <V> the value type
-       * @param key the key
-       * @param val the value
-       * @param q the reference queue
-       * @return the reference or null if the value is null
-       */
-      private static <K, V> WeakValueRef<K, V> create(K key, V val, ReferenceQueue<V> q)
-      {
-         if (val == null)
-            return null;
-         else
-            return new WeakValueRef<K, V>(key, val, q);
-      }
-
-      /**
-       * Create a new WeakValueRef.
-       *
-       * @param key the key
-       * @param val the value
-       * @param q the reference queue
-       */
-      private WeakValueRef(K key, V val, ReferenceQueue<V> q)
-      {
-         super(val, q);
-         this.key = key;
-      }
-
-      public K getKey()
-      {
-         return key;
-      }
-
-      public V getValue()
-      {
-         return get();
-      }
-
-      public V setValue(V value)
-      {
-         throw new UnsupportedOperationException("setValue");
-      }
    }
 }

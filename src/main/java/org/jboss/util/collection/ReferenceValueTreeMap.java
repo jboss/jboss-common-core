@@ -21,10 +21,10 @@
   */
 package org.jboss.util.collection;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * This Map will remove entries when the value in the map has been
@@ -32,53 +32,46 @@ import java.util.SortedMap;
  *
  * @param <K> the key type
  * @param <V> the value type
- * @author  <a href="mailto:bill@jboss.org">Bill Burke</a>
- * @author  <a href="mailto:adrian@jboss.org">Adrian Brock</a>
  * @author  <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class ReferenceValueHashMap<K, V> extends ReferenceValueMap<K, V>
+public abstract class ReferenceValueTreeMap<K, V> extends ReferenceValueMap<K, V>
 {
-   protected ReferenceValueHashMap()
+   protected ReferenceValueTreeMap()
    {
    }
 
-   protected ReferenceValueHashMap(int initialCapacity)
+   protected ReferenceValueTreeMap(Comparator<K> comparator)
    {
-      super(initialCapacity);
+      super(comparator);
    }
 
-   protected ReferenceValueHashMap(int initialCapacity, float loadFactor)
+   protected ReferenceValueTreeMap(SortedMap<K, ValueRef<K, V>> sorted)
    {
-      super(initialCapacity, loadFactor);
-   }
-
-   protected ReferenceValueHashMap(Map<K, V> t)
-   {
-      super(t);
-   }
-
-   protected Map<K, ValueRef<K, V>> createMap(int initialCapacity, float loadFactor)
-   {
-      return new HashMap<K, ValueRef<K,V>>(initialCapacity, loadFactor);
-   }
-
-   protected Map<K, ValueRef<K, V>> createMap(int initialCapacity)
-   {
-      return new HashMap<K, ValueRef<K,V>>(initialCapacity);
+      super(sorted);
    }
 
    protected Map<K, ValueRef<K, V>> createMap()
    {
-      return new HashMap<K, ValueRef<K,V>>();
+      return new TreeMap<K, ValueRef<K,V>>();
    }
 
-   protected Map<K, ValueRef<K, V>> createMap(Comparator<K> kComparator)
+   protected Map<K, ValueRef<K, V>> createMap(Comparator<K> comparator)
    {
-      throw new UnsupportedOperationException("Cannot create HashMap with such parameters.");
+      return new TreeMap<K, ValueRef<K,V>>(comparator);
    }
 
-   protected Map<K, ValueRef<K, V>> createMap(SortedMap<K, ValueRef<K, V>> kValueRefSortedMap)
+   protected Map<K, ValueRef<K, V>> createMap(SortedMap<K, ValueRef<K, V>> map)
    {
-      throw new UnsupportedOperationException("Cannot create HashMap with such parameters.");
+      return new TreeMap<K, ValueRef<K,V>>(map);
+   }
+
+   protected Map<K, ValueRef<K, V>> createMap(int initialCapacity)
+   {
+      throw new UnsupportedOperationException("Cannot create TreeMap with such parameters.");
+   }
+
+   protected Map<K, ValueRef<K, V>> createMap(int initialCapacity, float loadFactor)
+   {
+      throw new UnsupportedOperationException("Cannot create TreeMap with such parameters.");
    }
 }

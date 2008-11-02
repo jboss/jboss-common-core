@@ -22,7 +22,6 @@
 package org.jboss.util.collection;
 
 import java.lang.ref.ReferenceQueue;
-import java.lang.ref.SoftReference;
 import java.util.Map;
 
 /**
@@ -95,60 +94,5 @@ public class SoftValueHashMap<K, V> extends ReferenceValueHashMap<K, V>
    protected ValueRef<K, V> create(K key, V value, ReferenceQueue<V> q)
    {
       return SoftValueRef.create(key, value, q);
-   }
-
-   /**
-    * Soft value ref impl
-    */
-   private static class SoftValueRef<K, V> extends SoftReference<V> implements ValueRef<K, V>
-   {
-      /** The key */
-      public K key;
-
-      /**
-       * Safely create a new SoftValueRef
-       *
-       * @param <K> the key type
-       * @param <V> the value type
-       * @param key the key
-       * @param val the value
-       * @param q the reference queue
-       * @return the reference or null if the value is null
-       */
-      private static <K, V> SoftValueRef<K, V> create(K key, V val, ReferenceQueue<V> q)
-      {
-         if (val == null)
-            return null;
-         else
-            return new SoftValueRef<K, V>(key, val, q);
-      }
-
-      /**
-       * Create a new SoftValueRef.
-       *
-       * @param key the key
-       * @param val the value
-       * @param q the reference queue
-       */
-      private SoftValueRef(K key, V val, ReferenceQueue<V> q)
-      {
-         super(val, q);
-         this.key = key;
-      }
-
-      public K getKey()
-      {
-         return key;
-      }
-
-      public V getValue()
-      {
-         return get();
-      }
-
-      public V setValue(V value)
-      {
-         throw new UnsupportedOperationException("setValue");
-      }
    }
 }

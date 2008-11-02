@@ -23,17 +23,17 @@ package org.jboss.test.util.test.collection;
 
 import java.util.Map;
 
-import org.jboss.util.collection.SoftValueHashMap;
+import org.jboss.util.collection.SoftValueTreeMap;
 
 /**
- * SoftValueHashMap test.
- * 
+ * SoftValueTreeMap test.
+ *
  * @author <a href="mailto:ales.justin@jboss.com">Ales Justin</a>
  */
-public class SoftValueMapUnitTestCase extends AbstractMapUnitTest
+public class SoftValueTreeMapUnitTestCase extends AbstractMapUnitTest
 {
    protected Map createEmptyMap()
    {
-      return new SoftValueHashMap();
+      return new SoftValueTreeMap();
    }
 }

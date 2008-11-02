@@ -23,17 +23,17 @@ package org.jboss.test.util.test.collection;
 
 import java.util.Map;
 
-import org.jboss.util.collection.WeakValueHashMap;
+import org.jboss.util.collection.WeakValueTreeMap;
 
 /**
- * WeakValueHashMap test.
+ * WeakValueTreeMap test.
  *
  * @author <a href="mailto:ales.justin@jboss.com">Ales Justin</a>
  */
-public class WeakValueMapUnitTestCase extends AbstractMapUnitTest
+public class WeakValueTreeMapUnitTestCase extends AbstractMapUnitTest
 {
    protected Map createEmptyMap()
    {
-      return new WeakValueHashMap();
+      return new WeakValueTreeMap();
    }
 }
