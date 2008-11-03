@@ -41,9 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import junit.framework.TestCase;
-
 import org.jboss.logging.Logger;
-import org.jboss.util.Strings;
 import org.jboss.util.propertyeditor.DateEditor;
 import org.jboss.util.propertyeditor.DocumentEditor;
 import org.jboss.util.propertyeditor.ElementEditor;
@@ -58,6 +56,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Scott.Stark@jboss.org
  * @author Dimitris.Andreadis@jboss.org
+ * @author Ales.Justin@jboss.org
  * @version $Revision: 43534 $
  */
 @SuppressWarnings("unchecked")
@@ -65,7 +64,8 @@ public class PropertyEditorsUnitTestCase extends TestCase
 {
    private static Logger log = Logger.getLogger(PropertyEditorsUnitTestCase.class);
    Calendar calendar = Calendar.getInstance();
-   
+   private Locale locale;
+
    /** Augment the PropertyEditorManager search path to incorporate the JBoss
     specific editors. This simply references the PropertyEditors.class to
     invoke its static initialization block.
@@ -137,6 +137,21 @@ public class PropertyEditorsUnitTestCase extends TestCase
    public PropertyEditorsUnitTestCase(String name)
    {
       super(name);
+   }
+
+   protected void setUp() throws Exception
+   {
+      locale = Locale.getDefault();
+      Locale.setDefault(Locale.US);
+
+      super.setUp();
+   }
+
+   protected void tearDown() throws Exception
+   {
+      super.tearDown();
+
+      Locale.setDefault(locale);
    }
 
    public void testEditorSearchPath()

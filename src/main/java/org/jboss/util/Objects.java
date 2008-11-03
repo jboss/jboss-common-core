@@ -38,8 +38,8 @@ import org.jboss.util.stream.Streams;
 /**
  * A collection of <code>Object</code> utilities.
  *
- * @version <tt>$Revision$</tt>
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ * @author  <a href="mailto:ales.justin@jboss.com">Ales Justin</a>
  */
 @SuppressWarnings("unchecked")
 public final class Objects
@@ -252,5 +252,38 @@ public final class Objects
     */
    public static boolean equals(final Object[] a, final Object[] b) {
       return equals(a, b, true);
+   }
+
+   /**
+    * Test the equality of two objects.
+    * They can be an (multi dimensional) array.
+    *
+    * @param first the first obejct
+    * @param second the second object
+    * @return true if equal, false otherwise
+    */
+   public static boolean equals(Object first, Object second)
+   {
+      if (isArray(first))
+      {
+         if (isArray(second) == false)
+            return false;
+
+         int lenght = Array.getLength(first);
+         if (lenght != Array.getLength(second))
+            return false;
+
+         for (int i = 0; i < lenght; i++)
+         {
+            if (equals(Array.get(first, i), Array.get(second, i)) == false)
+               return false;
+         }
+
+         return true;
+      }
+      else
+      {
+         return JBossObject.equals(first, second);
+      }
    }
 }

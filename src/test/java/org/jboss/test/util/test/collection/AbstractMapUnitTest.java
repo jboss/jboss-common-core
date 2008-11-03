@@ -20,29 +20,46 @@ public abstract class AbstractMapUnitTest extends TestCase
    {
       Map map = createEmptyMap();
       assertTrue(map.isEmpty());
+      assertEquals(0, map.size());
 
-      String key = "date1";
-      Date value = new Date();
-      map.put(key, value);
+      String key1 = "date1";
+      Date value1 = new Date();
+      map.put(key1, value1);
 
-      assertTrue(map.containsKey(key));
-      assertTrue(map.containsValue(value));
+      assertTrue(map.containsKey(key1));
+      assertTrue(map.containsValue(value1));
       assertEquals(1, map.size());
+
+      String key2 = "date2";
+      Date value2 = new Date();
+      map.put(key2, value2);
+
+      assertTrue(map.containsKey(key2));
+      assertTrue(map.containsValue(value2));
+      assertEquals(2, map.size());
+
+      String key3 = "date3";
+      Date value3 = new Date();
+      map.put(key3, value3);
+
+      assertTrue(map.containsKey(key1));
+      assertTrue(map.containsValue(value1));
+      assertEquals(3, map.size());
 
       map.clear();
       assertTrue(map.isEmpty());
 
-      key = "date1";
-      value = new Date();
-      map.put(key, value);
+      key1 = "date1";
+      value1 = new Date();
+      map.put(key1, value1);
 
-      map.remove(key);
+      map.remove(key1);
       assertTrue(map.isEmpty());
 
-      map.putAll(Collections.singletonMap(key, value));
+      map.putAll(Collections.singletonMap(key1, value1));
 
-      assertEquals(value, map.get(key));
-      assertEquals(map, Collections.singletonMap(key, value));
+      assertEquals(value1, map.get(key1));
+      assertEquals(Collections.singletonMap(key1, value1), map);
       
       // iterables
       Iterable<String> keys = map.keySet();
@@ -51,8 +68,8 @@ public abstract class AbstractMapUnitTest extends TestCase
       assertIterable(values, Date.class);
       Iterable<Map.Entry> entries = map.entrySet();
       Map.Entry entry = assertIterable(entries, Map.Entry.class);
-      assertEquals(key, entry.getKey());
-      assertEquals(value, entry.getValue());
+      assertEquals(key1, entry.getKey());
+      assertEquals(value1, entry.getValue());
    }
 
    protected <T> T assertIterable(Iterable<T> iter, Class<T> clazz)
