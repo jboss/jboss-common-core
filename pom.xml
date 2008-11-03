@@ -8,13 +8,13 @@
   <groupId>org.jboss</groupId>   
   <artifactId>jboss-common-core</artifactId>
   <packaging>jar</packaging>
-  <version>2.2.9-SNAPSHOT</version>
+  <version>2.2.9.GA</version>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>JBoss Common Core Utility classes</description>
   <scm>
-    <connection>scm:svn:http://anonsvn.jboss.org/repos/common/common-core/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</developerConnection>    
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/common/common-core/tags/2.2.9.GA</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/common/common-core/tags/2.2.9.GA</developerConnection>    
   </scm>
   
   <build>
