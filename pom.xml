@@ -1,61 +1,62 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>3</version>
+    <version>4.0.CR1</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss</groupId>   
   <artifactId>jboss-common-core</artifactId>
-  <version>2.2.9-SNAPSHOT</version>
   <packaging>jar</packaging>
+  <version>2.2.9-SNAPSHOT</version>
   <name>JBoss Common Classes</name>
   <url>http://www.jboss.org</url>
   <description>JBoss Common Core Utility classes</description>
   <scm>
-    <connection>scm:svn:https://svn.jboss.org/repos/common/common-core/tags/2.2.6.GA</connection>
+    <connection>scm:svn:http://anonsvn.jboss.org/repos/common/common-core/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</developerConnection>    
   </scm>
+  
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.3</version>
         <configuration>
-          <!-- The tagBase property is needed during the release process so that the maven release plugin
-            will create the release tag in the appropriate location. -->
-          <tagBase>https://svn.jboss.org/repos/common/common-core/tags</tagBase>
+          <printSummary>true</printSummary>
+          <disableXmlReport>false</disableXmlReport>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <includes>
+            <include>**/*TestCase.java</include>
+          </includes>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>jboss.maven-plugins</groupId>
-        <artifactId>jboss-deploy-maven-plugin</artifactId>
-      </plugin>
+      </plugin>      
     </plugins>
   </build>
   
-  <repositories>
-    <repository>
-      <id>repository.jboss.org</id>
-      <name>JBoss Repository</name>
-      <layout>default</layout>
-      <url>http://repository.jboss.org/maven2/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>snapshots.jboss.org</id>
-      <name>JBoss Snapshot Repository</name>
-      <layout>default</layout>
-      <url>http://snapshots.jboss.org/maven2/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+  <!-- 
+    Eclipse settings have been removed from parent. This needs to be
+    done via an eclipse profile.
+    http://www.jboss.com/index.html?module=bb&op=viewtopic&p=4085896#4085896 
+    -->
+  <profiles>
+    <profile>
+      <id>eclipse</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <configuration>
+              <downloadSources>true</downloadSources>
+              <buildOutputDirectory>target/eclipse-classes</buildOutputDirectory>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   
   <dependencies>
   
