@@ -45,6 +45,9 @@ public class DelegatingClassLoader
    /** Whether to use standard loading */
    protected boolean standard = false;
 
+   /** Cache the parent*/
+   private ClassLoader parent = null;
+
    /**
     * Constructor
     *
@@ -55,6 +58,7 @@ public class DelegatingClassLoader
       super(EMPTY_URL_ARRAY, parent);
       if (parent == null)
          throw new IllegalArgumentException("No parent");
+      this.parent = parent;
    }
 
    /**
@@ -68,6 +72,7 @@ public class DelegatingClassLoader
       super(EMPTY_URL_ARRAY, parent, factory);
       if (parent == null)
          throw new IllegalArgumentException("No parent");
+      this.parent = parent;
    }
 
    /**
@@ -89,7 +94,7 @@ public class DelegatingClassLoader
       Class<?> clazz = null;
       try
       {
-         clazz = getParent().loadClass(className);
+         clazz = parent.loadClass(className);
       }
       catch (ClassNotFoundException e)
       {
