@@ -165,8 +165,8 @@ public class NonSerializableFactory implements ObjectFactory
         return value;
     }
 
-    /** A convience method that simplifies the process of rebinding a
-        non-zerializable object into a JNDI context.
+    /** A convenience method that simplifies the process of rebinding a
+     non-serializable object into a JNDI context.
 
     @param ctx the JNDI context to rebind to.
     @param key the key to use in both the NonSerializableFactory map and JNDI. It
@@ -185,8 +185,8 @@ public class NonSerializableFactory implements ObjectFactory
         ctx.rebind(key, memoryRef);
     }
 
-   /** A convience method that simplifies the process of rebinding a
-    non-zerializable object into a JNDI context. This version binds the
+   /** A convenience method that simplifies the process of rebinding a
+    non-serializable object into a JNDI context. This version binds the
     target object into the default IntitialContext using name path.
 
    @param name the name to use as JNDI path name. The key into the
@@ -201,29 +201,53 @@ public class NonSerializableFactory implements ObjectFactory
       rebind(name, target, false);
    }
 
-   /** A convience method that simplifies the process of rebinding a
-    non-zerializable object into a JNDI context. This version binds the
-    target object into the default IntitialContext using name path.
+   /** A convenience method that simplifies the process of rebinding a
+    non-serializable object into a JNDI context.
 
-   @param name the name to use as JNDI path name. The key into the
-    NonSerializableFactory map is obtained from the toString() value of name.
-    The name parameter cannot be a 0 length name.
+   @param ctx the JNDI context to rebind to.
+   @param key the key to use in both the NonSerializableFactory map and JNDI. It
+        must be a valid name for use in ctx.bind().
    @param target the non-Serializable object to bind.
    @param createSubcontexts a flag indicating if subcontexts of name should
     be created if they do not already exist.
    @throws NamingException thrown on failure to rebind key into ctx.
    */
-   public static synchronized void rebind(Name name, Object target,
-      boolean createSubcontexts) throws NamingException
+   public static synchronized void rebind(Context ctx, String key, 
+      Object target, boolean createSubcontexts) throws NamingException
    {
-       String key = name.toString();
-       InitialContext ctx = new InitialContext();
+	   Name name = ctx.getNameParser("").parse(key);
        if( createSubcontexts == true && name.size() > 1 )
        {
           int size = name.size() - 1;
           Util.createSubcontext(ctx, name.getPrefix(size));
        }
        rebind(ctx, key, target);
+   }
+   
+   /** 
+    * A convenience method that simplifies the process of rebinding a 
+    * non-serializable object into a JNDI context. This version binds the
+    * target object into the default IntitialContext using name path.
+    * 
+    * @param name the name to use as JNDI path name. The key into the 
+    *   NonSerializableFactory map is obtained from the toString() value of name. 
+    *   The name parameter cannot be a 0 length name.
+    * @param target the non-Serializable object to bind.
+    * @param createSubcontexts a flag indicating if subcontexts of name should 
+    *   be created if they do not already exist.
+    * @throws NamingException thrown on failure to rebind key into ctx.
+    * @author Matt Carter
+    **/
+   public static synchronized void rebind(Name name, Object target, boolean createSubcontexts) throws NamingException
+   {
+      String key = name.toString();
+      InitialContext ctx = new InitialContext();
+      if (createSubcontexts == true && name.size() > 1)
+      {
+         int size = name.size() - 1;
+         Util.createSubcontext(ctx, name.getPrefix(size));
+      }
+      rebind(ctx, key, target);
    }
 
 // --- Begin ObjectFactory interface methods
