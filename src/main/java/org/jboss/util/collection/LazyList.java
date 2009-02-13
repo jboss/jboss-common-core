@@ -187,4 +187,10 @@ public class LazyList<T> implements List<T>, Serializable
    {
       return delegate.toArray(a);
    }
+
+   @Override
+   public String toString()
+   {
+      return delegate.toString();
+   }
 }

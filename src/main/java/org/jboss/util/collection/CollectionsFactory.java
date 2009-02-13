@@ -32,6 +32,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * Collections factory.
  * 
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
+ * @author  <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  * @version $Revision$
  */
 public class CollectionsFactory

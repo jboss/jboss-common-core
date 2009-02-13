@@ -176,4 +176,10 @@ public class ConcurrentSet<E> extends AbstractSet<E> implements Serializable
    {
       map.clear();
    }
+
+   @Override
+   public String toString()
+   {
+      return map.keySet().toString();
+   }
 }

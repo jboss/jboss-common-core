@@ -258,4 +258,10 @@ public abstract class ReferenceValueMap<K, V> extends AbstractMap<K, V>
     * @return new value ref instance
     */
    protected abstract ValueRef<K, V> create(K key, V value, ReferenceQueue<V> q);
+
+   @Override
+   public String toString()
+   {
+      return map.toString();
+   }
 }

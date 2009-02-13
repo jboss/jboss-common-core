@@ -21,7 +21,6 @@
   */
 package org.jboss.util.collection;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -29,6 +28,7 @@ import java.util.Map;
  *
  * @param <K> the key type
  * @param <V> the value type
+ * @author  <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public interface ValueRef<K, V> extends Map.Entry<K, V>
 {

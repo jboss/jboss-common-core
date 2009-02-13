@@ -126,4 +126,10 @@ public class LazyMap<K, V> implements Map<K, V>, Serializable
    {
       return delegate.values();
    }
+
+   @Override
+   public String toString()
+   {
+      return delegate.toString();
+   }
 }

@@ -85,4 +85,10 @@ class SoftValueRef<K, V> extends SoftReference<V> implements ValueRef<K, V>
    {
       throw new UnsupportedOperationException("setValue");
    }
+
+   @Override
+   public String toString()
+   {
+      return String.valueOf(get());
+   }
 }

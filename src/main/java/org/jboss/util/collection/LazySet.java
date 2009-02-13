@@ -132,4 +132,10 @@ public class LazySet<T> implements Set<T>, Serializable
    {
       return delegate.toArray(a);
    }
+
+   @Override
+   public String toString()
+   {
+      return delegate.toString();
+   }
 }

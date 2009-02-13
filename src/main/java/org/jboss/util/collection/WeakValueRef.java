@@ -85,4 +85,10 @@ class WeakValueRef<K, V> extends WeakReference<V> implements ValueRef<K, V>
    {
       throw new UnsupportedOperationException("setValue");
    }
+
+   @Override
+   public String toString()
+   {
+      return String.valueOf(get());
+   }
 }
