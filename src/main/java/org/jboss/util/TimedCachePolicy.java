@@ -21,6 +21,8 @@
   */
 package org.jboss.util;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.jboss.logging.Logger;
+import org.jboss.util.loading.ContextClassLoaderSwitcher;
 
 /** An implementation of a timed cache. This is a cache whose entries have a
     limited lifetime with the ability to refresh their lifetime. The entries
@@ -48,6 +53,31 @@ public class TimedCachePolicy
    extends TimerTask /* A legacy base class that is no longer used as this level */
    implements CachePolicy
 {
+   /** 
+    * Name of system property that this class consults to determine what
+    * classloader to assign to its static {@link Timer}'s thread.
+    */
+   public static final String TIMER_CLASSLOADER_PROPERTY = "jboss.common.timedcachepolicy.timer.classloader";
+   
+   /**
+    * Value for {@link #TIMER_CLASSLOADER_PROPERTY} indicating the
+    * {@link ClassLoader#getSystemClassLoader() system classloader} should
+    * be used. This is the default value if the system property is not set.
+    */
+   public static final String TIMER_CLASSLOADER_SYSTEM = "system";
+   /**
+    * Value for {@link #TIMER_CLASSLOADER_PROPERTY} indicating the
+    * {@link Class#getClassLoader() classloader that loaded this class} should
+    * be used.
+    */
+   public static final String TIMER_CLASSLOADER_CURRENT = "current";
+   /**
+    * Value for {@link #TIMER_CLASSLOADER_PROPERTY} indicating the
+    * {@link Thread#getContextClassLoader() thread context classloader}
+    * in effect when this class is loaded should be used.
+    */
+   public static final String TIMER_CLASSLOADER_CONTEXT = "context";
+   
    /** The interface that cache entries support.
     */
    public static interface TimedEntry
@@ -79,9 +109,60 @@ public class TimedCachePolicy
       */
       public Object getValue();
    }
+   
+   private static final Logger log = Logger.getLogger(TimedCachePolicy.class);
 
-   protected static Timer resolutionTimer = new Timer(true);
+   protected static Timer resolutionTimer;
 
+   static
+   {
+      // Don't leak the TCCL to the resolutionTimer thread
+      ContextClassLoaderSwitcher.SwitchContext clSwitchContext = null;
+      try
+      {
+         // See if the user configured what classloader they want
+         String timerCl = AccessController.doPrivileged(new PrivilegedAction<String>()
+         {
+            public String run()
+            {
+               return System.getProperty(TIMER_CLASSLOADER_PROPERTY, TIMER_CLASSLOADER_SYSTEM);
+            }
+         });
+         
+         if (TIMER_CLASSLOADER_CONTEXT.equalsIgnoreCase(timerCl) == false)
+         {         
+            ContextClassLoaderSwitcher clSwitcher = (ContextClassLoaderSwitcher) AccessController.doPrivileged(ContextClassLoaderSwitcher.INSTANTIATOR);
+            if (TIMER_CLASSLOADER_CURRENT.equalsIgnoreCase(timerCl))
+            {
+               // Switches the TCCL to this class' classloader
+               clSwitchContext = clSwitcher.getSwitchContext(TimedCachePolicy.class.getClassLoader());
+            }
+            else
+            {
+               if (TIMER_CLASSLOADER_SYSTEM.equalsIgnoreCase(timerCl) == false)
+               {
+                  log.warn("Unknown value " + timerCl + " found for property " + 
+                        TIMER_CLASSLOADER_PROPERTY + " -- using the system classloader");
+               }
+               clSwitchContext = clSwitcher.getSwitchContext(ClassLoader.getSystemClassLoader());
+            }
+         }
+         resolutionTimer = new Timer(true);
+      }
+      catch (SecurityException e)
+      {
+         // For backward compatibility, don't blow up, just risk leaking the TCCL
+         // TODO log a WARN or something?
+         resolutionTimer = new Timer(true);
+      }
+      finally
+      {
+         // Restores the TCCL
+         if (clSwitchContext != null)
+            clSwitchContext.reset();
+      }
+   }
+   
    /** The map of cached TimedEntry objects. */
    protected Map entryMap;
    /** The lifetime in seconds to use for objects inserted
