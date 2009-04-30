@@ -88,7 +88,7 @@ public class AbstractBuilder<T> implements PrivilegedAction<T>
          
          String msg = "Cannot cast object '" + objClassName + "' to factory '" + factoryClassName + "'\n" + 
          "  factoryLoader: " + factoryLoader + "\n" + 
-         "  objLoader: " + objLoader + "\n";
+         "  objLoader: " + objLoader;
          
          throw new RuntimeException(msg);
       }
