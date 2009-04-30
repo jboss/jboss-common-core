@@ -21,6 +21,8 @@
  */
 package org.jboss.util.builder;
 
+// $Id: $
+
 import java.security.PrivilegedAction;
 
 /**
@@ -28,6 +30,7 @@ import java.security.PrivilegedAction;
  * 
  * @param <T> the type to be built
  * @author <a href="adrian@jboss.org">Adrian Brock</a>
+ * @author Thomas.Diesler@jboss.com
  * @version $Revision: 1.1 $
  */
 public class AbstractBuilder<T> implements PrivilegedAction<T>
@@ -57,16 +60,39 @@ public class AbstractBuilder<T> implements PrivilegedAction<T>
    
    public T run()
    {
+      Object object;
       try
       {
          String className = System.getProperty(factoryClass.getName(), defaultFactory);
          Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
-         Object object = clazz.newInstance();
-         return factoryClass.cast(object);
+         object = clazz.newInstance();
       }
       catch (Throwable t)
       {
          throw new RuntimeException("Error constructing " + factoryClass.getName(), t);
       }
+      
+      // Cast the factory instance and report a potential ClassLoader problem
+      T retObj;
+      try
+      {
+         retObj = factoryClass.cast(object);
+      }
+      catch (ClassCastException ex)
+      {
+         String objClassName = object.getClass().getName();
+         ClassLoader objLoader = object.getClass().getClassLoader();
+         
+         String factoryClassName = factoryClass.getName();
+         ClassLoader factoryLoader = factoryClass.getClassLoader();
+         
+         String msg = "Cannot cast object '" + objClassName + "' to factory '" + factoryClassName + "'\n" + 
+         "  factoryLoader: " + factoryLoader + "\n" + 
+         "  objLoader: " + objLoader + "\n";
+         
+         throw new RuntimeException(msg);
+      }
+      
+      return retObj;
    }
 }
