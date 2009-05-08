@@ -80,39 +80,35 @@ public class JBossEntityResolver implements EntityResolver
             return null;
          }
       });
-      registerEntity("http://java.sun.com/xml/ns/j2ee/application_1_4.xsd", "application_1_4.xsd");
-      registerEntity("http://java.sun.com/xml/ns/javaee/application_5.xsd", "application_5.xsd");
-      registerEntity("http://java.sun.com/xml/ns/j2ee/application-client_1_4.xsd", "application-client_1_4.xsd");
-      registerEntity("http://java.sun.com/xml/ns/javaee/application-client_5.xsd", "application-client_5.xsd");
-      registerEntity("http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd", "connector_1_5.xsd");
-      registerEntity("http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd", "ejb-jar_2_1.xsd");
+
+      // xml
+      registerEntity("-//W3C//DTD/XMLSCHEMA 200102//EN", "XMLSchema.dtd");
+      registerEntity("http://www.w3.org/2001/XMLSchema.dtd", "XMLSchema.dtd");
+      registerEntity("datatypes", "datatypes.dtd"); // This dtd doesn't have a publicId - see XMLSchema.dtd
+      registerEntity("http://www.w3.org/XML/1998/namespace", "xml.xsd");
+      registerEntity("http://www.w3.org/2001/xml.xsd", "xml.xsd");
+      registerEntity("http://www.w3.org/2005/05/xmlmime", "xml-media-types.xsd");
+
+      // Java EE common
       registerEntity("http://java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd", "j2ee_1_4.xsd");
-      registerEntity("http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd", "web-app_2_4.xsd");
-      registerEntity("http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd", "web-app_2_5.xsd");
+      registerEntity("http://java.sun.com/xml/ns/javaee/javaee_5.xsd", "javaee_5.xsd");
+      // JBoss common
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-common_5_1.xsd", "jboss-common_5_1.xsd");
+
+      // Java EE WS
       registerEntity("http://schemas.xmlsoap.org/soap/encoding/", "soap-encoding_1_1.xsd");
       registerEntity("http://www.ibm.com/webservices/xsd/j2ee_web_services_client_1_1.xsd", "j2ee_web_services_client_1_1.xsd");
       registerEntity("http://www.ibm.com/webservices/xsd/j2ee_web_services_1_1.xsd", "j2ee_web_services_1_1.xsd");
       registerEntity("http://www.ibm.com/webservices/xsd/j2ee_jaxrpc_mapping_1_1.xsd", "j2ee_jaxrpc_mapping_1_1.xsd");
-      registerEntity("http://www.w3.org/2001/xml.xsd", "xml.xsd");
-      registerEntity("http://www.w3.org/2005/05/xmlmime", "xml-media-types.xsd");
-      // ejb related
+      registerEntity("http://java.sun.com/xml/ns/javaee/javaee_web_services_client_1_2.xsd", "javaee_web_services_client_1_2.xsd");
+
+      // ejb
       registerEntity("-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN", "ejb-jar.dtd");
       registerEntity("-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN", "ejb-jar_2_0.dtd");
-      // ear stuff
-      registerEntity("-//Sun Microsystems, Inc.//DTD J2EE Application 1.2//EN", "application_1_2.dtd");
-      registerEntity("-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN", "application_1_3.dtd");
-      registerEntity("-//Sun Microsystems, Inc.//DTD J2EE Application Client 1.3//EN", "application-client_1_3.dtd");
-      // connector descriptors
-      registerEntity("-//Sun Microsystems, Inc.//DTD Connector 1.0//EN", "connector_1_0.dtd");
-      // war meta-data
-      registerEntity("-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN", "web-app_2_2.dtd");
-      registerEntity("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN", "web-app_2_3.dtd");
-      // jboss-specific
-      registerEntity("-//JBoss//DTD J2EE Application 1.3//EN", "jboss-app_3_0.dtd");
-      registerEntity("-//JBoss//DTD J2EE Application 1.3V2//EN", "jboss-app_3_2.dtd");
-      registerEntity("-//JBoss//DTD J2EE Application 1.4//EN", "jboss-app_4_0.dtd");
-      registerEntity("-//JBoss//DTD J2EE Application 4.2//EN", "jboss-app_4_2.dtd");
-      registerEntity("-//JBoss//DTD Java EE Application 5.0//EN", "jboss-app_5_0.dtd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd", "ejb-jar_2_1.xsd");
+      // ejb3
+      registerEntity("http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd", "ejb-jar_3_0.xsd");
+      // jboss ejb2
       registerEntity("-//JBoss//DTD JBOSS//EN", "jboss.dtd");
       registerEntity("-//JBoss//DTD JBOSS 2.4//EN", "jboss_2_4.dtd");
       registerEntity("-//JBoss//DTD JBOSS 3.0//EN", "jboss_3_0.dtd");
@@ -123,17 +119,60 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 3.0//EN", "jbosscmp-jdbc_3_0.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 3.2//EN", "jbosscmp-jdbc_3_2.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 4.0//EN", "jbosscmp-jdbc_4_0.dtd");
-      registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 4.2//EN", "jbosscmp-jdbc_4_2.dtd");      
+      registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 4.2//EN", "jbosscmp-jdbc_4_2.dtd");
+      // jboss ejb3
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss_5_0.xsd", "jboss_5_0.xsd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss_5_1.xsd", "jboss_5_1.xsd");
+      
+      // ear stuff
+      registerEntity("-//Sun Microsystems, Inc.//DTD J2EE Application 1.2//EN", "application_1_2.dtd");
+      registerEntity("-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN", "application_1_3.dtd");
+      registerEntity("-//Sun Microsystems, Inc.//DTD J2EE Application Client 1.3//EN", "application-client_1_3.dtd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/application_1_4.xsd", "application_1_4.xsd");
+      registerEntity("http://java.sun.com/xml/ns/javaee/application_5.xsd", "application_5.xsd");
+      // jboss-app
+      registerEntity("-//JBoss//DTD J2EE Application 1.3//EN", "jboss-app_3_0.dtd");
+      registerEntity("-//JBoss//DTD J2EE Application 1.3V2//EN", "jboss-app_3_2.dtd");
+      registerEntity("-//JBoss//DTD J2EE Application 1.4//EN", "jboss-app_4_0.dtd");
+      registerEntity("-//JBoss//DTD J2EE Application 4.2//EN", "jboss-app_4_2.dtd");
+      registerEntity("-//JBoss//DTD Java EE Application 5.0//EN", "jboss-app_5_0.dtd");
+
+      // connector descriptors
+      registerEntity("-//Sun Microsystems, Inc.//DTD Connector 1.0//EN", "connector_1_0.dtd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/connector_1_5.xsd", "connector_1_5.xsd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/connector_1_6.xsd", "connector_1_6.xsd");
+      // jboss-ds
+      registerEntity("-//JBoss//DTD JBOSS JCA Config 1.0//EN", "jboss-ds_1_0.dtd");
+      registerEntity("-//JBoss//DTD JBOSS JCA Config 1.5//EN", "jboss-ds_1_5.dtd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-ds_5_0.xsd", "jboss-ds_5_0.xsd");
+      // jboss-ra
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-ra_1_0.xsd", "jboss-ra_1_0.xsd");
+
+      // war meta-data
+      registerEntity("-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN", "web-app_2_2.dtd");
+      registerEntity("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN", "web-app_2_3.dtd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd", "web-app_2_4.xsd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd", "web-app_2_5.xsd");
+      // jboss-web
       registerEntity("-//JBoss//DTD Web Application 2.2//EN", "jboss-web.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.3//EN", "jboss-web_3_0.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.3V2//EN", "jboss-web_3_2.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.4//EN", "jboss-web_4_0.dtd");
       registerEntity("-//JBoss//DTD Web Application 4.2//EN", "jboss-web_4_2.dtd");      
       registerEntity("-//JBoss//DTD Web Application 5.0//EN", "jboss-web_5_0.dtd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd", "jboss-web_5_1.xsd");
+
+      // application client
+      registerEntity("http://java.sun.com/xml/ns/j2ee/application-client_1_4.xsd", "application-client_1_4.xsd");
+      registerEntity("http://java.sun.com/xml/ns/javaee/application-client_5.xsd", "application-client_5.xsd");
+      // jboss-client
       registerEntity("-//JBoss//DTD Application Client 3.2//EN", "jboss-client_3_2.dtd");
       registerEntity("-//JBoss//DTD Application Client 4.0//EN", "jboss-client_4_0.dtd");
       registerEntity("-//JBoss//DTD Application Client 4.2//EN", "jboss-client_4_2.dtd");      
       registerEntity("-//JBoss//DTD Application Client 5.0//EN", "jboss-client_5_0.dtd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-client_5_1.xsd", "jboss-client_5_1.xsd");
+      
+      // jboss-specific
       registerEntity("-//JBoss//DTD Web Service Reference 4.0//EN", "service-ref_4_0.dtd");
       registerEntity("-//JBoss//DTD Web Service Reference 4.2//EN", "service-ref_4_2.dtd");   
       registerEntity("-//JBoss//DTD Web Service Reference 5.0//EN", "service-ref_5_0.dtd");       
@@ -145,8 +184,6 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD JBOSS XMBEAN 1.1//EN", "jboss_xmbean_1_1.dtd");
       registerEntity("-//JBoss//DTD JBOSS XMBEAN 1.2//EN", "jboss_xmbean_1_2.dtd");
       registerEntity("-//JBoss//DTD JBOSS Security Config 3.0//EN", "security_config.dtd");
-      registerEntity("-//JBoss//DTD JBOSS JCA Config 1.0//EN", "jboss-ds_1_0.dtd");
-      registerEntity("-//JBoss//DTD JBOSS JCA Config 1.5//EN", "jboss-ds_1_5.dtd");
       registerEntity("http://www.jboss.org/j2ee/schema/security-config_4_0.xsd", "security-config_4_0.xsd");
       registerEntity("urn:jboss:aop-deployer", "aop-deployer_1_1.xsd");
       registerEntity("urn:jboss:aop-beans:1.0", "aop-beans_1_0.xsd");
@@ -162,24 +199,6 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("urn:jboss:security-config:5.0", "security-config_5_0.xsd");
       registerEntity("urn:jboss:jndi-binding-service:1.0", "jndi-binding-service_1_0.xsd");
       registerEntity("urn:jboss:user-roles:1.0", "user-roles_1_0.xsd");
-      // xml
-      registerEntity("-//W3C//DTD/XMLSCHEMA 200102//EN", "XMLSchema.dtd");
-      registerEntity("http://www.w3.org/2001/XMLSchema.dtd", "XMLSchema.dtd");
-      registerEntity("datatypes", "datatypes.dtd"); // This dtd doesn't have a publicId - see XMLSchema.dtd
-      registerEntity("http://www.w3.org/XML/1998/namespace", "xml.xsd");
-      // ejb3 and javaee5 related
-      registerEntity("http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd", "ejb-jar_3_0.xsd");
-      registerEntity("http://java.sun.com/xml/ns/javaee/javaee_web_services_client_1_2.xsd", "javaee_web_services_client_1_2.xsd");
-      registerEntity("http://java.sun.com/xml/ns/javaee/javaee_5.xsd", "javaee_5.xsd");
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss_5_0.xsd", "jboss_5_0.xsd");
-      
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss-common_5_1.xsd", "jboss-common_5_1.xsd");
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss_5_1.xsd", "jboss_5_1.xsd");
-      registerEntity("http://java.sun.com/xml/ns/j2ee/connector_1_6.xsd", "connector_1_6.xsd");
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss-ds_5_0.xsd", "jboss-ds_5_0.xsd");
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss-ra_1_0.xsd", "jboss-ra_1_0.xsd");
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd", "jboss-web_5_1.xsd");
-      registerEntity("http://www.jboss.org/j2ee/schema/jboss-client_5_1.xsd", "jboss-client_5_1.xsd");
    }
 
    /**
