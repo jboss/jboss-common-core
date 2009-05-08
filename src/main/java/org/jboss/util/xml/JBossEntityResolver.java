@@ -113,9 +113,6 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD J2EE Application 1.4//EN", "jboss-app_4_0.dtd");
       registerEntity("-//JBoss//DTD J2EE Application 4.2//EN", "jboss-app_4_2.dtd");
       registerEntity("-//JBoss//DTD Java EE Application 5.0//EN", "jboss-app_5_0.dtd");
-      registerEntity("-//JBoss//DTD JAWS//EN", "jaws.dtd");
-      registerEntity("-//JBoss//DTD JAWS 2.4//EN", "jaws_2_4.dtd");
-      registerEntity("-//JBoss//DTD JAWS 3.0//EN", "jaws_3_0.dtd");
       registerEntity("-//JBoss//DTD JBOSS//EN", "jboss.dtd");
       registerEntity("-//JBoss//DTD JBOSS 2.4//EN", "jboss_2_4.dtd");
       registerEntity("-//JBoss//DTD JBOSS 3.0//EN", "jboss_3_0.dtd");
@@ -175,6 +172,14 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("http://java.sun.com/xml/ns/javaee/javaee_web_services_client_1_2.xsd", "javaee_web_services_client_1_2.xsd");
       registerEntity("http://java.sun.com/xml/ns/javaee/javaee_5.xsd", "javaee_5.xsd");
       registerEntity("http://www.jboss.org/j2ee/schema/jboss_5_0.xsd", "jboss_5_0.xsd");
+      
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-common_5_1.xsd", "jboss-common_5_1.xsd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss_5_1.xsd", "jboss_5_1.xsd");
+      registerEntity("http://java.sun.com/xml/ns/j2ee/connector_1_6.xsd", "connector_1_6.xsd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-ds_5_0.xsd", "jboss-ds_5_0.xsd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-ra_1_0.xsd", "jboss-ra_1_0.xsd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd", "jboss-web_5_1.xsd");
+      registerEntity("http://www.jboss.org/j2ee/schema/jboss-client_5_1.xsd", "jboss-client_5_1.xsd");
    }
 
    /**
