@@ -57,6 +57,8 @@ public class GUID
 
    /** The hash code of this GUID */
    protected final int hashCode;
+   
+   private transient String toString;
 
    /**
     * Construct a new GUID.
@@ -106,7 +108,12 @@ public class GUID
     * @return  A string representation of this GUID.
     */
    public String toString() {
-      return vmid.toString() + "-" + uid.toString();
+      // JBCOMMON-88. Cache this as it's expensive to create
+      if (toString == null)
+      {
+         toString = vmid.toString() + "-" + uid.toString();
+      }
+      return toString;
    }
 
    /**
