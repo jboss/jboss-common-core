@@ -24,8 +24,10 @@ package org.jboss.util;
 import java.lang.ref.SoftReference;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.jboss.logging.Logger;
+import org.jboss.util.collection.ConcurrentReferenceHashMap;
 
 /**
  * Utility Class
@@ -54,11 +56,15 @@ import org.jboss.logging.Logger;
  *    protected boolean cacheGetHashCode()  
  * 
  * @author <a href="adrian@jboss.com">Adrian Brock</a>
+ * @author <a href="ales.justin@jboss.com">Ales Justin</a>
  * @version $Revision$
  */
 @SuppressWarnings("unchecked")
 public class JBossObject implements JBossInterface
 {
+   /** The loggers */
+   private static final Map<Class<?>, Logger> loggers = new ConcurrentReferenceHashMap<Class<?>, Logger>();
+
    /** The log */
    protected Logger log;
    
@@ -67,6 +73,41 @@ public class JBossObject implements JBossInterface
    
    /** Cached hashCode */
    protected transient int hashCode = Integer.MIN_VALUE;
+
+   /**
+    * Create a new object
+    */
+   public JBossObject()
+   {
+      log = createLog();
+   }
+
+   /**
+    * Create a new object using the specified Logger instace
+    *
+    * @param log the Logger instance to use
+    */
+   public JBossObject(Logger log)
+   {
+      this.log = (log != null) ? log : createLog();
+   }
+
+   /**
+    * Create logger.
+    *
+    * @return the logger
+    */
+   private Logger createLog()
+   {
+      Class<?> clazz = getClass();
+      Logger logger = loggers.get(clazz);
+      if (logger == null)
+      {
+         logger = Logger.getLogger(clazz);
+         loggers.put(clazz, logger);
+      }
+      return logger;
+   }
 
    /**
     * Safe equality check
@@ -124,24 +165,6 @@ public class JBossObject implements JBossInterface
       buffer.append(']');
    }
 
-   /**
-    * Create a new object
-    */
-   public JBossObject()
-   {
-      log = Logger.getLogger(getClass());
-   }
-   
-   /**
-    * Create a new object using the specified Logger instace
-    * 
-    * @param log the Logger instance to use
-    */
-   public JBossObject(Logger log)
-   {
-      this.log = (log != null) ? log : Logger.getLogger(getClass());
-   }
-   
    /**
     * Override toString to cache the value
     * 
