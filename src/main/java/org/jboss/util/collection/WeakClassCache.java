@@ -35,13 +35,14 @@ import java.util.WeakHashMap;
  * instantiate - creates the data<br>
  * generate - fills in the details
  *
+ * @param <T> exact value type
  * @author <a href="mailto:adrian@jboss.org">Adrian Brock</a>
+ * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@SuppressWarnings("unchecked")
-public abstract class WeakClassCache
+public abstract class WeakClassCache<T>
 {
    /** The cache */
-   protected Map cache = new WeakHashMap(); 
+   protected final Map<ClassLoader, Map<String, WeakReference<T>>> cache = new WeakHashMap<ClassLoader, Map<String, WeakReference<T>>>();
 
    /**
     * Get the information for a class
@@ -49,24 +50,24 @@ public abstract class WeakClassCache
     * @param clazz the class
     * @return the info
     */
-   public Object get(Class clazz)
+   public T get(Class<?> clazz)
    {
       if (clazz == null)
          throw new IllegalArgumentException("Null class");
       
-      Map classLoaderCache = getClassLoaderCache(clazz.getClassLoader());
+      Map<String, WeakReference<T>> classLoaderCache = getClassLoaderCache(clazz.getClassLoader());
 
-      WeakReference weak = (WeakReference) classLoaderCache.get(clazz.getName());
+      WeakReference<T> weak = classLoaderCache.get(clazz.getName());
       if (weak != null)
       {
-         Object result = weak.get();
+         T result = weak.get();
          if (result != null)
             return result;
       }
 
-      Object result = instantiate(clazz);
+      T result = instantiate(clazz);
 
-      weak = new WeakReference(result);
+      weak = new WeakReference<T>(result);
       classLoaderCache.put(clazz.getName(), weak);
       
       generate(clazz, result);
@@ -82,13 +83,14 @@ public abstract class WeakClassCache
     * @return the info
     * @throws ClassNotFoundException when the class cannot be found
     */
-   public Object get(String name, ClassLoader cl) throws ClassNotFoundException
+   public T get(String name, ClassLoader cl) throws ClassNotFoundException
    {
       if (name == null)
          throw new IllegalArgumentException("Null name");
       if (cl == null)
          throw new IllegalArgumentException("Null classloader");
-      Class clazz = cl.loadClass(name);
+
+      Class<?> clazz = cl.loadClass(name);
       return get(clazz);
    }
    
@@ -98,7 +100,7 @@ public abstract class WeakClassCache
     * @param clazz the class
     * @return the result
     */
-   protected abstract Object instantiate(Class clazz);
+   protected abstract T instantiate(Class<?> clazz);
    
    /**
     * Fill in the result
@@ -106,7 +108,7 @@ public abstract class WeakClassCache
     * @param clazz the class
     * @param result the result
     */
-   protected abstract void generate(Class clazz, Object result);
+   protected abstract void generate(Class<?> clazz, T result);
    
    /**
     * Get the cache for the classloader
@@ -114,11 +116,11 @@ public abstract class WeakClassCache
     * @param cl the classloader
     * @return the map
     */
-   protected Map getClassLoaderCache(ClassLoader cl)
+   protected Map<String, WeakReference<T>> getClassLoaderCache(ClassLoader cl)
    {
       synchronized (cache)
       {
-         Map result = (Map) cache.get(cl);
+         Map<String, WeakReference<T>> result = cache.get(cl);
          if (result == null)
          {
             result = CollectionsFactory.createConcurrentReaderMap();
