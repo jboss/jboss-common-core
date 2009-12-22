@@ -23,13 +23,16 @@ package org.jboss.util.graph;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A directed graph data structure.
  * 
  * @author Scott.Stark@jboss.org
+ * @author Ales.Justin@jboss.org
  * @version $Revision$
  * @param <T> 
  */
@@ -42,8 +45,8 @@ public class Graph<T>
    public static final int VISIT_COLOR_GREY = 2;
    /** Color used to mark nodes after descendants are completely visited */
    public static final int VISIT_COLOR_BLACK = 3;
-   /** Vector<Vertex> of graph verticies */
-   private List<Vertex<T>> verticies;
+   /** Map<String, Vertex> of graph verticies */
+   private Map<String, Vertex<T>> verticies;
    /** Vector<Edge> of edges in the graph */
    private List<Edge<T>> edges;
    /** The vertex identified as the root of the graph */
@@ -54,7 +57,7 @@ public class Graph<T>
     */
    public Graph()
    {
-      verticies = new ArrayList<Vertex<T>>();
+      verticies = new LinkedHashMap<String, Vertex<T>>();
       edges = new ArrayList<Edge<T>>();
    }
 
@@ -74,12 +77,12 @@ public class Graph<T>
     */ 
    public boolean addVertex(Vertex<T> v)
    {
-      boolean added = false;
-      if( verticies.contains(v) == false )
+      if( verticies.containsValue(v) == false )
       {
-         added = verticies.add(v);
+         verticies.put(v.getName(), v);
+         return true;
       }
-      return added;
+      return false;
    }
 
    /**
@@ -108,8 +111,8 @@ public class Graph<T>
    public void setRootVertex(Vertex<T> root)
    {
       this.rootVertex = root;
-      if( verticies.contains(root) == false )
-         this.addVertex(root);
+      if( verticies.containsValue(root) == false )
+         addVertex(root);
    }
 
    /**
@@ -119,7 +122,7 @@ public class Graph<T>
     */ 
    public Vertex<T> getVertex(int n)
    {
-      return verticies.get(n);
+      return getVerticies().get(n);
    }
 
    /**
@@ -129,7 +132,7 @@ public class Graph<T>
     */
    public List<Vertex<T>> getVerticies()
    {
-      return this.verticies;
+      return new ArrayList<Vertex<T>>(verticies.values());
    }
 
    /**
@@ -145,9 +148,9 @@ public class Graph<T>
    public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost)
       throws IllegalArgumentException
    {
-      if( verticies.contains(from) == false )
+      if( verticies.containsValue(from) == false )
          throw new IllegalArgumentException("from is not in graph");
-      if( verticies.contains(to) == false )
+      if( verticies.containsValue(to) == false )
          throw new IllegalArgumentException("to is not in graph");
 
       Edge<T> e = new Edge<T>(from, to, cost);
@@ -194,10 +197,10 @@ public class Graph<T>
     */ 
    public boolean removeVertex(Vertex<T> v)
    {
-      if (!verticies.contains(v))
+      if (!verticies.containsValue(v))
          return false;
 
-      verticies.remove(v);
+      verticies.remove(v.getName());
       if( v == rootVertex )
          rootVertex = null;
 
@@ -247,7 +250,7 @@ public class Graph<T>
     */ 
    public void clearMark()
    {
-      for (Vertex<T> w : verticies)
+      for (Vertex<T> w : verticies.values())
          w.clearMark();
    }
 
@@ -282,7 +285,7 @@ public class Graph<T>
    /**
     * Perform a depth first serach using recursion. The search may
     * be cut short if the visitor throws an exception.
-    * @param <E> 
+    * @param <E> exception type
     * 
     * @param v - the Vertex to start the search from
     * @param visitor - the vistor to inform prior to 
@@ -329,7 +332,7 @@ public class Graph<T>
     * Perform a breadth first search of this graph, starting at v. The
     * vist may be cut short if visitor throws an exception during
     * a vist callback.
-    * @param <E> 
+    * @param <E> exception type
     * 
     * @param v - the search starting point
     * @param visitor - the vistor whose vist method is called prior
@@ -397,16 +400,7 @@ public class Graph<T>
     */
    public Vertex<T> findVertexByName(String name)
    {
-      Vertex<T> match = null;
-      for(Vertex<T> v : verticies)
-      {
-         if( name.equals(v.getName()) )
-         {
-            match = v;
-            break;
-         }
-      }
-      return match;
+      return verticies.get(name);
    }
 
    /**
@@ -420,7 +414,7 @@ public class Graph<T>
    public Vertex<T> findVertexByData(T data, Comparator<T> compare)
    {
       Vertex<T> match = null;
-      for(Vertex<T> v : verticies)
+      for(Vertex<T> v : verticies.values())
       {
          if( compare.compare(data, v.getData()) == 0 )
          {
@@ -484,7 +478,7 @@ public class Graph<T>
    public String toString()
    {
       StringBuffer tmp = new StringBuffer("Graph[");
-      for (Vertex<T> v : verticies)
+      for (Vertex<T> v : verticies.values())
          tmp.append(v);
       tmp.append(']');
       return tmp.toString();

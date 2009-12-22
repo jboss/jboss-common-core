@@ -28,6 +28,7 @@ import java.util.List;
  * A named graph vertex with optional data.
  * 
  * @author Scott.Stark@jboss.org
+ * @author Ales.Justin@jboss.org
  * @version $Revision$
  * @param <T> 
  */
@@ -148,9 +149,9 @@ public class Vertex<T>
    public boolean hasEdge(Edge<T> e)
    {
       if (e.getFrom() == this)
-         return incomingEdges.contains(e);
-      else if (e.getTo() == this)
          return outgoingEdges.contains(e);
+      else if (e.getTo() == this)
+         return incomingEdges.contains(e);
       else 
          return false;
    }
@@ -165,9 +166,9 @@ public class Vertex<T>
    public boolean remove(Edge<T> e)
    {
       if (e.getFrom() == this)
-         incomingEdges.remove(e);
-      else if (e.getTo() == this)
          outgoingEdges.remove(e);
+      else if (e.getTo() == this)
+         incomingEdges.remove(e);
       else 
          return false;
       return true;

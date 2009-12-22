@@ -23,11 +23,12 @@ package org.jboss.test.util.test.graph;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.jboss.util.graph.Graph;
 import org.jboss.util.graph.Edge;
+import org.jboss.util.graph.Graph;
 import org.jboss.util.graph.Vertex;
 import org.jboss.util.graph.Visitor;
 
@@ -35,6 +36,7 @@ import org.jboss.util.graph.Visitor;
  * Tests of the graph package
  *
  * @author Scott.Stark@jboss.org
+ * @author Ales.Justin@jboss.org
  * @version $Revision: 1.1 $
  */
 @SuppressWarnings("unchecked")
@@ -59,11 +61,49 @@ public class GraphTestCase extends TestCase
       super(name);
    }
 
+   public void testBasicOps() throws Exception
+   {
+      Graph graph = new Graph();
+
+      Vertex v1 = new Vertex("1");
+      graph.addVertex(v1);
+      Vertex v2 = new Vertex("2");
+      graph.addVertex(v2);
+
+      graph.addEdge(v1, v2, 0);
+      List edges = graph.getEdges();
+      assertNotNull(edges);
+      assertEquals(1, edges.size());
+      Edge e = (Edge)edges.get(0);
+      List outgoing1 = v1.getOutgoingEdges();
+      assertEquals(1, outgoing1.size());
+      assertEquals(e, outgoing1.get(0));
+      List incoming1 = v1.getIncomingEdges();
+      assertTrue(incoming1 == null || incoming1.isEmpty());
+      List outgoing2 = v2.getOutgoingEdges();
+      assertTrue(outgoing2 == null || outgoing2.isEmpty());
+      List incoming2 = v2.getIncomingEdges();
+      assertEquals(1, incoming2.size());
+      assertEquals(e, incoming2.get(0));
+
+      graph.removeEdge(v1, v2);
+      edges = graph.getEdges();
+      assertNotNull(edges);
+      assertEquals(0, edges.size());
+      outgoing1 = v1.getOutgoingEdges();
+      assertTrue(outgoing1 == null || outgoing1.isEmpty());
+      incoming1 = v1.getIncomingEdges();
+      assertTrue(incoming1 == null || incoming1.isEmpty());
+      outgoing2 = v2.getOutgoingEdges();
+      assertTrue(outgoing2 == null || outgoing2.isEmpty());
+      incoming2 = v2.getIncomingEdges();
+      assertTrue(incoming2 == null || incoming2.isEmpty());
+   }
+
    /** Depth first search of digraph1
     * @throws Exception
     */
-   public void testDFS()
-      throws Exception
+   public void testDFS() throws Exception
    {
       Graph graph = buildGraph1();
 
