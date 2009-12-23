@@ -6,6 +6,8 @@
 
 package org.jboss.util.collection;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.AbstractCollection;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
@@ -308,7 +310,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
     /**
      * The topmost head index of the skiplist.
      */
-    private transient volatile HeadIndex<K,V> head;
+    transient volatile HeadIndex<K,V> head;
 
     /**
      * The Comparator used to maintain order in this Map, or null
@@ -351,10 +353,12 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
     }
 
     /** Updater for casHead */
-    private static final
-        AtomicReferenceFieldUpdater<ConcurrentSkipListMap, HeadIndex>
-        headUpdater = AtomicReferenceFieldUpdater.newUpdater
-        (ConcurrentSkipListMap.class, HeadIndex.class, "head");
+    private static final AtomicReferenceFieldUpdater<ConcurrentSkipListMap, HeadIndex> headUpdater = AccessController.doPrivileged(
+        new PrivilegedAction<AtomicReferenceFieldUpdater<ConcurrentSkipListMap, HeadIndex>>() {
+    	    public AtomicReferenceFieldUpdater<ConcurrentSkipListMap, HeadIndex> run() {
+                return AtomicReferenceFieldUpdater.newUpdater(ConcurrentSkipListMap.class, HeadIndex.class, "head");
+		    }
+        });
 
     /**
      * compareAndSet head node
@@ -401,13 +405,18 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
 
         /** Updater for casNext */
         static final AtomicReferenceFieldUpdater<Node, Node>
-            nextUpdater = AtomicReferenceFieldUpdater.newUpdater
-            (Node.class, Node.class, "next");
+            nextUpdater = AccessController.doPrivileged(new PrivilegedAction<AtomicReferenceFieldUpdater<Node, Node>>() {
+			    public AtomicReferenceFieldUpdater<Node, Node> run() {
+				    return AtomicReferenceFieldUpdater.newUpdater(Node.class, Node.class, "next");
+			    }
+            });
 
-        /** Updater for casValue */
         static final AtomicReferenceFieldUpdater<Node, Object>
-            valueUpdater = AtomicReferenceFieldUpdater.newUpdater
-            (Node.class, Object.class, "value");
+        	valueUpdater = AccessController.doPrivileged(new PrivilegedAction<AtomicReferenceFieldUpdater<Node, Object>>() {
+        	    public AtomicReferenceFieldUpdater<Node, Object> run() {
+        		    return AtomicReferenceFieldUpdater.newUpdater(Node.class, Object.class, "value");
+        	    }
+            });
 
         /**
          * compareAndSet value field
@@ -528,8 +537,11 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
 
         /** Updater for casRight */
         static final AtomicReferenceFieldUpdater<Index, Index>
-            rightUpdater = AtomicReferenceFieldUpdater.newUpdater
-            (Index.class, Index.class, "right");
+            rightUpdater = AccessController.doPrivileged(new PrivilegedAction<AtomicReferenceFieldUpdater<Index, Index>>() {
+		        public AtomicReferenceFieldUpdater<Index, Index> run() {
+			        return AtomicReferenceFieldUpdater.newUpdater(Index.class, Index.class, "right");
+		        }
+            });
 
         /**
          * compareAndSet right field
