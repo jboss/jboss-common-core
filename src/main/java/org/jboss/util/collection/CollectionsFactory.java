@@ -115,4 +115,15 @@ public class CollectionsFactory
    {
       return new ConcurrentSet<T>();
    }
+
+   /**
+    * Defines the concurrent reference set implementation
+    *
+    * @param <T> the type
+    * @return the set
+    */
+   public static final <T> Set<T> createConcurrentReferenceSet()
+   {
+      return new ConcurrentReferenceHashSet<T>();
+   }
 }

@@ -25,7 +25,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * ConcurrentSet based on top of ConcurrentReferenceHashMap.
+ * Set based on top of ConcurrentReferenceHashMap.
  * It's serializable if the elements are serializable.
  *
  * @author <a href="ales.justin@jboss.org">Ales Justin</a>

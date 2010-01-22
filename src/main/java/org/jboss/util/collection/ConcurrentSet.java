@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ConcurrentSet based on top of ConcurrenthashMap.
+ * Concurrent Set based on top of ConcurrentHashMap.
  * It's serializable if the elements are serializable.
  *
  * @param <E> the element type
