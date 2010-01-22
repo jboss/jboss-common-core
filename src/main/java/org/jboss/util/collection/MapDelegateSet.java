@@ -35,6 +35,8 @@ import java.util.Map;
  */
 public class MapDelegateSet<E> extends AbstractSet<E> implements Serializable
 {
+   /** The serialVersionUID */
+   private static final long serialVersionUID = 1L;
    /** The delegate map */
    private final Map<E, Object> map;
    /** The dummy object */
