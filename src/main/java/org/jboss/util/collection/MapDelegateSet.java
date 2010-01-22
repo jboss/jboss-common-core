@@ -33,7 +33,7 @@ import java.util.Map;
  * @param <E> the element type
  * @author <a href="ales.justin@jboss.org">Ales Justin</a>
  */
-public abstract class MapDelegateSet<E> extends AbstractSet<E> implements Serializable
+public class MapDelegateSet<E> extends AbstractSet<E> implements Serializable
 {
    /** The delegate map */
    private final Map<E, Object> map;
@@ -45,7 +45,7 @@ public abstract class MapDelegateSet<E> extends AbstractSet<E> implements Serial
     *
     * @param map the initial map
     */
-   protected MapDelegateSet(Map<E, Object> map)
+   public MapDelegateSet(Map<E, Object> map)
    {
       if (map == null)
          throw new IllegalArgumentException("Null map");
