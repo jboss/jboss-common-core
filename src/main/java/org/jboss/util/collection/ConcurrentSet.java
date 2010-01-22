@@ -22,9 +22,7 @@
 package org.jboss.util.collection;
 
 import java.io.Serializable;
-import java.util.AbstractSet;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -32,16 +30,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * It's serializable if the elements are serializable.
  *
  * @param <E> the element type
- * @author <a href="ales.justin@jboss.com">Ales Justin</a>
+ * @author <a href="ales.justin@jboss.org">Ales Justin</a>
  */
-public class ConcurrentSet<E> extends AbstractSet<E> implements Serializable
+public class ConcurrentSet<E> extends MapDelegateSet<E> implements Serializable
 {
    /** The serialVersionUID */
    private static final long serialVersionUID = 1L;
-   /** The delegate set */
-   private ConcurrentHashMap<E, Object> map;
-   /** The dummy object */
-   private static final Object PRESENT = new Object();
 
    /**
     * Constructs a new, empty set; the backing <tt>ConcurrentHashMap</tt> instance has
@@ -49,7 +43,7 @@ public class ConcurrentSet<E> extends AbstractSet<E> implements Serializable
     */
    public ConcurrentSet()
    {
-      map = new ConcurrentHashMap<E, Object>();
+      super(new ConcurrentHashMap<E, Object>());
    }
 
    /**
@@ -63,7 +57,7 @@ public class ConcurrentSet<E> extends AbstractSet<E> implements Serializable
     */
    public ConcurrentSet(Collection<? extends E> c)
    {
-      map = new ConcurrentHashMap<E, Object>(Math.max((int)(c.size() / .75f) + 1, 16));
+      super(new ConcurrentHashMap<E, Object>(Math.max((int)(c.size() / .75f) + 1, 16)));
       addAll(c);
    }
 
@@ -84,7 +78,7 @@ public class ConcurrentSet<E> extends AbstractSet<E> implements Serializable
     */
    public ConcurrentSet(int initialCapacity, float loadFactor, int concurrencyLevel)
    {
-      map = new ConcurrentHashMap<E, Object>(initialCapacity, loadFactor, concurrencyLevel);
+      super(new ConcurrentHashMap<E, Object>(initialCapacity, loadFactor, concurrencyLevel));
    }
 
    /**
@@ -98,88 +92,6 @@ public class ConcurrentSet<E> extends AbstractSet<E> implements Serializable
     */
    public ConcurrentSet(int initialCapacity)
    {
-      map = new ConcurrentHashMap<E, Object>(initialCapacity);
-   }
-
-   /**
-    * Returns an iterator over the elements in this set.  The elements
-    * are returned in no particular order.
-    *
-    * @return an Iterator over the elements in this set.
-    * @see java.util.ConcurrentModificationException
-    */
-   public Iterator<E> iterator()
-   {
-      return map.keySet().iterator();
-   }
-
-   /**
-    * Returns the number of elements in this set (its cardinality).
-    *
-    * @return the number of elements in this set (its cardinality).
-    */
-   public int size()
-   {
-      return map.size();
-   }
-
-   /**
-    * Returns <tt>true</tt> if this set contains no elements.
-    *
-    * @return <tt>true</tt> if this set contains no elements.
-    */
-   public boolean isEmpty()
-   {
-      return map.isEmpty();
-   }
-
-   /**
-    * Returns <tt>true</tt> if this set contains the specified element.
-    *
-    * @param o element whose presence in this set is to be tested.
-    * @return <tt>true</tt> if this set contains the specified element.
-    */
-   @SuppressWarnings({"SuspiciousMethodCalls"})
-   public boolean contains(Object o)
-   {
-      return map.containsKey(o);
-   }
-
-   /**
-    * Adds the specified element to this set if it is not already
-    * present.
-    *
-    * @param o element to be added to this set.
-    * @return <tt>true</tt> if the set did not already contain the specified
-    *         element.
-    */
-   public boolean add(E o)
-   {
-      return map.put(o, PRESENT) == null;
-   }
-
-   /**
-    * Removes the specified element from this set if it is present.
-    *
-    * @param o object to be removed from this set, if present.
-    * @return <tt>true</tt> if the set contained the specified element.
-    */
-   public boolean remove(Object o)
-   {
-      return map.remove(o) == PRESENT;
-   }
-
-   /**
-    * Removes all of the elements from this set.
-    */
-   public void clear()
-   {
-      map.clear();
-   }
-
-   @Override
-   public String toString()
-   {
-      return map.keySet().toString();
+      super(new ConcurrentHashMap<E, Object>(initialCapacity));
    }
 }

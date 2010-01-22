@@ -971,6 +971,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      *
      * @param keyType the reference type to use for keys
      * @param valueType the reference type to use for values
+     * @param options the options
      * @throws IllegalArgumentException if the initial capacity of
      * elements is negative.
      */
