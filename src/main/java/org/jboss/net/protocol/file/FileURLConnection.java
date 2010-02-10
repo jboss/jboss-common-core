@@ -31,10 +31,7 @@ import java.io.FilePermission;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
+import java.net.*;
 import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -49,36 +46,28 @@ import java.util.TimeZone;
  * @author  <a href="mailto:jason@planet57.com">Jason Dillon</a>
  * @author  <a href="mailto:scott.stark@jboss.org">Scott Stark</a>
  * @author  <a href="mailto:dimitris@jboss.org">Dimitris Andreadis</a>
+ * @author  <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  * @version $Revision$
  */
 public class FileURLConnection extends URLConnection
 {
-   static boolean decodeFilePaths = true;
-   static
-   {
-      String flag = System.getProperty("org.jboss.net.protocol.file.decodeFilePaths");
-      if (flag != null)
-      {
-         decodeFilePaths = Boolean.valueOf(flag).booleanValue();
-      }
-   }
-   
    /** The underlying file */
-   protected File file;
+   protected final File file;
 
-   public FileURLConnection(final URL url) throws MalformedURLException, IOException
+   public FileURLConnection(final URL url) throws IOException
    {
       super(url);
-      
-      String path = url.getPath();
-      if (decodeFilePaths)
+      try
       {
-         path = URLDecoder.decode(path, "UTF-8");
+         file = new File(url.toURI());
+         super.doOutput = false;
       }
-      // Convert the url '/' to the os file separator
-      file = new File(path.replace('/', File.separatorChar).replace('|', ':'));
-
-      super.doOutput = false;
+      catch (URISyntaxException e)
+      {
+         IOException ioe = new IOException();
+         ioe.initCause(e);
+         throw ioe;
+      }
    }
 
    /**
