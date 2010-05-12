@@ -116,6 +116,8 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//JBoss//DTD JBOSS 4.0//EN", "jboss_4_0.dtd");
       registerEntity("-//JBoss//DTD JBOSS 4.2//EN", "jboss_4_2.dtd");
       registerEntity("-//JBoss//DTD JBOSS 5.0//EN", "jboss_5_0.dtd");
+      registerEntity("-//JBoss//DTD JBOSS 5.1.EAP//EN", "jboss_5_1_eap.dtd");
+      registerEntity("-//JBoss//DTD JBOSS 6.0//EN", "jboss_6_0.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 3.0//EN", "jbosscmp-jdbc_3_0.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 3.2//EN", "jbosscmp-jdbc_3_2.dtd");
       registerEntity("-//JBoss//DTD JBOSSCMP-JDBC 4.0//EN", "jbosscmp-jdbc_4_0.dtd");
