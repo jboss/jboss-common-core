@@ -262,7 +262,11 @@ public final class JarUtils
       }
       JarInputStream jin = new JarInputStream(in);
       byte[] buffer = new byte[1024];
-      
+     
+      String canonicalDocBasePrefix = dest.getCanonicalPath(); 
+      if (!canonicalDocBasePrefix.endsWith(File.separator)) {
+         canonicalDocBasePrefix += File.separator;
+      }
       ZipEntry entry = jin.getNextEntry();
       while (entry != null)
       {
@@ -280,6 +284,9 @@ public final class JarUtils
             fileName = fileName.replace('/', File.separatorChar);
          }
          File file = new File(dest, fileName);
+         if (!file.getCanonicalPath().startsWith(canonicalDocBasePrefix)) {
+            throw new IOException("illegalPath: " + fileName);
+         }
          if (entry.isDirectory())
          {
             // make sure the directory exists
