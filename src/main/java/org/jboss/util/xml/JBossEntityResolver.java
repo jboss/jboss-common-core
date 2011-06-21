@@ -549,7 +549,7 @@ public class JBossEntityResolver implements EntityResolver
          else
             filename = path;
 
-         if(path.length() == 0)
+         if(filename.length() == 0)
             return null;
 
          if (trace)

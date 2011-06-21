@@ -97,6 +97,29 @@ public class JBossEntityResolverUnitTestCase
       assertEquals(280, resolvedSize);
    }
 
+   public void testEmptyFilenameResolution()
+      throws Exception
+   {
+      String rootDir = "file:///";
+      URL rootUrl = new URL(rootDir);
+      JBossEntityResolver resolver = new JBossEntityResolver();
+      InputSource resolvedSource = resolver.resolveEntity(rootDir, rootDir);
+
+      InputStream resolverStream = resolvedSource.getByteStream();
+      InputStream rootDirStream = rootUrl.openStream();
+
+      int resolverByte,rootDirByte;
+      while((resolverByte = resolverStream.read()) != -1)
+      {
+         rootDirByte = rootDirStream.read();
+         if(rootDirByte != resolverByte)
+            assertTrue("Empty filename resolution failed. URL: " + rootUrl, false);
+      }
+
+      if(rootDirStream.read() != -1)
+         assertTrue("Empty filename resolution failed. URL: " + rootUrl, false);
+   }
+
    private int bytesTotal(InputStream redefinedStream) throws IOException
    {
       byte[] bytes = new byte[1024];
