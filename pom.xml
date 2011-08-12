@@ -3,16 +3,17 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>5</version>
+    <version>6</version>
   </parent>
   <groupId>org.jboss</groupId>   
   <artifactId>jboss-common-core</artifactId>
   <packaging>jar</packaging>
   <version>2.2.18-SNAPSHOT</version>
   <name>JBoss Common Classes</name>
-  <url>http://www.jboss.org</url>
+  <url>http://www.jboss.org/jboss-common</url>
   <description>JBoss Common Core Utility classes</description>
   <scm>
+    <url>https://source.jboss.org/browse/JBossCommon</url>
     <connection>scm:svn:http://anonsvn.jboss.org/repos/common/common-core/trunk/</connection>
     <developerConnection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</developerConnection>    
   </scm>
