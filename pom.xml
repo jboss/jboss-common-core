@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>4.0.CR1</version>
+    <version>5</version>
   </parent>
   <groupId>org.jboss</groupId>   
   <artifactId>jboss-common-core</artifactId>
@@ -16,7 +16,37 @@
     <connection>scm:svn:http://anonsvn.jboss.org/repos/common/common-core/trunk/</connection>
     <developerConnection>scm:svn:https://svn.jboss.org/repos/common/common-core/trunk/</developerConnection>    
   </scm>
-  
+<!-- -->
+<repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Repository Group</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+<!-- -->  
   <build>
     <plugins>
       <plugin>
@@ -73,7 +103,7 @@
   <dependencies>
   
     <dependency>
-      <groupId>apache-httpclient</groupId>
+      <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
       <version>2.0.2</version>
       <scope>compile</scope>
@@ -81,7 +111,7 @@
     </dependency>
     
     <dependency>
-      <groupId>apache-slide</groupId>
+      <groupId>slide</groupId>
       <artifactId>webdavlib</artifactId>
       <version>2.0</version>
       <scope>compile</scope>
