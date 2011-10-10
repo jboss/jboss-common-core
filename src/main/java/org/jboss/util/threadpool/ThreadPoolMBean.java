@@ -83,6 +83,13 @@ public interface ThreadPoolMBean
    void setMaximumPoolSize(int size);
 
    /**
+    * Get the current pool size
+    *
+    * @return the current pool size
+    */
+   int getPoolSize();
+
+   /**
     * @return the instance
     */
    ThreadPool getInstance();
