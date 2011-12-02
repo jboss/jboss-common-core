@@ -23,6 +23,7 @@ package org.jboss.util.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,8 +34,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.jboss.logging.Logger;
+import org.jboss.util.NotImplementedException;
 import org.jboss.util.StringPropertyReplacer;
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -52,7 +57,7 @@ import org.xml.sax.SAXException;
  * @version $Revision$
  */
 @SuppressWarnings("unchecked")
-public class JBossEntityResolver implements EntityResolver
+public class JBossEntityResolver implements EntityResolver, LSResourceResolver
 {
    private static final Logger log = Logger.getLogger(JBossEntityResolver.class);
 
@@ -63,12 +68,13 @@ public class JBossEntityResolver implements EntityResolver
     */
    private static boolean warnOnNonFileURLs;
 
-   private boolean entityResolved = false;
    /** Should system property refs in system ids be replaced */
    private boolean replaceSystemProperties = true;
 
    /** A local entities map that overrides the class level entities */
    private Map localEntities;
+
+   private ThreadLocal<Boolean> entityResolved = new ThreadLocal<Boolean>();
 
    static
    {
@@ -155,6 +161,7 @@ public class JBossEntityResolver implements EntityResolver
       registerEntity("-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN", "web-app_2_3.dtd");
       registerEntity("http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd", "web-app_2_4.xsd");
       registerEntity("http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd", "web-app_2_5.xsd");
+      registerEntity("http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd", "web-app_3_0.xsd");
       // jboss-web
       registerEntity("-//JBoss//DTD Web Application 2.2//EN", "jboss-web.dtd");
       registerEntity("-//JBoss//DTD Web Application 2.3//EN", "jboss-web_3_0.dtd");
@@ -241,6 +248,7 @@ public class JBossEntityResolver implements EntityResolver
    {
       return replaceSystemProperties;
    }
+
    public void setReplaceSystemProperties(boolean replaceSystemProperties)
    {
       this.replaceSystemProperties = replaceSystemProperties;
@@ -288,7 +296,7 @@ public class JBossEntityResolver implements EntityResolver
     */
    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
    {
-      entityResolved = false;
+      entityResolved.set(Boolean.FALSE);
 
       // nothing to resolve
       if( publicId == null && systemId == null )
@@ -341,9 +349,9 @@ public class JBossEntityResolver implements EntityResolver
          inputSource = resolveSystemIDasURL(systemId, trace);
       }
 
-      entityResolved = (inputSource != null);
-      
-      if (entityResolved == false)
+      entityResolved.set(new Boolean(inputSource != null));
+
+      if (inputSource == null)
          log.debug("Cannot resolve [publicID=" + publicId + ",systemID=" + systemId + "]");
       
       return inputSource;
@@ -352,13 +360,12 @@ public class JBossEntityResolver implements EntityResolver
    /**
     * Returns the boolean value to inform id DTD was found in the XML file or not
     *
-    * @todo this is not thread safe and should be removed?
-    *
     * @return boolean - true if DTD was found in XML
     */
    public boolean isEntityResolved()
    {
-      return entityResolved;
+       Boolean value = entityResolved.get();
+       return value != null ? value.booleanValue() : false;
    }
 
    /**
@@ -615,4 +622,96 @@ public class JBossEntityResolver implements EntityResolver
       return inputStream;
    }
 
+    public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
+        InputSource inputSource = null;
+        try {
+            inputSource = resolveEntity(publicId, systemId);
+        } catch (Exception e) {
+            log.debug("Failed to resolve resource", e);
+        }
+        LSInput result = null;
+        if (inputSource != null) {
+            result = new LSInputImpl(publicId, systemId, baseURI, inputSource);
+        }
+        return result;
+    }
+
+    private static class LSInputImpl implements LSInput {
+
+        private final String systemID;
+        private final String publicID;
+        private final String baseURI;
+        private final InputSource inputSource;
+
+        public LSInputImpl(String publicID, String systemID, String baseURI, InputSource inputSource) {
+            this.inputSource = inputSource;
+            this.systemID = systemID;
+            this.publicID = publicID;
+            this.baseURI = baseURI;
+        }
+
+        public Reader getCharacterStream() {
+            return inputSource.getCharacterStream();
+        }
+
+        public void setCharacterStream(Reader characterStream) {
+            throw new NotImplementedException();
+        }
+
+        public InputStream getByteStream() {
+            return inputSource.getByteStream();
+        }
+
+        public void setByteStream(InputStream byteStream) {
+            throw new NotImplementedException();
+        }
+
+        public String getStringData() {
+            return null;
+        }
+
+        public void setStringData(String stringData) {
+            throw new NotImplementedException();
+        }
+
+        public String getSystemId() {
+            return systemID;
+        }
+
+        public void setSystemId(String systemId) {
+            throw new NotImplementedException();
+        }
+
+        public String getPublicId() {
+            return publicID;
+        }
+
+        public void setPublicId(String publicId) {
+            throw new NotImplementedException();
+        }
+
+        public String getBaseURI() {
+            return baseURI;
+        }
+
+        public void setBaseURI(String baseURI) {
+            throw new NotImplementedException();
+        }
+
+        public String getEncoding() {
+            return null;
+        }
+
+        public void setEncoding(String encoding) {
+            throw new NotImplementedException();
+        }
+
+        public boolean getCertifiedText() {
+            return false;
+        }
+
+        public void setCertifiedText(boolean certifiedText) {
+            throw new NotImplementedException();
+        }
+    }
 }
