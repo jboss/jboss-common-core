@@ -51,6 +51,27 @@ import java.util.TimeZone;
  */
 public class FileURLConnection extends URLConnection
 {
+   static boolean decodeFilePaths = true;
+
+   // JBPAPP-8065 - regression introduced where fixing JBCOMMON-106 exposed bugs in some third party frameworks,  
+   //  setting this property false enables the previous behavior to allow it to continue to work
+   static boolean useURI = true;
+
+   static
+   {
+      String flag = System.getProperty("org.jboss.net.protocol.file.decodeFilePaths");
+      if (flag != null)
+      {
+         decodeFilePaths = Boolean.valueOf(flag).booleanValue();
+      }
+
+      flag = System.getProperty("org.jboss.net.protocol.file.useURI");
+      if (flag != null)
+      {
+         useURI = Boolean.valueOf(flag).booleanValue();
+      }
+   }
+
    /** The underlying file */
    protected final File file;
 
@@ -59,7 +80,21 @@ public class FileURLConnection extends URLConnection
       super(url);
       try
       {
-         file = new File(url.toURI());
+         if (useURI) 
+         {
+            file = new File(url.toURI());
+         } 
+         else
+         {
+            String path = url.getPath();
+            if (decodeFilePaths) 
+            {
+               path = URLDecoder.decode(path, "UTF-8");
+            }
+
+            // Convert the url '/' to the os file separator
+            file = new File(path.replace('/', File.separatorChar).replace('|', ':'));
+         }
          super.doOutput = false;
       }
       catch (URISyntaxException e)
