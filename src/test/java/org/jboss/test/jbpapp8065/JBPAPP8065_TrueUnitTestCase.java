@@ -38,15 +38,16 @@ import junit.framework.TestCase;
  * 
  * @author bmaxwell
  */
-public class JBPAPP8065UnitTestCase extends TestCase
+public class JBPAPP8065_TrueUnitTestCase extends TestCase
 {
-   public JBPAPP8065UnitTestCase(String name)
+   public JBPAPP8065_TrueUnitTestCase(String name)
    {
       super(name);
    }
  
-   public void testJBPAPP806_Default()
+   public void testJBPAPP806_UseURI_True()
    {
+      System.setProperty("org.jboss.net.protocol.file.useURI", "true");
       URL url = null;
       try
       {
@@ -60,14 +61,14 @@ public class JBPAPP8065UnitTestCase extends TestCase
          {
             // this will catch a FileNotFoundException
             // This is NOT the expected result when -Dorg.jboss.net.protocol.file.useURI=true
-            fail("URL: " + url + " should have thrown an IllegalArgumentException when -Dorg.jboss.net.protocol.file.useURI is not set see JBPAPP-8065");
+            fail("URL: " + url + " should have thrown an IllegalArgumentException when -Dorg.jboss.net.protocol.file.useURI=true see JBPAPP-8065");
          }
          catch(IllegalArgumentException iae)
          {
             // This is the expected results the url.toURI() will throw given file:non... is not a valid URI
             return;   
          }
-         fail("URL: " + url + " should have thrown an IllegalArgumentException when -Dorg.jboss.net.protocol.file.useURI is not set see JBPAPP-8065");
+         fail("URL: " + url + " should have thrown an IllegalArgumentException when -Dorg.jboss.net.protocol.file.useURI=true see JBPAPP-8065");
       }
       catch (MalformedURLException e)
       {
