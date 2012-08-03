@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.jboss.logging.Logger;
 import org.jboss.util.NotImplementedException;
 import org.jboss.util.StringPropertyReplacer;
