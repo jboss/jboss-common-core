@@ -493,7 +493,9 @@ public class JBossEntityResolver implements EntityResolver, LSResourceResolver
          if(isReplaceSystemProperties())
             systemId = StringPropertyReplacer.replaceProperties(systemId);
          URL url = new URL(systemId);
-         if (warnOnNonFileURLs && url.getProtocol().equalsIgnoreCase("file") == false)
+         if (warnOnNonFileURLs
+         	 && url.getProtocol().equalsIgnoreCase("file") == false
+         	 && url.getProtocol().equalsIgnoreCase("vfszip") == false)
          {
             log.warn("Trying to resolve systemId as a non-file URL: " + systemId);
          }
