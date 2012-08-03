@@ -620,7 +620,7 @@ public class PropertyMap extends Properties
     * @param value   Property value.
     * @return        Previous property value or null.
     */
-   public Object setProperty(String name, String value)
+   public synchronized Object setProperty(String name, String value)
    {
       updateJndiCache(name, value);
       return put(name, value);
