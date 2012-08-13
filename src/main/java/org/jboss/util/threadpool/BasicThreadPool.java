@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -96,7 +97,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    /** Has the pool been stopped? */
    private AtomicBoolean stopped = new AtomicBoolean(false);
    /** The Heap<TimeoutInfo> of tasks ordered by their completion timeout */
-   private PriorityQueue<TimeoutInfo> tasksWithTimeouts = new PriorityQueue<TimeoutInfo>(13);
+   private PriorityBlockingQueue<TimeoutInfo> tasksWithTimeouts = new PriorityBlockingQueue<TimeoutInfo>(13);
    /** The task completion timeout monitor runnable */
    private TimeoutMonitor timeoutTask;
    /** The trace level logging flag */
@@ -512,12 +513,7 @@ public class BasicThreadPool implements ThreadPool, BasicThreadPoolMBean
    }
    protected TimeoutInfo getNextTimeout()
    {
-      TimeoutInfo info = null;
-      if(this.tasksWithTimeouts.isEmpty() == false)
-      {
-         info = this.tasksWithTimeouts.remove();
-      }
-      return info;
+      return this.tasksWithTimeouts.poll();
    }
    
    protected void setDefaultThreadContextClassLoader(Thread thread)
