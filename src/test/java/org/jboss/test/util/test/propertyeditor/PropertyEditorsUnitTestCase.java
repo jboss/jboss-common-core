@@ -65,6 +65,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
    private static Logger log = Logger.getLogger(PropertyEditorsUnitTestCase.class);
    Calendar calendar = Calendar.getInstance();
    private Locale locale;
+   private static final boolean hasJDK7;
 
    /** Augment the PropertyEditorManager search path to incorporate the JBoss
     specific editors. This simply references the PropertyEditors.class to
@@ -75,6 +76,25 @@ public class PropertyEditorsUnitTestCase extends TestCase
       PropertyEditors.init();
       String[] paths = PropertyEditorManager.getEditorSearchPath();
       log.info(Arrays.asList(paths));
+      hasJDK7 = hasClass("java.util.concurrent.ForkJoinPool");
+   }
+
+   private static boolean hasClass(final String name)
+   {
+      try
+      {
+         Class.forName(name);
+         return true;
+      }
+      catch (ClassNotFoundException e)
+      {
+         return false;
+      }
+   }
+
+   private static boolean hasJDK7()
+   {
+      return hasJDK7;
    }
 
    static class StringArrayComparator implements Comparator
@@ -216,7 +236,7 @@ public class PropertyEditorsUnitTestCase extends TestCase
       };
       // The expected string output from getAsText()
       String[][] expectedStringData = {
-         {"true", "false", "true", "false", "true", "false", "null"},
+         {"true", "false", "true", "false", "true", "false", hasJDK7() ? null : "null"},
          {"1", "-1", "0", "26"},
          {"1", "-1", "0", "160"},
          {"1", "-1", "0", "160"},
