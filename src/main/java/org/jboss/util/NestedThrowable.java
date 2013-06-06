@@ -110,7 +110,9 @@ public interface NestedThrowable
    final class Util 
    {
       // Can not be final due to init bug, see getLogger() for details
-      private static Logger log = Logger.getLogger(NestedThrowable.class);
+	  // This variable should not be accessed directly so the getLogger method
+	  // will be able to check it is not null.
+      private static Logger pvtLog = null;
 
       /**
        * Something is very broken with class nesting, which can sometimes
@@ -122,25 +124,30 @@ public interface NestedThrowable
        */
       private static Logger getLogger()
       {
-         if (log == null)
-            log = Logger.getLogger(NestedThrowable.class);
+         if (pvtLog == null)
+        	 pvtLog = Logger.getLogger(NestedThrowable.class);
 
-         return log;
+         return pvtLog;
       }
       
+      /** A helper to get a boolean property. */
       protected static boolean getBoolean(String name, boolean defaultValue)
       {
          name = NestedThrowable.class.getName() + "." + name;
          String value = System.getProperty(name, String.valueOf(defaultValue));
 
          // HACK see getLogger() for details
-         log = getLogger();
+         Logger log = getLogger();
          
          log.debug(name + "=" + value);
 
          return new Boolean(value).booleanValue();
       }
 
+      /**
+       * Check and possibly warn if the nested exception type is the same
+       * as the parent type (duplicate nesting).
+       */
       public static void checkNested(final NestedThrowable parent,
                                      final Throwable child)
       {
@@ -155,7 +162,7 @@ public interface NestedThrowable
          
          if (parentType.isAssignableFrom(childType)) {
             // HACK see getLogger() for details
-            log = getLogger();
+            Logger log = getLogger();
 
             log.warn("Duplicate throwable nesting of same base type: " +
                      parentType + " is assignable from: " + childType);
