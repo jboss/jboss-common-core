@@ -23,6 +23,7 @@ package org.jboss.test.util.test.xml.resolver;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URL;
 
 import org.jboss.util.xml.JBossEntityResolver;
@@ -94,7 +95,7 @@ public class JBossEntityResolverUnitTestCase
       InputStream resolvedStream = resolvedSource.getByteStream();
       assertNotNull(resolvedStream);
       int resolvedSize = bytesTotal(resolvedStream);
-      assertEquals(280, resolvedSize);
+      assertEquals(333, resolvedSize);
    }
 
    public void testEmptyFilenameResolution()
