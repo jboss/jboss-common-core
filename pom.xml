@@ -18,6 +18,14 @@
         <maven.compiler.source>1.6</maven.compiler.source>
     </properties>
 
+    <licenses>
+        <license>
+            <name>Apache License Version 2.0</name>
+            <url>http://repository.jboss.org/licenses/apache-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <scm>
         <url>https://github.com/jboss/jboss-common-core</url>
         <connection>scm:git:https://github.com/jboss/jboss-common-core.git</connection>
