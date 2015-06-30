@@ -91,7 +91,7 @@ public class JBossEntityResolverUnitTestCase
       InputStream resolvedStream = resolvedSource.getByteStream();
       assertNotNull(resolvedStream);
       int resolvedSize = bytesTotal(resolvedStream);
-      assertEquals(333, resolvedSize);
+      assertEquals(324, resolvedSize);
    }
 
    public void testEmptyFilenameResolution()
